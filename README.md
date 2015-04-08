@@ -1,1 +1,1 @@
-# qtcat package:
+# Quantitative Trait Cluster Association Test (QTCAT)
