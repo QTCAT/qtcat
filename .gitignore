@@ -1,0 +1,14 @@
+.Rproj.user/
+.Rhistory
+.RData
+qtcat.Rproj
+src/*.o
+src/*.so
+src/*.dll
+tests/
+.Rproj.user
+packrat/lib*/
+.Rprofile
+man/
+NAMESPACE
+README*
