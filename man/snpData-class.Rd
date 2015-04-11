@@ -18,8 +18,9 @@ chromosomes the second row contains the positions.}
 
 \item{\code{alleles}}{A matrix of allele labels: A, T, C or, G.}
 
-\item{\code{dim}}{Dimentions of snpData.}
+\item{\code{dim}}{integer vector with exactly two non-negative values.}
 
-\item{\code{dimnames}}{Row and column names of snpData.}
+\item{\code{dimnames}}{list of length two; each component containing NULL or a
+character vector length equal the corresponding Dim element.}
 }}
 

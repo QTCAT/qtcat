@@ -84,10 +84,10 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         allelepos.push_back(allele[0]);
         allelepos.push_back(allele[1]);
         // if two alleles make new coding
-        AA = allele[0] + allele[0];
-        AB = allele[0] + allele[1];
-        BA = allele[1] + allele[0];
-        BB = allele[1] + allele[1];
+        AA = allele[0]; AA += allele[0];
+        AB = allele[0]; AB += allele[1];
+        BA = allele[1]; BA += allele[0];
+        BB = allele[1]; BB += allele[1];
         // raw coding of line (SNP) 
         for (int i = dataStart; i < lineElements.size(); ++i) {
             if (lineElements[i] == AA) {
