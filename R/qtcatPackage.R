@@ -1,4 +1,3 @@
-
 #' @name qtcat-package
 #' @aliases qtcat
 #' @docType package

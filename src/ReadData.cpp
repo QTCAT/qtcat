@@ -5,16 +5,7 @@
 
 using namespace std;
 
-
-
-// split string in to vector of strings
-void split(const string &s, char delim, vector<string> &elems) {
-    stringstream ss(s);
-    string item;
-    while (getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-}
+void split(const string &s, char delim, vector<string> &elems);
 
 // [[Rcpp::export]]
 Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote, 
@@ -26,7 +17,6 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     const string naStr = Rcpp::as<string>(na_str);
     // Input file stream
     ifstream fileIn(fname.c_str());
-    
     // Column names (Individual names)
     getline(fileIn, oneLine);
     // Delete qoutes if exist
@@ -34,11 +24,15 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         oneLine.erase(remove(oneLine.begin(), oneLine.end(), quote), 
                       oneLine.end());
     }
+    // check if sep is part of first line
+    if (oneLine.find(sep) == string::npos) {
+        Rcpp::stop("In line 1 the separator character 'sep' doesn't exist");
+    }
     // split string in to vector of strings
     split(oneLine, sep, lineElements);
+    int row = lineElements.size();
     // Individual names
     Rcpp::CharacterVector indivNames = Rcpp::wrap(lineElements);
-    
     // 
     vector<string> lociNames;
     vector<int> pos;
@@ -50,7 +44,6 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     string BB;
     vector<char> snpData;
     int col = 0;
-    int row = 0;
     int posStart = 0;
     int dataStart = 2;
     if (rowNames) {
@@ -61,10 +54,6 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     while(getline(fileIn, oneLine)) {
         lineElements.clear();
         allelesSet.clear();
-        // check if sep is part of first line
-        if (col == 0 && oneLine.find(sep) == string::npos) {
-            Rcpp::stop("The separator character 'sep' doesn't exist in line 1");
-        }
         // Delete qoutes if exist
         if (quote != ' ') {
             oneLine.erase(remove(oneLine.begin(), oneLine.end(), quote), 
@@ -73,12 +62,9 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         // split string in to vector of strings
         split(oneLine, sep, lineElements);
         // length of line
-        if (col == 0) {
-            row = lineElements.size();
-        } else if (row != lineElements.size()){
-            Rcpp::Rcerr << "Error: Length of line " << col +1 << " is " << 
-                lineElements.size() << " instead of " << row <<  "\n" << endl;
-            Rcpp::stop("Reading stopt");
+        if (row != lineElements.size()){
+            Rcpp::stop("Error: Length of line ", col+2, " is ",
+                lineElements.size(), " instead of ", row);
         }
         // detect Nucleotides in this line (SNP)
         for (int i = dataStart; i < lineElements.size(); i++) {
@@ -90,18 +76,18 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         vector<char> allele(allelesSet.begin(), allelesSet.end());
         // if more not two alleles skip
         if (allele.size() != 2) {
-            Rcpp::Rcerr << "warning:\nline " << col +1 << 
-                " has more or less than two alleles and therefore the line is skipt\n" 
+            Rcpp::Rcerr << "warning: Line " << col+2 << 
+                " has more or less than two alleles and therefore the line is skipt" 
                 << endl;
             continue;
         }
         allelepos.push_back(allele[0]);
         allelepos.push_back(allele[1]);
         // if two alleles make new coding
-        AA = allele[0]; AA += allele[0];
-        AB = allele[0]; AB += allele[1];
-        BA = allele[1]; BA += allele[0];
-        BB = allele[1]; BB += allele[1];
+        AA = allele[0] + allele[0];
+        AB = allele[0] + allele[1];
+        BA = allele[1] + allele[0];
+        BB = allele[1] + allele[1];
         // raw coding of line (SNP) 
         for (int i = dataStart; i < lineElements.size(); ++i) {
             if (lineElements[i] == AA) {
@@ -117,7 +103,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
                 snpData.push_back(0x00);
             }
         }
-                // SNP names
+        // SNP names
         if (rowNames) {
             lociNames.push_back(lineElements[0]);
         }
@@ -125,19 +111,19 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
          pos.push_back(atoi(lineElements[posStart].c_str()));
          pos.push_back(atoi(lineElements[posStart +1].c_str()));
         ++col;
-        if (nrows > 0 && nrows == col) {
+        if (nrows > 0 && nrows <= col+2) {
             break;
         }
     }
+    if (snpData.size() == 0)
+        Rcpp::stop("No valid SNP found");
     // Rcpp conversioan and vector as matrix
     // position
     Rcpp::IntegerVector position = Rcpp::wrap(pos);
     position.attr("dim") = Rcpp::Dimension(2, col);
-    
     // alleles
     Rcpp::CharacterVector alleles = Rcpp::wrap(allelepos);
     alleles.attr("dim") = Rcpp::Dimension(2, col);
-    
     // snpData
     Rcpp::RawVector snpOutData(snpData.size());
     copy(snpData.begin(), snpData.end(), snpOutData.begin());
@@ -150,10 +136,8 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     }
     row  = snpOutData.size() / col;
     snpOutData.attr("dim") = Rcpp::Dimension(row, col);
-    
     // individual names
     indivNames.erase(indivNames.begin(), indivNames.begin() +2);
-    
     // Results as List
     Rcpp::List  out = Rcpp::List::create(Rcpp::Named("snpData", snpOutData),
                                          Rcpp::Named("alleles", alleles),
@@ -161,4 +145,13 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
                                          Rcpp::Named("lociNames", lociNames),
                                          Rcpp::Named("indivNames", indivNames));
     return out;
+}
+
+// split string in to vector of strings
+void split(const string &s, char delim, vector<string> &elems) {
+    stringstream ss(s);
+    string item;
+    while (getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
 }
