@@ -111,7 +111,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
          pos.push_back(atoi(lineElements[posStart].c_str()));
          pos.push_back(atoi(lineElements[posStart +1].c_str()));
         ++col;
-        if (nrows > 0 && nrows <= col+2) {
+        if (nrows > 0 && nrows <= col+1) {
             break;
         }
     }
