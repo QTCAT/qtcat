@@ -1,6 +1,6 @@
 # define
 #' @importFrom methods setClassUnion
-setClassUnion("matrixOrNULL", members=c("matrix", "NULL"))
+setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 
 #' @title Class "snpData" for a SNP matrix (S4 class)
 #' @name snpData-class
@@ -22,3 +22,7 @@ setClass("snpData",
                  alleles = "matrixOrNULL",
                  dim = "integer", 
                  dimnames = "list"))
+# TODO: validity check of class 
+#    - names individuals and snps unique?
+#    - no NAs
+#    - ...

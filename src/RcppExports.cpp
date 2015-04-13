@@ -25,3 +25,50 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// design
+NumericMatrix design(RawMatrix x, IntegerVector inx1, IntegerVector inx2);
+RcppExport SEXP qtcat_design(SEXP xSEXP, SEXP inx1SEXP, SEXP inx2SEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type inx1(inx1SEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type inx2(inx2SEXP );
+        NumericMatrix __result = design(x, inx1, inx2);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// freqs2
+List freqs2(RawMatrix x);
+RcppExport SEXP qtcat_freqs2(SEXP xSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        List __result = freqs2(x);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// freq1
+NumericVector freq1(RawMatrix x);
+RcppExport SEXP qtcat_freq1(SEXP xSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        NumericVector __result = freq1(x);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}

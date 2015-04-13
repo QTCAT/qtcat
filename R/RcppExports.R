@@ -5,3 +5,15 @@ read_snpData <- function(file, sep, quote, rowNames, na_str, nrows) {
     .Call('qtcat_read_snpData', PACKAGE = 'qtcat', file, sep, quote, rowNames, na_str, nrows)
 }
 
+design <- function(x, inx1, inx2) {
+    .Call('qtcat_design', PACKAGE = 'qtcat', x, inx1, inx2)
+}
+
+freqs2 <- function(x) {
+    .Call('qtcat_freqs2', PACKAGE = 'qtcat', x)
+}
+
+freq1 <- function(x) {
+    .Call('qtcat_freq1', PACKAGE = 'qtcat', x)
+}
+
