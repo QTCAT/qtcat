@@ -5,6 +5,119 @@
 
 using namespace Rcpp;
 
+// corDist
+double corDist(RawVector x, RawVector y);
+RcppExport SEXP qtcat_corDist(SEXP xSEXP, SEXP ySEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawVector >::type x(xSEXP );
+        Rcpp::traits::input_parameter< RawVector >::type y(ySEXP );
+        double __result = corDist(x, y);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// corDists
+NumericVector corDists(RawMatrix x);
+RcppExport SEXP qtcat_corDists(SEXP xSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        NumericVector __result = corDists(x);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// preClustIdenticals
+List preClustIdenticals(RawMatrix x, const int step);
+RcppExport SEXP qtcat_preClustIdenticals(SEXP xSEXP, SEXP stepSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        Rcpp::traits::input_parameter< const int >::type step(stepSEXP );
+        List __result = preClustIdenticals(x, step);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// identicals
+List identicals(RawMatrix x, IntegerVector clustIdx);
+RcppExport SEXP qtcat_identicals(SEXP xSEXP, SEXP clustIdxSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type clustIdx(clustIdxSEXP );
+        List __result = identicals(x, clustIdx);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// joinIdenticals
+List joinIdenticals(int n, List preclust, List ClustMedo);
+RcppExport SEXP qtcat_joinIdenticals(SEXP nSEXP, SEXP preclustSEXP, SEXP ClustMedoSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< int >::type n(nSEXP );
+        Rcpp::traits::input_parameter< List >::type preclust(preclustSEXP );
+        Rcpp::traits::input_parameter< List >::type ClustMedo(ClustMedoSEXP );
+        List __result = joinIdenticals(n, preclust, ClustMedo);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// clarans
+List clarans(RawMatrix x, const int k, const int maxNeigbours);
+RcppExport SEXP qtcat_clarans(SEXP xSEXP, SEXP kSEXP, SEXP maxNeigboursSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        Rcpp::traits::input_parameter< const int >::type k(kSEXP );
+        Rcpp::traits::input_parameter< const int >::type maxNeigbours(maxNeigboursSEXP );
+        List __result = clarans(x, k, maxNeigbours);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
+// medoids
+IntegerVector medoids(RawMatrix x, IntegerVector clusters);
+RcppExport SEXP qtcat_medoids(SEXP xSEXP, SEXP clustersSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
+        Rcpp::traits::input_parameter< IntegerVector >::type clusters(clustersSEXP );
+        IntegerVector __result = medoids(x, clusters);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // read_snpData
 Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote, bool rowNames, Rcpp::CharacterVector na_str, int nrows);
 RcppExport SEXP qtcat_read_snpData(SEXP fileSEXP, SEXP sepSEXP, SEXP quoteSEXP, SEXP rowNamesSEXP, SEXP na_strSEXP, SEXP nrowsSEXP) {
