@@ -25,6 +25,8 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
     stop("In line one the separator character 'sep' doesn't exist")
   if (length(testRead[[1L]]) != length(testRead[[2L]]))
     stop("Line one and tow are of differnt length")
+  if (!identical(unique(testRead[[1L]]), testRead[[1L]]))
+    stop("Column names are not unique")
   firstCols <- tolower(substring(testRead[[1L]][1L:3L], 1L, 3L))
   if (identical(firstCols, c("nam", "chr", "pos"))) {
     rowNames <- TRUE
@@ -41,14 +43,16 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
   temp <- read_snpData(file, sep, quote, rowNames, "ZZZ", nrows)
   # make snpData object
   if (identical(temp$lociNames, character(0))) {
-    temp$lociNames <- paste0("loci", seq_len(ncol(temp$snpData)))
+    lociNames <- paste0("loci", seq_len(ncol(temp$snpData)))
+  } else {
+    lociNames <- make.unique(temp$lociNames)
   }
   out <- new("snpData",
              snpData=temp$snpData,
              position=temp$position,
              alleles=temp$alleles,
              dim=dim(temp$snpData),
-             dimnames=list(temp$indivNames, temp$lociNames))
+             dimnames=list(temp$indivNames, lociNames))
   out
 } # read.snpData
 
