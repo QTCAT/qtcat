@@ -26,20 +26,22 @@ qtcatDist <- function(x) {
 #' @param mc.cores A positive integer for the number of cores for parallel 
 #' computing. See \code{\link[parallel]{mclapply}} for details.
 #' @importFrom parallel mclapply
-qtcatIdenticals <- function (x, mc.cores=1) {
+#' @export
+qtcatIdenticals <- function (x, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   p <- ncol(x@snpData)
-  s <- optimise(function(s, p, m) p*s+p/s*(p/s-1)/2*s/m, 
-                interval=c(2, p-1), p=p, m=mc.cores)$minimum
-  step <- as.integer(p/(s+1))
+  s <- optimise(function(s, p, m) p * s + p / s * (p / s - 1) / 2 * s / m,
+                interval = c(2, p - 1), p = p, m = mc.cores)$minimum
+  step <- as.integer(p / (s + 1))
   preclust <- unlist(preClustIdenticals(x@snpData, step), FALSE)
   kidenticals <- mclapply(preclust, function(i, x) identicals(x, i), 
-                         x=x@snpData, mc.cores=mc.cores)
+                         x = x@snpData, mc.cores = mc.cores)
   identclust <- joinIdenticals(ncol(x@snpData), preclust, kidenticals)
-  clust <- identclust[[1]]
+  clust <- identclust[[1L]]
   names(clust) <- colnames(x)
-  out <- list(clusters=clust,
-              medoids=colnames(x)[identclust[[2]]+1])
+  out <- list(clusters = clust,
+              medoids = colnames(x)[identclust[[2L]] + 1])
+  class(out) <- "qtcatIdenticals"
   out
 } # qtcatIdenticals
 
@@ -73,7 +75,7 @@ qtcatIdenticals <- function (x, mc.cores=1) {
 #' \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 #' @importFrom parallel mclapply
 #' @export 
-qtcatClarans <- function(x, k, maxNeigbours=100, nLocal=10, mc.cores=1) {
+qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   if (missing(k))
     stop("k must be specifid")
@@ -87,20 +89,20 @@ qtcatClarans <- function(x, k, maxNeigbours=100, nLocal=10, mc.cores=1) {
   } # clarans.i
   out.nLocal <- mclapply(1L:nLocal, clarans.i,
                             x, k, maxNeigbours,
-                            mc.cores=mc.cores)
+                            mc.cores = mc.cores)
   opt.func <- function(i, x) {x[[i]][[3L]]}
   all.objectives <- sapply(1:nLocal, opt.func, out.nLocal)
   out.opt <- out.nLocal[[which.min(all.objectives)]]                     
-  clusters <- out.opt[[1]]
+  clusters <- out.opt[[1L]]
   names(clusters) <- colnames(x)
-  medoids <- out.opt[[2L]]+1
+  medoids <- out.opt[[2L]] + 1
   names(medoids) <- colnames(x)[medoids]
   # output
-  out <- list(clusters=clusters,
-              medoids=medoids,
-              objective=out.opt[[3L]],
-              all.objectives=all.objectives)
-  class(out) <- 'qtcatClarans'
+  out <- list(clusters = clusters,
+              medoids = medoids,
+              objective = out.opt[[3L]],
+              all.objectives = all.objectives)
+  class(out) <- "qtcatClarans"
   out
 } # qtcatClarans
 
@@ -115,7 +117,7 @@ qtcatClarans <- function(x, k, maxNeigbours=100, nLocal=10, mc.cores=1) {
 #' @param nLocal positive integer specifying the number of optimisation runs.
 #' Columns have to be similar to \code{x}.
 #' @param method see hclust
-#' @param mc.cores number of cores for parallel computing. See \code{mclapply} 
+#' @param mc.cores number of cores for parallel computing. See \code{mclapply}
 #' in package parallel for details.
 #' @param trace if TRUE it prints current status of the program.
 #' @param ... additional agruments for \code{\link[stats]{hclust}}
@@ -123,9 +125,9 @@ qtcatClarans <- function(x, k, maxNeigbours=100, nLocal=10, mc.cores=1) {
 #' @importFrom parallel mclapply
 #' @importFrom stats hclust
 #' @export
-qtcatClust <- function(x, k, identicals=TRUE,
-                       maxNeigbours=100, nLocal=10, 
-                       method="complete", mc.cores=1, trace=FALSE, ...) {
+qtcatClust <- function(x, k, identicals = TRUE,
+                       maxNeigbours = 100, nLocal = 10, 
+                       method = "complete", mc.cores = 1, trace = FALSE, ...) {
   if (is.element("fastcluster", rownames(installed.packages()))) {
     hclust <- fastcluster::hclust
   }
@@ -140,19 +142,19 @@ qtcatClust <- function(x, k, identicals=TRUE,
     if (length(identicalFit$medoids) <= k * 2)
       stop ("Number of medoids from pefect correlated clustering is < k*2")
     x <- x[, identicalFit$medoids]
-  } else
-    if (trace)
-      cat("Step 1: Search for Identicals is switch off\n")
+  } else if (trace) {
+    cat("Step 1: Search for Identicals is switch off\n")
+  }
   # CLARANS
   if (missing(k))
-    k <- as.integer(ncol(x)/10000)
+    k <- as.integer(ncol(x) / 10000L)
   if (k >= 2L) {
     if (trace)
       cat("Step 2: CLARANS is running\n")
     clarFit <- qtcatClarans(x, k, maxNeigbours, nLocal, mc.cores)
     if (trace)
-      cat("   objectives:", 
-          format(clarFit$all.objectives, sort=TRUE, digits=4), "\n")
+      cat("   objectives:",
+          format(clarFit$all.objectives, sort = TRUE, digits=4), "\n")
     # if cluster < 2 add to a bigger cluster
     clust.inx <- seq_len(k)
     cluster.size <- rep(NA, k)
@@ -176,7 +178,7 @@ qtcatClust <- function(x, k, identicals=TRUE,
     } # hclust.sub
     hclustFit <- mclapply(clust.inx, hclust.sub, 
                           x, clarFit, method, ..., 
-                          mc.cores=mc.cores)
+                          mc.cores = mc.cores)
     dendro <- dend.merge(hclustFit)
   } else {
     if (ncol(x) > 65536L)
@@ -187,13 +189,13 @@ qtcatClust <- function(x, k, identicals=TRUE,
     dendro <- as.dendrogram(hclust(qtcatDist(x), method, ...))
   }
   if (identicals) {
-    out <- list(dendrogram=dendro,
-                clusters=identicalFit$clusters,
-                medoids=identicalFit$medoids)
+    out <- list(dendrogram = dendro,
+                clusters = identicalFit$clusters,
+                medoids = identicalFit$medoids)
   } else {
-    out <- list(dendrogram=dendro,
-                clusters=NULL,
-                medoids=NULL)
+    out <- list(dendrogram = dendro,
+                clusters = NULL,
+                medoids = NULL)
   }
   class(out) <- "qtcatClust"
   out
@@ -207,7 +209,7 @@ qtcatClust <- function(x, k, identicals=TRUE,
 qtcatMedoids <- function (x, clusters) {
   stopifnot(is(x, "snpData"))
   medoids <- medoids(x@snpData, clusters)
-  out <- rbind(clusters=clusters, medoids=medoids)
+  out <- rbind(clusters = clusters, medoids = medoids)
   class(out) <- "qtcatMedoids"
   out
 } # qtcatMedoidsClusters
@@ -221,9 +223,9 @@ dend.merge <- function (x) {
     temp1 <- list(x[[1]], x[[2]])
     attr(temp1, "members") <- sum(vapply(temp1, attr, 0L, which = "members"))
     attr(temp1, "height") <- 1 # max(vapply(temp1, attr, 0, which = "height"))
-    attr(temp1, "midpoint") <- (attr(temp1[[1]], "members")+
-                                  attr(temp1[[1]], "midpoint")+
-                                  attr(temp1[[2]], "midpoint"))/2
+    attr(temp1, "midpoint") <- (attr(temp1[[1]], "members") +
+                                  attr(temp1[[1]], "midpoint") +
+                                  attr(temp1[[2]], "midpoint")) / 2
     class(temp1) <- "dendrogram"
     x[c(1, 2)] <- NULL
     if (length(x)) {
@@ -247,7 +249,7 @@ sigClusters <- function(x, clusters, alpha = 0.05, max.height) {
   stopifnot(is(clusters, "qtcatClust"))
   y <- summary(x, alpha, max.height)
   signames <- rownames(y)
-  sigclust <- match(signames, clusters$medoids)  
+  sigclust <- match(signames, clusters$medoids)
   out <- matrix(0, length(clusters$clusters), 3L)
   out[, 2] <- 1
   for (i in seq_along(signames)) {
