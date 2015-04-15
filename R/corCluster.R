@@ -78,9 +78,9 @@ qtcatIdenticals <- function (x, mc.cores = 1) {
 qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   if (missing(k))
-    stop("k must be specifid")
+    stop("'k' must be specifid")
   if (k < 2L)
-    stop ("k must be at least two")
+    stop ("'k' must be at least two")
   # cluster optimisation by clarans in parallel
   clarans.i <- function(i, x, k, maxNeigbours) {
     # cluster optimisation by clarans
@@ -135,11 +135,11 @@ qtcatClust <- function(x, k, identicals = TRUE,
   if (identicals) {
     # identicals
     if (trace)
-      cat("Step 1: Search for Identicals is running\n")
+      cat("Step 1: Search for identicals is running\n")
     identicalFit <- qtcatIdenticals(x, mc.cores)
     x <- x[, identicalFit$medoids]
   } else if (trace) {
-    cat("Step 1: Search for Identicals is switch off\n")
+    cat("Step 1: Search for identicals is switch off\n")
   }
   # CLARANS
   if (missing(k))
@@ -165,7 +165,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
       clarFit$clusters[clarFit$clusters %in% smallclust] <- min.bigclust
     }
     if (max(cluster.size) > 65536L)
-      stop("clusters from CLARANS are to big for hclust, choose larger 'k'")
+      stop("Clusters from CLARANS are to big for hclust, choose larger 'k'")
     # HClust
     if (trace)
       cat("Step 3: HClust is running\n")
@@ -180,7 +180,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
     dendro <- dend.merge(hclustFit)
   } else {
     if (ncol(x) > 65536L)
-      stop("Data size is to big for hclust, increase 'k'")
+      stop("Data size is to big for hclust, choose larger 'k'")
     # HClust
     if (trace)
       cat("Step 2: CLARANS is switch off\nStep 3: HClust is running\n")
