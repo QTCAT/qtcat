@@ -21,3 +21,32 @@ qtcatGeno <- function(x, qtcatClust, height, max.height) {
   class(out) <- "qtcatGeno"
   out
 }
+
+#' peno of xxx
+#' @param x data.frame fisrt column individual names secend column pheno  
+#' additional columns aditional variables.
+#' @export
+qtcatPheno <- function(x) {
+  if (any(is.na(x))) 
+    stop("Missing values are not allowed")
+  if(!identical(substring(tolower(colnames(x)[1:2]), 1, 4), c("name", "phen")))
+     stop("first column must be 'names', second column must be 'pheno'")
+  if (!is.numeric(x[, 2])) 
+    stop("phenotype is not numeric")
+  if (ncol(x) > 2L) {
+    design <- model.matrix(~ . , data=x[, -1:-2])[, -1L, drop=FALSE]
+  } else {
+    design <- c()
+  }
+  out <- list(names = as.character(x[, 1]),
+              pheno=x[, 2],
+              design=design)
+  class(out) <- "qtcatPheno"
+  out
+}
+
+# #'
+# qtcatHit <- function() {
+#   
+# }
+
