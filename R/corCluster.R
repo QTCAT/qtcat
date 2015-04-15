@@ -132,15 +132,11 @@ qtcatClust <- function(x, k, identicals = TRUE,
     hclust <- fastcluster::hclust
   }
   stopifnot(is(x, "snpData"))
-  if (missing(k))
-    stop("k must be specifid")
   if (identicals) {
     # identicals
     if (trace)
       cat("Step 1: Search for Identicals is running\n")
     identicalFit <- qtcatIdenticals(x, mc.cores)
-    if (length(identicalFit$medoids) <= k * 2)
-      stop ("Number of medoids from pefect correlated clustering is < k*2")
     x <- x[, identicalFit$medoids]
   } else if (trace) {
     cat("Step 1: Search for Identicals is switch off\n")
@@ -149,6 +145,8 @@ qtcatClust <- function(x, k, identicals = TRUE,
   if (missing(k))
     k <- as.integer(ncol(x) / 10000L)
   if (k >= 2L) {
+    if (identicals && length(identicalFit$medoids) <= k * 2)
+      stop ("Number of medoids from pefect correlated clustering is < k * 2")
     if (trace)
       cat("Step 2: CLARANS is running\n")
     clarFit <- qtcatClarans(x, k, maxNeigbours, nLocal, mc.cores)
@@ -185,7 +183,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
       stop("Data size is to big for hclust, increase 'k'")
     # HClust
     if (trace)
-      cat("Step 2: CLARANS is switch off\n", "Step 3: HClust is running\n")
+      cat("Step 2: CLARANS is switch off\nStep 3: HClust is running\n")
     dendro <- as.dendrogram(hclust(qtcatDist(x), method, ...))
   }
   if (identicals) {
