@@ -5,6 +5,26 @@
 
 using namespace Rcpp;
 
+// read_snpData
+Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote, bool rowNames, Rcpp::CharacterVector na_str, int nrows);
+RcppExport SEXP qtcat_read_snpData(SEXP fileSEXP, SEXP sepSEXP, SEXP quoteSEXP, SEXP rowNamesSEXP, SEXP na_strSEXP, SEXP nrowsSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type file(fileSEXP );
+        Rcpp::traits::input_parameter< char >::type sep(sepSEXP );
+        Rcpp::traits::input_parameter< char >::type quote(quoteSEXP );
+        Rcpp::traits::input_parameter< bool >::type rowNames(rowNamesSEXP );
+        Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type na_str(na_strSEXP );
+        Rcpp::traits::input_parameter< int >::type nrows(nrowsSEXP );
+        Rcpp::List __result = read_snpData(file, sep, quote, rowNames, na_str, nrows);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}
 // corDist
 double corDist(RawVector x, RawVector y);
 RcppExport SEXP qtcat_corDist(SEXP xSEXP, SEXP ySEXP) {
@@ -112,26 +132,6 @@ BEGIN_RCPP
         Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP );
         Rcpp::traits::input_parameter< IntegerVector >::type clusters(clustersSEXP );
         IntegerVector __result = medoids(x, clusters);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
-END_RCPP
-}
-// read_snpData
-Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote, bool rowNames, Rcpp::CharacterVector na_str, int nrows);
-RcppExport SEXP qtcat_read_snpData(SEXP fileSEXP, SEXP sepSEXP, SEXP quoteSEXP, SEXP rowNamesSEXP, SEXP na_strSEXP, SEXP nrowsSEXP) {
-BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type file(fileSEXP );
-        Rcpp::traits::input_parameter< char >::type sep(sepSEXP );
-        Rcpp::traits::input_parameter< char >::type quote(quoteSEXP );
-        Rcpp::traits::input_parameter< bool >::type rowNames(rowNamesSEXP );
-        Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type na_str(na_strSEXP );
-        Rcpp::traits::input_parameter< int >::type nrows(nrowsSEXP );
-        Rcpp::List __result = read_snpData(file, sep, quote, rowNames, na_str, nrows);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);
