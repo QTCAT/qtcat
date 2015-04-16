@@ -137,7 +137,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     row  = snpOutData.size() / col;
     snpOutData.attr("dim") = Rcpp::Dimension(row, col);
     // individual names
-    indivNames.erase(indivNames.begin(), indivNames.begin() +2);
+    indivNames.erase(indivNames.begin(), indivNames.begin() + dataStart);
     // Results as List
     Rcpp::List  out = Rcpp::List::create(Rcpp::Named("snpData", snpOutData),
                                          Rcpp::Named("alleles", alleles),
