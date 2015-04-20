@@ -177,7 +177,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
     hclustFit <- mclapply(clust.inx, hclust.sub, 
                           x, clarFit, method, ..., 
                           mc.cores = mc.cores)
-    dendro <- dend.merge(hclustFit)
+    dendro <- do.call(merge, hclustFit)
   } else {
     if (ncol(x) > 65536L)
       stop("Data size is to big for hclust, choose larger 'k'")
@@ -234,28 +234,3 @@ dend.merge <- function (x) {
   }
   x
 } # dend.merge
-
-#' @title Include zero clusters x
-#' @description Include zero clusters
-#' @param x hit object.
-#' @param clusters object of class qtcatClust.
-#' @param alpha alpha level.
-#' @param max.height max. height to consider.
-#' @importFrom hit hit
-#' @export
-sigClusters <- function(x, clusters, alpha = 0.05, max.height) {
-  stopifnot(is(clusters, "qtcatClust"))
-  y <- summary(x, alpha, max.height)
-  signames <- rownames(y)
-  sigclust <- match(signames, clusters$medoids)
-  out <- matrix(0, length(clusters$clusters), 3L)
-  out[, 2] <- 1
-  for (i in seq_along(signames)) {
-    inx <- which(clusters$clusters == sigclust[i])
-    out[inx, ] <- matrix(unlist(y[signames[i], ]), length(inx), 3, byrow=TRUE)
-  }
-  rownames(out) <- names(clusters$clusters)
-  colnames(out) <- colnames(y)
-  out <- as.data.frame(out[out[, 1] != 0, ])
-  out
-} # sigCluster
