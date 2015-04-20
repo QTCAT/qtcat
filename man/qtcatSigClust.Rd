@@ -4,12 +4,10 @@
 \alias{qtcatSigClust}
 \title{Include zero clusters x}
 \usage{
-qtcatSigClust(x, clusters, alpha = 0.05, max.height)
+qtcatSigClust(x, alpha = 0.05, max.height)
 }
 \arguments{
 \item{x}{hit object.}
-
-\item{clusters}{object of class qtcatClust.}
 
 \item{alpha}{alpha level.}
 

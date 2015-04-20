@@ -13,7 +13,7 @@ qtcatGeno <- function(x, clusters, height, max.height=.3) {
   }
   # TODO: chack allele.freq
   desMat <- as.matrix(x[, colnames(x) %in% names])
-  hier <- hierarchy(clusters$dendrogram, height, max.height, colnames(x))
+  hier <- hierarchy(clusters$dendrogram, height, max.height, colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
               clusters = clusters$clusters,
@@ -89,25 +89,24 @@ qtcatHit <- function(pheno, geno,
 #' @title Include zero clusters x
 #' @description Include zero clusters
 #' @param x hit object.
-#' @param clusters object of class qtcatClust.
 #' @param alpha alpha level.
 #' @param max.height max. height to consider.
 #' @importFrom hit hit
 #' @export
-qtcatSigClust <- function(x, clusters, alpha = 0.05, max.height) {
-  stopifnot(is(clusters, "qtcatClust"))
+qtcatSigClust <- function(x, alpha = 0.05, max.height) {
+  stopifnot(is(x, "qtcatHit"))
   y <- summary(x, alpha, max.height)
   signames <- rownames(y)
-  sigclust <- match(signames, clusters$medoids)
-  sigClust <- matrix(0, length(clusters$clusters), 3L)
+  sigclust <- match(signames, x$medoids)
+  sigClust <- matrix(0, length(x$clusters), 3L)
   sigClust[, 2] <- 1
   for (i in seq_along(signames)) {
-    inx <- which(clusters$clusters == sigclust[i])
+    inx <- which(x$clusters == sigclust[i])
     sigClust[inx, ] <- matrix(unlist(y[signames[i], ]), length(inx), 3, byrow=TRUE)
   }
-  rownames(sigClust) <- names(clusters$clusters)
+  rownames(sigClust) <- names(x$clusters)
   colnames(sigClust) <- colnames(y)
   sigClust <- as.data.frame(sigClust[sigClust[, 1] != 0, ,drop=FALSE])
-  sigClust <- cbind(t(getPos(x)[, rownames(sigClust), drop=FALSE]), sigClust)
+  sigClust <- cbind(t(x$positions[, rownames(sigClust), drop=FALSE]), sigClust)
   sigClust
 } # sigCluster
