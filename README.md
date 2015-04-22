@@ -6,6 +6,7 @@ The current built and tested status of the main branch under Linux and Windows:
 [![AppVeyor Build status]
   (https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew?branch=master&svg=true)]
 (https://ci.appveyor.com/project/jrklasen/qtcat).
+
 The licence is: 
 [![License]
   (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
