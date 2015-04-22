@@ -8,6 +8,9 @@
 qtcatGeno <- function(x, clusters, height, max.height=.3) {
   stopifnot(is(x, "snpData"))
   stopifnot(is(clusters, "qtcatClust"))
+  if (!setequal(names(clusters$clusters), colnames(x))) {
+    stop ("SNP names of 'x' and 'clusters' differ")
+  }
   if (is.null(names <- clusters$medoids)) {
     names <- names(clusters)
   }
@@ -74,7 +77,7 @@ qtcatHit <- function(pheno, geno,
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
     warning("The following individuals are part of 'pheno' but not of 'geno':\n", 
             paste(id.uniquePheno, collapse=" "))
-  phenoInx <- match(pheno$names, id, nomatch=0)
+  phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(geno$x))
   x <- cbind(geno$x[genoInx, ], pheno$design[phenoInx, ])
   y <- pheno$pheno[phenoInx]
