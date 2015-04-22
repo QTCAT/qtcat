@@ -24,7 +24,8 @@ yet `devtools` installed, you have to do so first.
 devtools::install_github("jrklasen/hit")
 devtools::install_github("QTCAT/qtcat")
 ```
-The licence of the packe is 
+
+The licence of the package is
 [![License]
   (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
 (http://www.gnu.org/licenses/gpl-2.0.html), 
