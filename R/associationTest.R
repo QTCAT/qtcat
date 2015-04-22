@@ -1,8 +1,8 @@
 #' geno data
-#' @param x snpData
-#' @param clusters clusteing
-#' @param height height
-#' @param max.height max.height
+#' @param x snpData object.
+#' @param clusters Clustering.
+#' @param height Height.
+#' @param max.height Max. height.
 #' @importFrom hit hierarchy
 #' @export
 qtcatGeno <- function(x, clusters, height, max.height=.3) {
@@ -26,9 +26,9 @@ qtcatGeno <- function(x, clusters, height, max.height=.3) {
   out
 }
 
-#' peno of xxx
-#' @param x data.frame fisrt column individual names secend column pheno  
-#' additional columns aditional variables.
+#' geno of xxx
+#' @param x data.frame, first column individual names, second column phenotype.
+#' Additional columns for additional variables.
 #' @export
 qtcatPheno <- function(x) {
   if (any(is.na(x))) 
@@ -50,17 +50,17 @@ qtcatPheno <- function(x) {
 }
 
 #' hit
-#' @param pheno qtcatPheno
-#' @param geno qtcatGeno
-#' @param B number of sample-splits.
-#' @param p.samp1 fraction of data used for the LASSO. The ANOVA uses 
+#' @param pheno qtcatPheno object.
+#' @param geno qtcatGeno object.
+#' @param B Number of sample-splits.
+#' @param p.samp1 Fraction of data used for the LASSO. The ANOVA uses 
 #' \code{1 - p.samp1}.
-#' @param gamma vector of gamma-values.
-#' @param max.p.esti maximum alpha level. All p-values above this value are set 
+#' @param gamma Vector of gamma-values.
+#' @param max.p.esti Maximum alpha level. All p-values above this value are set 
 #' to one. Small \code{max.p.esti} values reduce computing time.
-#' @param mc.cores number of cores for parallelising. Theoretical maximum is 
+#' @param mc.cores Number of cores for parallelising. Theoretical maximum is 
 #' 'B'. For details see \code{\link[parallel]{mclapply}}.
-#' @param trace if TRUE it prints current status of the program.
+#' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
 #' @export
 qtcatHit <- function(pheno, geno, 
@@ -90,10 +90,10 @@ qtcatHit <- function(pheno, geno,
 }
 
 #' @title Include zero clusters x
-#' @description Include zero clusters
+#' @description Include zero clusters.
 #' @param x hit object.
-#' @param alpha alpha level.
-#' @param max.height max. height to consider.
+#' @param alpha Alpha level.
+#' @param max.height Max. height to consider.
 #' @importFrom hit hit
 #' @export
 qtcatSigClust <- function(x, alpha = 0.05, max.height) {
