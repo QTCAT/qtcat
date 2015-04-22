@@ -9,7 +9,7 @@ The current built and test status under Linux
 
 ## Description:
 
-A association mapping method which jointly analysis all SNPs at ones and at the 
+A association mapping method which jointly analyses all SNPs at ones and at the 
 same time accounts for the correlation among them. This makes population 
 structure correction unnecessary and therefore increases power compared to 
 classical methods like the mixed model.
