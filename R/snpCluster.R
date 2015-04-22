@@ -148,7 +148,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
     if (identicals && length(identicalFit$medoids) <= k * 2)
       stop ("Number of medoids from pefect correlated clustering is < k * 2")
     if (trace)
-      cat("Step 2: CLARANS is running\n")
+      cat("Step 2: CLARANS is running, 'k' is:", k, "\n")
     clarFit <- qtcatClarans(x, k, maxNeigbours, nLocal, mc.cores)
     if (trace)
       cat("   objectives:",
