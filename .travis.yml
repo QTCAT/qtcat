@@ -17,6 +17,7 @@ before_install:
 
 install:
   - ./travis-tool.sh install_deps
+  - Rscript -e 'library("devtools"); devtools::install_github("jrklasen/hit")'
 
 script: 
   - ./travis-tool.sh run_tests
