@@ -1,6 +1,6 @@
 # Quantitative Trait Cluster Association Test
 
-The current built and tested status of the main branch under Linux 
+The current built and test status of the main branch under Linux 
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
 (https://travis-ci.org/QTCAT/qtcat) and Windows 
 [![AppVeyor Build status]
