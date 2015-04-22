@@ -25,8 +25,7 @@ devtools::install_github("jrklasen/hit")
 devtools::install_github("QTCAT/qtcat")
 ```
 
-The licence of the package is
 [![License]
   (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
-(http://www.gnu.org/licenses/gpl-2.0.html), 
-and &copy; is held by JR Klasen.
+(http://www.gnu.org/licenses/gpl-2.0.html)
+&copy; 2015 JR Klasen
