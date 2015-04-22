@@ -1,16 +1,15 @@
 # Quantitative Trait Cluster Association Test
 
-The package is built and tested under continuous integration. Current status for the main branch is:
-Linux 
+The package is built and tested under continuous integration. Currently the main branch has for Linux  and Windows the following status:
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
-(https://travis-ci.org/QTCAT/qtcat), and Windows
-[![AppVeyor Build Status]
-  (https://ci.appveyor.com/api/projects/status/github/jrklasen/qtcat?branch=master&svg=true)]
+(https://travis-ci.org/QTCAT/qtcat),
+[![AppVeyor Build status]
+  (https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew?branch=master&svg=true)]
 (https://ci.appveyor.com/project/jrklasen/qtcat).
 The licence is: 
 [![License]
   (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
-(http://www.gnu.org/licenses/gpl-2.0.html)
+(http://www.gnu.org/licenses/gpl-2.0.html).
 
 ## Description:
 
