@@ -1,6 +1,6 @@
 # Quantitative Trait Cluster Association Test
 
-The package is built and tested under continuous integration. Currently the main branch has for Linux  and Windows the following status:
+The current built and tested status of the main branch under Linux and Windows:
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
 (https://travis-ci.org/QTCAT/qtcat),
 [![AppVeyor Build status]
