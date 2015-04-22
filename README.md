@@ -1,16 +1,11 @@
 # Quantitative Trait Cluster Association Test
 
-The current built and tested status of the main branch under Linux and Windows:
+The current built and tested status of the main branch under Linux 
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
-(https://travis-ci.org/QTCAT/qtcat),
+(https://travis-ci.org/QTCAT/qtcat) and Windows 
 [![AppVeyor Build status]
   (https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew?branch=master&svg=true)]
 (https://ci.appveyor.com/project/jrklasen/qtcat).
-
-The licence is: 
-[![License]
-  (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
-(http://www.gnu.org/licenses/gpl-2.0.html).
 
 ## Description:
 
@@ -29,3 +24,8 @@ yet `devtools` installed, you have to do so first.
 devtools::install_github("jrklasen/hit")
 devtools::install_github("QTCAT/qtcat")
 ```
+The licence of the packe is 
+[![License]
+  (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
+(http://www.gnu.org/licenses/gpl-2.0.html), 
+and &copy; is held by JR Klasen.
