@@ -8,17 +8,17 @@
 \S4method{[}{snpData,ANY,ANY,missing}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
-\item{x}{snpData object}
+\item{x}{snpData object.}
 
-\item{i}{indices specifying elements to extract or replace. Indices are
+\item{i}{Indices specifying elements to extract or replace. Indices are
 numeric or character vectors.}
 
 \item{j}{indices specifying elements to extract or replace. Indices are
-numeric or character vectors}
+numeric or character vectors.}
 
-\item{...}{not implemented}
+\item{...}{Not implemented.}
 
-\item{drop}{not implemented}
+\item{drop}{Not implemented.}
 }
 \description{
 Sub snpData

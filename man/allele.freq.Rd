@@ -8,7 +8,7 @@
 allele.freq(x)
 }
 \arguments{
-\item{x}{data object.}
+\item{x}{R object.}
 }
 \description{
 Frequency of alleles in data.

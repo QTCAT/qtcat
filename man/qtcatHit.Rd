@@ -8,24 +8,24 @@ qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, gamma = seq(0.05, 0.99, by =
   0.01), max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...)
 }
 \arguments{
-\item{pheno}{qtcatPheno}
+\item{pheno}{qtcatPheno object.}
 
-\item{geno}{qtcatGeno}
+\item{geno}{qtcatGeno object.}
 
-\item{B}{number of sample-splits.}
+\item{B}{Number of sample-splits.}
 
-\item{p.samp1}{fraction of data used for the LASSO. The ANOVA uses
+\item{p.samp1}{Fraction of data used for the LASSO. The ANOVA uses
 \code{1 - p.samp1}.}
 
-\item{gamma}{vector of gamma-values.}
+\item{gamma}{Vector of gamma-values.}
 
-\item{max.p.esti}{maximum alpha level. All p-values above this value are set
+\item{max.p.esti}{Maximum alpha level. All p-values above this value are set
 to one. Small \code{max.p.esti} values reduce computing time.}
 
-\item{mc.cores}{number of cores for parallelising. Theoretical maximum is
+\item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
 'B'. For details see \code{\link[parallel]{mclapply}}.}
 
-\item{trace}{if TRUE it prints current status of the program.}
+\item{trace}{If \code{TRUE} it prints current status of the program.}
 
 \item{...}{additional arguments for \code{\link[glmnet]{cv.glmnet}}.}
 }

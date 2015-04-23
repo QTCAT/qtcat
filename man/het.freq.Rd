@@ -8,9 +8,9 @@
 het.freq(x, dim = 1L)
 }
 \arguments{
-\item{x}{data object.}
+\item{x}{R object.}
 
-\item{dim}{dimension over which heterozygosity is estimated.}
+\item{dim}{Dimension over which heterozygosity is estimated.}
 }
 \description{
 Frequency of heterozygosity in data.

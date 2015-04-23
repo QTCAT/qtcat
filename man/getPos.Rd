@@ -3,14 +3,14 @@
 \docType{methods}
 \name{getPos}
 \alias{getPos}
-\title{extract position information from object.}
+\title{Extract position information from object.}
 \usage{
 getPos(object)
 }
 \arguments{
-\item{object}{data object.}
+\item{object}{R object.}
 }
 \description{
-extract position information from object.
+Extract position information from object.
 }
 

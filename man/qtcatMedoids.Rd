@@ -2,14 +2,14 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatMedoids}
 \alias{qtcatMedoids}
-\title{Estimates the medoids.}
+\title{Estimates the medoids}
 \usage{
 qtcatMedoids(x, clusters)
 }
 \arguments{
-\item{x}{A object of class \linkS4class{snpData}.}
+\item{x}{An object of class \linkS4class{snpData}.}
 
-\item{clusters}{vector of cluster groups \code{snpData}.}
+\item{clusters}{Vector of cluster groups \code{snpData}.}
 }
 \description{
 Estimates clusters and medoids.

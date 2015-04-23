@@ -8,9 +8,9 @@
 \S4method{het.freq}{snpData}(x, dim = c(1, 2))
 }
 \arguments{
-\item{x}{snpData object}
+\item{x}{snpData object.}
 
-\item{dim}{interger for dimention}
+\item{dim}{Interger for dimension.}
 }
 \description{
 Heterozygosity

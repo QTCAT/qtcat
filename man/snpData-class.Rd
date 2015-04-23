@@ -5,7 +5,7 @@
 \alias{snpData-class}
 \title{Class "snpData" for a SNP matrix (S4 class)}
 \description{
-A S4 class for a SNP matrix. Storing SNP information using a
+An S4 class for a SNP matrix. Storing SNP information using a
 byte-level (raw) storage scheme jointly with positions.
 }
 \section{Slots}{
@@ -21,6 +21,6 @@ chromosomes the second row contains the positions.}
 \item{\code{dim}}{integer vector with exactly two non-negative values.}
 
 \item{\code{dimnames}}{list of length two; each component containing NULL or a
-character vector length equal the corresponding Dim element.}
+character vector length equal the corresponding dim element.}
 }}
 

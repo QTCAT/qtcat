@@ -2,28 +2,28 @@
 % Please edit documentation in R/snpData.R
 \name{read.snpData}
 \alias{read.snpData}
-\title{Reads a file in table format and creates a 'snpData' object from it.}
+\title{Read SNP tables to snpData object}
 \usage{
 read.snpData(file, sep = " ", quote = "\\"", na.strings, nrows = -1L)
 }
 \arguments{
-\item{file}{the name of the file which the data are to be read from. If it
+\item{file}{The name of the file which the data are to be read from. If it
 does not contain an absolute path, the file name is relative to the current
 working directory, \code{getwd()}. Tilde-expansion is performed where
 supported.}
 
-\item{sep}{the field separator character. Values on each line of the file
+\item{sep}{The field separator character. Values on each line of the file
 are separated by this character.}
 
-\item{quote}{the set of quoting characters. To disable quoting altogether,
+\item{quote}{The set of quoting characters. To disable quoting altogether,
 use \code{quote = ""}.}
 
-\item{na.strings}{a character vector of strings which are to be interpreted
+\item{na.strings}{A character vector of strings which are to be interpreted
 as NA values. Is not implemented yet.}
 
-\item{nrows}{integer: the maximum number of rows to read in.}
+\item{nrows}{Integer, the maximum number of rows to read in.}
 }
 \description{
-Reads a file in table format and creates a 'snpData' object from it.
+Reads a file in table format and returns a 'snpData' object.
 }
 

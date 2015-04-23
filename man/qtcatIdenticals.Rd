@@ -13,6 +13,6 @@ qtcatIdenticals(x, mc.cores = 1)
 computing. See \code{\link[parallel]{mclapply}} for details.}
 }
 \description{
-cluster at distance zero in qtcatClust
+Cluster at distance zero in qtcatClust.
 }
 

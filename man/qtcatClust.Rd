@@ -13,20 +13,20 @@ qtcatClust(x, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
 \item{k}{A positive integer specifying the number of clusters, less than
 the number of observations.}
 
-\item{identicals}{lgical if zero clustering ...}
+\item{identicals}{Logical, if zero clustering.}
 
-\item{maxNeigbours}{positive integer specifying the maximum number of
+\item{maxNeigbours}{Positive integer, specifying the maximum number of
 randomized searches.}
 
-\item{nLocal}{positive integer specifying the number of optimisation runs.
+\item{nLocal}{Positive integer, specifying the number of optimisation runs.
 Columns have to be similar to \code{x}.}
 
-\item{method}{see hclust}
+\item{method}{See hclust.}
 
-\item{mc.cores}{number of cores for parallel computing. See \code{mclapply}
+\item{mc.cores}{Number of cores for parallel computing. See \code{mclapply}
 in package parallel for details.}
 
-\item{trace}{if TRUE it prints current status of the program.}
+\item{trace}{If \code{TRUE} it prints current status of the program.}
 
 \item{...}{additional agruments for \code{\link[stats]{hclust}}}
 }

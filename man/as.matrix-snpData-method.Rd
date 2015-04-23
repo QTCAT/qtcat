@@ -8,13 +8,13 @@
 \S4method{as.matrix}{snpData}(x, inx1 = 1:ncol(x), inx2 = NULL, ...)
 }
 \arguments{
-\item{x}{snpData object}
+\item{x}{snpData object.}
 
 \item{inx1}{...}
 
 \item{inx2}{...}
 
-\item{...}{not implemented}
+\item{...}{Not implemented.}
 }
 \description{
 snpData as matrix

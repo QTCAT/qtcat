@@ -9,11 +9,11 @@ qtcatSigClust(x, alpha = 0.05, max.height)
 \arguments{
 \item{x}{hit object.}
 
-\item{alpha}{alpha level.}
+\item{alpha}{Alpha level.}
 
-\item{max.height}{max. height to consider.}
+\item{max.height}{Max. height to consider.}
 }
 \description{
-Include zero clusters
+Include zero clusters.
 }
 

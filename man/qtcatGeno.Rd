@@ -7,13 +7,13 @@
 qtcatGeno(x, clusters, height, max.height = 0.3)
 }
 \arguments{
-\item{x}{snpData}
+\item{x}{snpData object.}
 
-\item{clusters}{clusteing}
+\item{clusters}{Clustering.}
 
-\item{height}{height}
+\item{height}{Height.}
 
-\item{max.height}{max.height}
+\item{max.height}{Max. height.}
 }
 \description{
 geno data

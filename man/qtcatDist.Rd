@@ -7,7 +7,7 @@
 qtcatDist(x)
 }
 \arguments{
-\item{x}{A object of class \linkS4class{snpData}.}
+\item{x}{An object of class \linkS4class{snpData}.}
 }
 \description{
 This function computes and returns a distance matrix.

@@ -8,7 +8,7 @@
 \S4method{getPos}{snpData}(object)
 }
 \arguments{
-\item{object}{snpData object}
+\item{object}{snpData object.}
 }
 \description{
 Get position from snpData

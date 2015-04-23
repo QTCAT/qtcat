@@ -8,7 +8,7 @@
 \S4method{allele.freq}{snpData}(x)
 }
 \arguments{
-\item{x}{snpData object}
+\item{x}{snpData object.}
 }
 \description{
 Allele frequency

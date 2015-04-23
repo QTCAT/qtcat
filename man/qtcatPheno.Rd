@@ -2,15 +2,15 @@
 % Please edit documentation in R/associationTest.R
 \name{qtcatPheno}
 \alias{qtcatPheno}
-\title{peno of xxx}
+\title{geno of xxx}
 \usage{
 qtcatPheno(x)
 }
 \arguments{
-\item{x}{data.frame fisrt column individual names secend column pheno
-additional columns aditional variables.}
+\item{x}{data.frame, first column individual names, second column phenotype.
+Additional columns for additional variables.}
 }
 \description{
-peno of xxx
+geno of xxx
 }
 
