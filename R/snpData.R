@@ -1,15 +1,16 @@
-#' @title Reads a file in table format and creates a 'snpData' object from it.
-#' @param file the name of the file which the data are to be read from. If it 
+#' @title Read SNP tables to snpData object
+#' @description Reads a file in table format and returns a 'snpData' object.
+#' @param file The name of the file which the data are to be read from. If it 
 #' does not contain an absolute path, the file name is relative to the current 
 #' working directory, \code{getwd()}. Tilde-expansion is performed where 
 #' supported.
-#' @param sep the field separator character. Values on each line of the file 
+#' @param sep The field separator character. Values on each line of the file 
 #' are separated by this character.
-#' @param quote the set of quoting characters. To disable quoting altogether, 
+#' @param quote The set of quoting characters. To disable quoting altogether, 
 #' use \code{quote = ""}.
-#' @param na.strings a character vector of strings which are to be interpreted 
+#' @param na.strings A character vector of strings which are to be interpreted 
 #' as NA values. Is not implemented yet.
-#' @param nrows integer: the maximum number of rows to read in.
+#' @param nrows Integer, the maximum number of rows to read in.
 #' @importFrom methods new
 #' @export
 read.snpData <- function(file, sep = " ",  quote = "\"", 
@@ -58,13 +59,13 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
 
 #' @title Sub snpData
 #' @docType methods
-#' @param x snpData object
-#' @param i indices specifying elements to extract or replace. Indices are 
+#' @param x snpData object.
+#' @param i Indices specifying elements to extract or replace. Indices are 
 #' numeric or character vectors.
 #' @param j indices specifying elements to extract or replace. Indices are 
-#' numeric or character vectors
-#' @param ... not implemented
-#' @param drop not implemented
+#' numeric or character vectors.
+#' @param ... Not implemented.
+#' @param drop Not implemented.
 #' @importFrom methods setMethod signature new
 #' @export
 setMethod("[", signature(x="snpData", i="ANY", j="ANY", drop="missing"),
@@ -93,10 +94,10 @@ setMethod("[", signature(x="snpData", i="ANY", j="ANY", drop="missing"),
 
 #' @title snpData as matrix
 #' @docType methods
-#' @param x snpData object
+#' @param x snpData object.
 #' @param inx1 ...
 #' @param inx2 ...
-#' @param ... not implemented
+#' @param ... Not implemented.
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("as.matrix", signature(x="snpData"),
@@ -124,7 +125,7 @@ setMethod("as.matrix", signature(x="snpData"),
 
 #' @title Get position from snpData
 #' @docType methods
-#' @param object snpData object
+#' @param object snpData object.
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("getPos", signature(object="snpData"),
@@ -142,7 +143,7 @@ setMethod("getPos", signature(object="snpData"),
 
 #' @title Allele frequency
 #' @docType methods
-#' @param x snpData object
+#' @param x snpData object.
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("allele.freq", signature(x="snpData"),
@@ -155,8 +156,8 @@ setMethod("allele.freq", signature(x="snpData"),
 
 #' @title Heterozygosity
 #' @docType methods
-#' @param x snpData object
-#' @param dim interger for dimention
+#' @param x snpData object.
+#' @param dim Interger for dimension.
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("het.freq", signature(x="snpData"),

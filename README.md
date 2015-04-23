@@ -9,7 +9,7 @@ The current built and test status for Linux
 
 ## Description:
 
-A association mapping method which jointly analyses all SNPs at ones and at the 
+An association mapping method which jointly analyses all SNPs at once and at the 
 same time accounts for the correlation among them. This makes correction for 
 population structure unnecessary and therefore increases power compared to 
 classical methods like the mixed model.
@@ -17,7 +17,7 @@ classical methods like the mixed model.
 ## Install:
 
 The package can be installed from an R console via `devtools`. If you haven't 
-yet `devtools` installed, you have to do so first.
+yet installed `devtools`, you have to do so first.
 
 ```R
 # install.packages("devtools")

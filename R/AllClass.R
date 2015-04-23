@@ -5,7 +5,7 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #' @title Class "snpData" for a SNP matrix (S4 class)
 #' @name snpData-class
 #' @docType class
-#' @description A S4 class for a SNP matrix. Storing SNP information using a 
+#' @description An S4 class for a SNP matrix. Storing SNP information using a 
 #' byte-level (raw) storage scheme jointly with positions.
 #' @slot snpData A matrix of SNPs stored in type 'raw'.
 #' @slot position A matrix with two rows. The first row contains the 
@@ -13,7 +13,7 @@ setClassUnion("matrixOrNULL", c("matrix", "NULL"))
 #' @slot alleles A matrix of allele labels: A, T, C or, G.
 #' @slot dim integer vector with exactly two non-negative values.
 #' @slot dimnames list of length two; each component containing NULL or a 
-#' character vector length equal the corresponding Dim element.
+#' character vector length equal the corresponding dim element.
 #' @importFrom methods setClass
 #' @export
 setClass("snpData",

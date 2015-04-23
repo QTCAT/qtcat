@@ -3,7 +3,7 @@
 #' Distance is estimated as one minus absolute value of the correlation 
 #' coefficient 1-abs(cor). The estimation is computed for all pairwise 
 #' combinations SNPs. 
-#' @param x A object of class \linkS4class{snpData}.
+#' @param x An object of class \linkS4class{snpData}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
 #' @export
@@ -21,7 +21,7 @@ qtcatDist <- function(x) {
 } # qtcatDist
 
 #' @title Internal function
-#' @description cluster at distance zero in qtcatClust
+#' @description Cluster at distance zero in qtcatClust.
 #' @param x A object of class \linkS4class{snpData}.
 #' @param mc.cores A positive integer for the number of cores for parallel 
 #' computing. See \code{\link[parallel]{mclapply}} for details.
@@ -48,7 +48,7 @@ qtcatIdenticals <- function (x, mc.cores = 1) {
 #' @title K-medoids clustering among SNPs using randomized search
 #' @description Partitioning (clustering) into k clusters "around medoids" by 
 #' randomized search. 1-abs(cor) among SNPs is used as distance.
-#' @param x A object of class \linkS4class{snpData}.
+#' @param x An object of class \linkS4class{snpData}.
 #' @param k A positive integer specifying the number of clusters, greater than 
 #' one and less than the number of SNPs.
 #' @param maxNeigbours A positive integer specifying the maximum number of 
@@ -111,15 +111,15 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @param x A object of class \linkS4class{snpData}.
 #' @param k A positive integer specifying the number of clusters, less than 
 #' the number of observations.
-#' @param identicals lgical if zero clustering ...
-#' @param maxNeigbours positive integer specifying the maximum number of 
+#' @param identicals Logical, if zero clustering.
+#' @param maxNeigbours Positive integer, specifying the maximum number of 
 #' randomized searches.
-#' @param nLocal positive integer specifying the number of optimisation runs.
+#' @param nLocal Positive integer, specifying the number of optimisation runs.
 #' Columns have to be similar to \code{x}.
-#' @param method see hclust
-#' @param mc.cores number of cores for parallel computing. See \code{mclapply}
+#' @param method See hclust.
+#' @param mc.cores Number of cores for parallel computing. See \code{mclapply}
 #' in package parallel for details.
-#' @param trace if TRUE it prints current status of the program.
+#' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional agruments for \code{\link[stats]{hclust}}
 #' @seealso qtcatClarans
 #' @importFrom parallel mclapply
@@ -199,10 +199,10 @@ qtcatClust <- function(x, k, identicals = TRUE,
   out
 } # qtcatClust
 
-#' @title Estimates the medoids.
+#' @title Estimates the medoids
 #' @description Estimates clusters and medoids.
-#' @param x A object of class \linkS4class{snpData}.
-#' @param clusters vector of cluster groups \code{snpData}.
+#' @param x An object of class \linkS4class{snpData}.
+#' @param clusters Vector of cluster groups \code{snpData}.
 #' @export 
 qtcatMedoids <- function (x, clusters) {
   stopifnot(is(x, "snpData"))
@@ -213,8 +213,8 @@ qtcatMedoids <- function (x, clusters) {
 } # qtcatMedoidsClusters
 
 #' @title Internal function
-#' @description merge dendrograms.
-#' @param x list of dendrogtams
+#' @description Merge dendrograms.
+#' @param x List of dendrograms.
 #' @keywords internal
 dend.merge <- function (x) {
   while (!is(x, "dendrogram")) {
