@@ -1,11 +1,10 @@
+
 <a name="logo"/>
 <div align="center">
 <a href="https://qtcat.github.io/" target="_blank">
-<img src="https://github.com/QTCAT/qtcat.github.io/blob/master/_includes/QTCAT3.png?raw=true" alt="Logo" width="150" height="150"></img>
+<img src="https://github.com/QTCAT/qtcat.github.io/blob/master/_includes/QTCAT3.png?raw=true" width="150" height="150"></img>
 </a>
 </div>
-
-# Quantitative Trait Cluster Association Test
 
 The current built and test status for Linux 
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
@@ -14,7 +13,7 @@ The current built and test status for Linux
   (https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew?branch=master&svg=true)]
 (https://ci.appveyor.com/project/jrklasen/qtcat).
 
-## Description:
+##  Quantitative Trait Cluster Association Test:
 
 An association mapping method which jointly analyses all SNPs at once and at the 
 same time accounts for the correlation among them. This makes correction for 
