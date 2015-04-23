@@ -199,6 +199,55 @@ qtcatClust <- function(x, k, identicals = TRUE,
   out
 } # qtcatClust
 
+#' @title cluster qtcatClust object
+#' @param x qtcatClust object
+#' @param h cutting hight 
+#' @export 
+qtcatCutClust <- function(x, h) {
+  stopifnot(is(x, "qtcatClust"))
+  stopifnot(!missing(h))
+  clust.dend <- qtcatCutDend(x$dendrogram, h)
+  if (!is.null(x$clusters)) {
+    inx.names <- match(names(clust.dend), names(x$clusters))
+    inx.list <- list()
+    clust.list <- list()
+    for (i in unique(clust.dend)) {
+      inx.i <- inx.names[clust.dend == i]
+      inx.list[[i]] <- which(x$clusters %in% x$clusters[inx.i])
+      clust.list[[i]] <- rep(i, length(inx.list[[i]]))
+    }
+    out <- unlist(clust.list)[order(unlist(inx.list))]
+    names(out) <- names(x$clusters)
+  } else {
+    out <- clust.dend 
+  }
+  out
+} # cluster
+
+#' @title cluster dendrogram
+#' @param x dendrogram
+#' @param h cutting hight 
+#' @export 
+qtcatCutDend <- function(x, h) {
+  stopifnot(is(x, "dendrogram"))
+  stopifnot(!missing(h))
+  if (h >= attr(x, "height")) {
+    names.clust <- labels(x)
+    cluster <- rep(1, length(names.clust))
+    names(cluster) <- names.clust
+  } else {
+    cut.x <- cut(x, h=h)$lower
+    clust.member <- function(i, x) {
+      names.clust <- labels(x[[i]])
+      clust <- rep(i, length(names.clust))
+      names(clust) <- names.clust
+      return(clust)
+    }
+    cluster <- lapply(1:length(cut.x), clust.member, cut.x)
+  }  
+  unlist(cluster)
+} # cluster
+
 #' @title Estimates the medoids
 #' @description Estimates clusters and medoids.
 #' @param x An object of class \linkS4class{snpData}.
@@ -211,26 +260,3 @@ qtcatMedoids <- function (x, clusters) {
   class(out) <- "qtcatMedoids"
   out
 } # qtcatMedoidsClusters
-
-#' @title Internal function
-#' @description Merge dendrograms.
-#' @param x List of dendrograms.
-#' @keywords internal
-dend.merge <- function (x) {
-  while (!is(x, "dendrogram")) {
-    temp1 <- list(x[[1]], x[[2]])
-    attr(temp1, "members") <- sum(vapply(temp1, attr, 0L, which = "members"))
-    attr(temp1, "height") <- 1 # max(vapply(temp1, attr, 0, which = "height"))
-    attr(temp1, "midpoint") <- (attr(temp1[[1]], "members") +
-                                  attr(temp1[[1]], "midpoint") +
-                                  attr(temp1[[2]], "midpoint")) / 2
-    class(temp1) <- "dendrogram"
-    x[c(1, 2)] <- NULL
-    if (length(x)) {
-      x <- c(x, list(temp1))
-    } else {
-      x <- temp1
-    }
-  }
-  x
-} # dend.merge
