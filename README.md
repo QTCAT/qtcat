@@ -6,6 +6,8 @@
 </a>
 </div>
 
+# Quantitative Trait Cluster Association Test
+
 The current built and test status for Linux 
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
 (https://travis-ci.org/QTCAT/qtcat) and for Windows 
@@ -13,8 +15,8 @@ The current built and test status for Linux
   (https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew?branch=master&svg=true)]
 (https://ci.appveyor.com/project/jrklasen/qtcat).
 
-##  Quantitative Trait Cluster Association Test:
 
+## Description:
 An association mapping method which jointly analyses all SNPs at once and at the 
 same time accounts for the correlation among them. This makes correction for 
 population structure unnecessary and therefore increases power compared to 
