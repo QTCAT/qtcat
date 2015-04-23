@@ -1,3 +1,10 @@
+<a name="logo"/>
+<div align="center">
+<a href="https://qtcat.github.io/" target="_blank">
+<img src="https://github.com/QTCAT/qtcat.github.io/blob/master/_includes/QTCAT3.png?raw=true" alt="Logo" width="150" height="150"></img>
+</a>
+</div>
+
 # Quantitative Trait Cluster Association Test
 
 The current built and test status for Linux 
