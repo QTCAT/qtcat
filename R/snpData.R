@@ -146,13 +146,13 @@ setMethod("getPos", signature(object="snpData"),
 #' @param x snpData object.
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("allele.freq", signature(x="snpData"),
+setMethod("alleleFreq", signature(x="snpData"),
           function (x) {
             out <- freqs2(x@snpData)[[1]]
             names(out) <- colnames(x)
             out
           }
-) # allele.freq
+) # alleleFreq
 
 #' @title Heterozygosity
 #' @docType methods
@@ -160,7 +160,7 @@ setMethod("allele.freq", signature(x="snpData"),
 #' @param dim Interger for dimension.
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("het.freq", signature(x="snpData"),
+setMethod("hetFreq", signature(x="snpData"),
           function (x, dim=c(1, 2)) {
             if (dim[1] == 2)
               return(freqs2(x@snpData)[[2]])
@@ -168,4 +168,4 @@ setMethod("het.freq", signature(x="snpData"),
               return(freq1(x@snpData))
             return(NULL)
           }
-) # "het.freq"
+) # "hetFreq"

@@ -10,7 +10,7 @@ setGeneric("getPos", function(object) standardGeneric("getPos"))
 #' @param x R object.
 #' @importFrom methods setGeneric
 #' @export
-setGeneric("allele.freq", function(x) standardGeneric("allele.freq"))
+setGeneric("alleleFreq", function(x) standardGeneric("alleleFreq"))
 
 #' @title Frequency of heterozygosity in data.
 #' @docType methods
@@ -18,4 +18,4 @@ setGeneric("allele.freq", function(x) standardGeneric("allele.freq"))
 #' @param dim Dimension over which heterozygosity is estimated.
 #' @importFrom methods setGeneric
 #' @export
-setGeneric("het.freq", function(x, dim=1L) standardGeneric("het.freq"))
+setGeneric("hetFreq", function(x, dim=1L) standardGeneric("hetFreq"))

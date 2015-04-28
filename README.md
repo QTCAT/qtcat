@@ -29,7 +29,7 @@ yet installed `devtools`, you have to do so first.
 
 ```R
 # install.packages("devtools")
-devtools::install_github("jrklasen/hit")
+# devtools::install_github("jrklasen/hit")
 devtools::install_github("QTCAT/qtcat")
 ```
 

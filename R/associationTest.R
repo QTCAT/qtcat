@@ -14,7 +14,7 @@ qtcatGeno <- function(x, clusters, height, max.height=.3) {
   if (is.null(names <- clusters$medoids)) {
     names <- names(clusters)
   }
-  # TODO: chack allele.freq
+  # TODO: chack alleleFreq
   desMat <- as.matrix(x[, colnames(x) %in% names])
   hier <- hierarchy(clusters$dendrogram, height, max.height, colnames(desMat))
   out <- list(x = desMat,
