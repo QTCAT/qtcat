@@ -200,13 +200,13 @@ qtcatClust <- function(x, k, identicals = TRUE,
 } # qtcatClust
 
 #' @title cluster qtcatClust object
-#' @param x qtcatClust object
-#' @param h cutting hight 
+#' @param x qtcatClust object.
+#' @param absCor cutting height in absolute value of correlation.
 #' @export 
-qtcatCutClust <- function(x, h) {
+qtcatCutClust <- function(x, absCor) {
   stopifnot(is(x, "qtcatClust"))
-  stopifnot(!missing(h))
-  clust.dend <- qtcatCutDend(x$dendrogram, h)
+  stopifnot(!missing(absCor))
+  clust.dend <- qtcatCutDend(x$dendrogram, absCor)
   if (!is.null(x$clusters)) {
     inx.names <- match(names(clust.dend), names(x$clusters))
     inx.list <- list()
@@ -225,12 +225,13 @@ qtcatCutClust <- function(x, h) {
 } # cluster
 
 #' @title cluster dendrogram
-#' @param x dendrogram
-#' @param h cutting hight 
+#' @param x dendrogram.
+#' @param absCor cutting height in absolute value of correlation.
 #' @export 
-qtcatCutDend <- function(x, h) {
+qtcatCutDend <- function(x, absCor) {
   stopifnot(is(x, "dendrogram"))
-  stopifnot(!missing(h))
+  stopifnot(!missing(absCor))
+  h <- 1-absCor
   if (h >= attr(x, "height")) {
     names.clust <- labels(x)
     cluster <- rep(1, length(names.clust))

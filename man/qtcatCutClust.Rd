@@ -4,12 +4,12 @@
 \alias{qtcatCutClust}
 \title{cluster qtcatClust object}
 \usage{
-qtcatCutClust(x, h)
+qtcatCutClust(x, absCor)
 }
 \arguments{
-\item{x}{qtcatClust object}
+\item{x}{qtcatClust object.}
 
-\item{h}{cutting hight}
+\item{absCor}{cutting height in absolute value of correlation.}
 }
 \description{
 cluster qtcatClust object

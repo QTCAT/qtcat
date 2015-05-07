@@ -4,12 +4,12 @@
 \alias{qtcatCutDend}
 \title{cluster dendrogram}
 \usage{
-qtcatCutDend(x, h)
+qtcatCutDend(x, absCor)
 }
 \arguments{
-\item{x}{dendrogram}
+\item{x}{dendrogram.}
 
-\item{h}{cutting hight}
+\item{absCor}{cutting height in absolute value of correlation.}
 }
 \description{
 cluster dendrogram

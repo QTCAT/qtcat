@@ -4,14 +4,14 @@
 \alias{qtcatSigClust}
 \title{Include zero clusters x}
 \usage{
-qtcatSigClust(x, alpha = 0.05, max.height)
+qtcatSigClust(x, alpha = 0.05, min.absCor)
 }
 \arguments{
 \item{x}{hit object.}
 
 \item{alpha}{Alpha level.}
 
-\item{max.height}{Max. height to consider.}
+\item{min.absCor}{Minimum absolute value of correlation considered.}
 }
 \description{
 Include zero clusters.

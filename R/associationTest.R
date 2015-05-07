@@ -93,23 +93,74 @@ qtcatHit <- function(pheno, geno,
 #' @description Include zero clusters.
 #' @param x hit object.
 #' @param alpha Alpha level.
-#' @param max.height Max. height to consider.
+#' @param min.absCor Minimum absolute value of correlation considered.
 #' @importFrom hit hit
 #' @export
-qtcatSigClust <- function(x, alpha = 0.05, max.height) {
+qtcatSigClust <- function(x, alpha = 0.05, min.absCor) {
   stopifnot(is(x, "qtcatHit"))
-  y <- summary(x, alpha, max.height)
+  if (missing(min.absCor))
+    y <- summary(x, alpha)
+  else
+    y <- summary(x, alpha, 1 - min.absCor)
   signames <- rownames(y)
   sigclust <- match(signames, x$medoids)
   sigClust <- matrix(0, length(x$clusters), 3L)
   sigClust[, 2] <- 1
   for (i in seq_along(signames)) {
     inx <- which(x$clusters == sigclust[i])
-    sigClust[inx, ] <- matrix(unlist(y[signames[i], ]), length(inx), 3, byrow=TRUE)
+    sigClust[inx, ] <- matrix(unlist(y[signames[i], ]), length(inx), 
+                              3, byrow = TRUE)
   }
   rownames(sigClust) <- names(x$clusters)
-  colnames(sigClust) <- colnames(y)
-  sigClust <- as.data.frame(sigClust[sigClust[, 1] != 0, ,drop=FALSE])
-  sigClust <- cbind(t(x$positions[, rownames(sigClust), drop=FALSE]), sigClust)
-  sigClust
+  sigClust[, 2] <- 1 - sigClust[, 2]
+  colnames(sigClust) <- c(colnames(y)[1], "absCor", colnames(y)[3])
+  sigClust <- as.data.frame(sigClust[sigClust[, 1] != 0, ,drop = FALSE])
+  out <- cbind(t(x$positions[, rownames(sigClust), drop = FALSE]), 
+                    sigClust)
+  out
 } # sigCluster
+
+#' @title Linear model
+#' @description Linear model between phenotype amd medoids of significent SNP 
+#' clusters.
+#' @param x hit object.
+#' @param pheno qtcatPheno object.
+#' @param geno qtcatGeno object.
+#' @param alpha Alpha level.
+#' @param min.absCor Minimum absolute value of correlation considered.
+#' @importFrom hit hit
+#' @export
+qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
+  stopifnot(is(x, "qtcatHit"))
+  stopifnot(is(pheno, "qtcatPheno"))
+  stopifnot(is(geno, "qtcatGeno"))
+  id <- intersect(pheno$names, rownames(geno$x))
+  if (!length(id))
+    stop("The ID intersect of 'pheno' and 'geno' is emty")
+  if (length(id.uniqueGeno <- setdiff(rownames(geno$x), id)))
+    warning("The following individuals are part of 'geno' but not of 'pheno':\n", 
+            paste(id.uniqueGeno, collapse=" "))
+  if (length(id.uniquePheno <- setdiff(pheno$names, id)))
+    warning("The following individuals are part of 'pheno' but not of 'geno':\n", 
+            paste(id.uniquePheno, collapse=" "))
+  sigClust <- qtcatSigClust(x, alpha, min.absCor)
+  clusters <- split(rownames(sigClust), sigClust$clusters)
+  medoids <- lapply(clusters, function(names, geno) {
+    if (length(names) > 1L)
+      return(names[which.max(abs(cor(geno$x[, names])))])
+    else
+      return(names)
+  }, geno=geno)
+  xg <- geno$x[, unlist(medoids)]
+  colnames(xg) <- paste0("Cluster", 1:length(medoids))
+  phenoInx <- which(pheno$names %in% id)
+  genoInx <- match(pheno$names[phenoInx], rownames(xg))
+  rownames(xg) <- NULL
+  if (is.null(pheno$design))
+    dat <- data.frame(y=pheno$pheno[phenoInx], xg[genoInx, ])
+  else
+    dat <- data.frame(y=pheno$pheno[phenoInx],
+                      pheno$design[phenoInx, ], 
+                      xg[genoInx, ])  
+    lm(y ~ ., data=dat)
+}
