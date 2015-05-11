@@ -143,7 +143,7 @@ qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
     warning("The following individuals are part of 'pheno' but not of 'geno':\n", 
             paste(id.uniquePheno, collapse=" "))
-  sigClust <- qtcatSigClust(x, alpha, min.absCor)
+  sigClust <- summary(x, alpha, min.absCor)
   clusters <- split(rownames(sigClust), sigClust$clusters)
   medoids <- lapply(clusters, function(names, geno) {
     if (length(names) > 1L)
@@ -151,8 +151,7 @@ qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
     else
       return(names)
   }, geno=geno)
-  xg <- geno$x[, unlist(medoids)]
-  colnames(xg) <- paste0("Cluster", 1:length(medoids))
+  xg <- geno$x[, colnames(geno$x) %in% unlist(medoids)] 
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(xg))
   rownames(xg) <- NULL
