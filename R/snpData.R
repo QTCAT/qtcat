@@ -106,6 +106,7 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
     if (any(colnames(x) != colnames(alleles))) {
       stop("Column names of 'x' and 'alleles' differ")
     }
+    attr(alleles, 'dimnames') <- NULL
   }
   if (is.null(rownames(x))) {
     indiv.names <- paste0("indiv", seq_len(nrow(x)))
