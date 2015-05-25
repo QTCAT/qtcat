@@ -4,16 +4,17 @@
 \alias{qtcatGeno}
 \title{geno data}
 \usage{
-qtcatGeno(x, clusters, height, max.height = 0.3)
+qtcatGeno(x, clusters, absCor, min.absCor = 0.7)
 }
 \arguments{
 \item{x}{snpData object.}
 
 \item{clusters}{Clustering.}
 
-\item{height}{Height.}
+\item{absCor}{Vector of absolute value of correlations considered in the
+hierarchy.}
 
-\item{max.height}{Max. height.}
+\item{min.absCor}{Minimum absolute value of correlation considered.}
 }
 \description{
 geno data
