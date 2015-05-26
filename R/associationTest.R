@@ -17,8 +17,12 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   }
   # TODO: chack alleleFreq
   desMat <- as.matrix(x[, colnames(x) %in% names])
-  hier <- hierarchy(clusters$dendrogram, 1-absCor, 1-min.absCor,
-                    colnames(desMat))
+  if (missing(absCor))
+    hier <- hierarchy(clusters$dendrogram, min.absCor = 1 - min.absCor,
+                      names = colnames(desMat))
+  else
+    hier <- hierarchy(clusters$dendrogram, 1-absCor, 1-min.absCor,
+                      colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
               clusters = clusters$clusters,
@@ -74,11 +78,11 @@ qtcatHit <- function(pheno, geno,
   if (!length(id))
     stop("The ID intersect of 'pheno' and 'geno' is emty")
   if (length(id.uniqueGeno <- setdiff(rownames(geno$x), id)))
-    warning("The following individuals are part of 'geno' but not of 'pheno':\n",
-            paste(id.uniqueGeno, collapse=" "))
+    cat("The following individuals are part of 'geno' but not of 'pheno':\n",
+            paste(id.uniqueGeno, collapse=" "), "\n")
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
-    warning("The following individuals are part of 'pheno' but not of 'geno':\n",
-            paste(id.uniquePheno, collapse=" "))
+    cat("The following individuals are part of 'pheno' but not of 'geno':\n",
+            paste(id.uniquePheno, collapse=" "), "\n")
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(geno$x))
   x <- cbind(geno$x[genoInx, ], pheno$design[phenoInx, ])

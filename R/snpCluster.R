@@ -1,8 +1,8 @@
 #' @title Correlation based distance among SNPs
-#' @description This function computes and returns a distance matrix. 
-#' Distance is estimated as one minus absolute value of the correlation 
-#' coefficient 1-abs(cor). The estimation is computed for all pairwise 
-#' combinations SNPs. 
+#' @description This function computes and returns a distance matrix.
+#' Distance is estimated as one minus absolute value of the correlation
+#' coefficient 1-abs(cor). The estimation is computed for all pairwise
+#' combinations SNPs.
 #' @param x An object of class \linkS4class{snpData}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
@@ -23,7 +23,7 @@ qtcatDist <- function(x) {
 #' @title Internal function
 #' @description Cluster at distance zero in qtcatClust.
 #' @param x A object of class \linkS4class{snpData}.
-#' @param mc.cores A positive integer for the number of cores for parallel 
+#' @param mc.cores A positive integer for the number of cores for parallel
 #' computing. See \code{\link[parallel]{mclapply}} for details.
 #' @importFrom parallel mclapply
 #' @export
@@ -34,7 +34,7 @@ qtcatIdenticals <- function (x, mc.cores = 1) {
                 interval = c(2, p - 1), p = p, m = mc.cores)$minimum
   step <- as.integer(p / (s + 1))
   preclust <- unlist(preClustIdenticals(x@snpData, step), FALSE)
-  kidenticals <- mclapply(preclust, function(i, x) identicals(x, i), 
+  kidenticals <- mclapply(preclust, function(i, x) identicals(x, i),
                          x = x@snpData, mc.cores = mc.cores)
   identclust <- joinIdenticals(ncol(x@snpData), preclust, kidenticals)
   clust <- identclust[[1L]]
@@ -46,35 +46,35 @@ qtcatIdenticals <- function (x, mc.cores = 1) {
 } # qtcatIdenticals
 
 #' @title K-medoids clustering among SNPs using randomized search
-#' @description Partitioning (clustering) into k clusters "around medoids" by 
+#' @description Partitioning (clustering) into k clusters "around medoids" by
 #' randomized search. 1-abs(cor) among SNPs is used as distance.
 #' @param x An object of class \linkS4class{snpData}.
-#' @param k A positive integer specifying the number of clusters, greater than 
+#' @param k A positive integer specifying the number of clusters, greater than
 #' one and less than the number of SNPs.
-#' @param maxNeigbours A positive integer specifying the maximum number of 
+#' @param maxNeigbours A positive integer specifying the maximum number of
 #' randomized searches.
 #' @param nLocal A positive integer specifying the number of optimisation runs.
-#' @param mc.cores A positive integer for the number of cores for parallel 
+#' @param mc.cores A positive integer for the number of cores for parallel
 #' computing. See \code{\link[parallel]{mclapply}} for details.
-#' @details 
-#' The K-medoids clustering is implemented as clustering large 
-#' applications based upon randomized search (CLARANS) algorithm 
-#' (Ng and Han 2002). CLARANS is a modification of the partitioning around 
-#' medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the PAM 
-#' algorithm is estimating all distances between SNPs and the 
-#' respective medoids SNPs, CLARANS is searching a random subset of the SNPs. 
-#' This is independently repeated several times and the result which minimises 
-#' the average distance the most is reported. This produces results close to 
-#' those of the PAM algorithm (Ng and Han 2002), even though the number of runs 
-#' and the subset size have to be arbitrarily chosen by the user. The algorithm 
-#' has two advantages: (i) the number of distance comparisons is dramatically 
+#' @details
+#' The K-medoids clustering is implemented as clustering large
+#' applications based upon randomized search (CLARANS) algorithm
+#' (Ng and Han 2002). CLARANS is a modification of the partitioning around
+#' medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the PAM
+#' algorithm is estimating all distances between SNPs and the
+#' respective medoids SNPs, CLARANS is searching a random subset of the SNPs.
+#' This is independently repeated several times and the result which minimises
+#' the average distance the most is reported. This produces results close to
+#' those of the PAM algorithm (Ng and Han 2002), even though the number of runs
+#' and the subset size have to be arbitrarily chosen by the user. The algorithm
+#' has two advantages: (i) the number of distance comparisons is dramatically
 #' reduced; and (ii) parallelizing is straightforward.
 #' @references
-#' Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial 
-#' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}. 
+#' Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
+#' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
 #' \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 #' @importFrom parallel mclapply
-#' @export 
+#' @export
 qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   if (missing(k))
@@ -92,7 +92,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
                             mc.cores = mc.cores)
   opt.func <- function(i, x) {x[[i]][[3L]]}
   all.objectives <- sapply(1:nLocal, opt.func, out.nLocal)
-  out.opt <- out.nLocal[[which.min(all.objectives)]]                     
+  out.opt <- out.nLocal[[which.min(all.objectives)]]
   clusters <- out.opt[[1L]]
   names(clusters) <- colnames(x)
   medoids <- out.opt[[2L]] + 1
@@ -109,10 +109,10 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @title A three step approximated hirachical clustering among SNPs
 #' @description Hirachical clustering for big data.
 #' @param x A object of class \linkS4class{snpData}.
-#' @param k A positive integer specifying the number of clusters, less than 
+#' @param k A positive integer specifying the number of clusters, less than
 #' the number of observations.
 #' @param identicals Logical, if zero clustering.
-#' @param maxNeigbours Positive integer, specifying the maximum number of 
+#' @param maxNeigbours Positive integer, specifying the maximum number of
 #' randomized searches.
 #' @param nLocal Positive integer, specifying the number of optimisation runs.
 #' Columns have to be similar to \code{x}.
@@ -126,7 +126,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @importFrom stats hclust
 #' @export
 qtcatClust <- function(x, k, identicals = TRUE,
-                       maxNeigbours = 100, nLocal = 10, 
+                       maxNeigbours = 100, nLocal = 10,
                        method = "complete", mc.cores = 1, trace = FALSE, ...) {
   if (is.element("fastcluster", rownames(installed.packages()))) {
     hclust <- fastcluster::hclust
@@ -174,10 +174,10 @@ qtcatClust <- function(x, k, identicals = TRUE,
       out <- as.dendrogram(hclust(qtcatDist(x[, inx.i]), method, ...))
       out
     } # hclust.sub
-    hclustFit <- mclapply(clust.inx, hclust.sub, 
-                          x, clarFit, method, ..., 
+    hclustFit <- mclapply(clust.inx, hclust.sub,
+                          x, clarFit, method, ...,
                           mc.cores = mc.cores)
-    dendro <- do.call(merge, hclustFit)
+    dendro <- do.call(merge, c(hclustFit, height = 1, adjust = "add.max"))
   } else {
     if (ncol(x) > 65536L)
       stop("Data size is to big for hclust, choose larger 'k'")
@@ -202,7 +202,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
 #' @title cluster qtcatClust object
 #' @param x qtcatClust object.
 #' @param absCor cutting height in absolute value of correlation.
-#' @export 
+#' @export
 qtcatCutClust <- function(x, absCor) {
   stopifnot(is(x, "qtcatClust"))
   stopifnot(!missing(absCor))
@@ -219,7 +219,7 @@ qtcatCutClust <- function(x, absCor) {
     out <- unlist(clust.list)[order(unlist(inx.list))]
     names(out) <- names(x$clusters)
   } else {
-    out <- clust.dend 
+    out <- clust.dend
   }
   out
 } # cluster
@@ -227,7 +227,7 @@ qtcatCutClust <- function(x, absCor) {
 #' @title cluster dendrogram
 #' @param x dendrogram.
 #' @param absCor cutting height in absolute value of correlation.
-#' @export 
+#' @export
 qtcatCutDend <- function(x, absCor) {
   stopifnot(is(x, "dendrogram"))
   stopifnot(!missing(absCor))
@@ -245,7 +245,7 @@ qtcatCutDend <- function(x, absCor) {
       return(clust)
     }
     cluster <- lapply(1:length(cut.x), clust.member, cut.x)
-  }  
+  }
   unlist(cluster)
 } # cluster
 
@@ -253,7 +253,7 @@ qtcatCutDend <- function(x, absCor) {
 #' @description Estimates clusters and medoids.
 #' @param x An object of class \linkS4class{snpData}.
 #' @param clusters Vector of cluster groups \code{snpData}.
-#' @export 
+#' @export
 qtcatMedoids <- function (x, clusters) {
   stopifnot(is(x, "snpData"))
   medoids <- medoids(x@snpData, clusters)
