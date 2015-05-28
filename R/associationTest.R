@@ -70,8 +70,8 @@ qtcatPheno <- function(x) {
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
 #' @export
 qtcatHit <- function(pheno, geno,
-                     B=50, p.samp1=0.5, gamma=seq(0.05, 0.99, by=0.01),
-                     max.p.esti=1, mc.cores=1L, trace=FALSE, ...) {
+                     B = 50, p.samp1 = 0.5, gamma = seq(0.05, 0.99, by=0.01),
+                     max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
   id <- intersect(pheno$names, rownames(geno$x))
@@ -79,16 +79,17 @@ qtcatHit <- function(pheno, geno,
     stop("The ID intersect of 'pheno' and 'geno' is emty")
   if (length(id.uniqueGeno <- setdiff(rownames(geno$x), id)))
     cat("The following individuals are part of 'geno' but not of 'pheno':\n",
-            paste(id.uniqueGeno, collapse=" "), "\n")
+            paste(id.uniqueGeno, collapse = " "), "\n")
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
     cat("The following individuals are part of 'pheno' but not of 'geno':\n",
-            paste(id.uniquePheno, collapse=" "), "\n")
+            paste(id.uniquePheno, collapse = " "), "\n")
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(geno$x))
   x <- cbind(geno$x[genoInx, ], pheno$design[phenoInx, ])
   y <- pheno$pheno[phenoInx]
   fitHit <- hit(x, y, geno$hierarchy,
-                B, p.samp1, gamma, max.p.esti, mc.cores, trace, ...)
+                B, p.samp1, gamma, max.p.esti, mc.cores, trace,
+                standardize = FALSE)
   out <- c(fitHit,
            geno[3:5])
   class(out) <- c("hit", "qtcatHit")
