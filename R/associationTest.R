@@ -39,18 +39,19 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
 qtcatPheno <- function(x) {
   if (any(is.na(x)))
     stop("Missing values are not allowed")
-  if(!identical(substring(tolower(colnames(x)[1:2]), 1, 4), c("name", "phen")))
+  if(!identical(substring(tolower(colnames(x)[1L:2L]), 1L, 4L),
+                c("name", "phen")))
      stop("first column must be 'names', second column must be 'pheno'")
-  if (!is.numeric(x[, 2]))
+  if (!is.numeric(x[, 2L]))
     stop("phenotype is not numeric")
   if (ncol(x) > 2L) {
-    design <- model.matrix(~ . , data=x[, -1:-2])[, -1L, drop=FALSE]
+    design <- model.matrix(~ . , data = x[, -1L:-2L])[, -1L, drop = FALSE]
   } else {
-    design <- c()
+    design <- matrix(nrow = nrow(x), ncol = 0L)
   }
-  out <- list(names = as.character(x[, 1]),
-              pheno=x[, 2],
-              design=design)
+  out <- list(names = as.character(x[, 1L]),
+              pheno = x[, 2L],
+              design = design)
   class(out) <- "qtcatPheno"
   out
 }
@@ -85,13 +86,17 @@ qtcatHit <- function(pheno, geno,
             paste(id.uniquePheno, collapse = " "), "\n")
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(geno$x))
-  x <- cbind(geno$x[genoInx, ], pheno$design[phenoInx, ])
+  if (ncol(pheno$design) == 0L) {
+    x <- geno$x[genoInx, ]
+  } else {
+    x <- cbind(geno$x[genoInx, ], pheno$design[phenoInx, ])
+  }
   y <- pheno$pheno[phenoInx]
   fitHit <- hit(x, y, geno$hierarchy,
                 B, p.samp1, gamma, max.p.esti, mc.cores, trace,
                 standardize = FALSE)
   out <- c(fitHit,
-           geno[3:5])
+           geno[3L:5L])
   class(out) <- c("hit", "qtcatHit")
   out
 }
@@ -112,16 +117,16 @@ qtcatSigClust <- function(x, alpha = 0.05, min.absCor) {
   signames <- rownames(y)
   sigclust <- match(signames, x$medoids)
   sigClust <- matrix(0, length(x$clusters), 3L)
-  sigClust[, 2] <- 1
+  sigClust[, 2L] <- 1
   for (i in seq_along(signames)) {
     inx <- which(x$clusters == sigclust[i])
-    sigClust[inx, ] <- matrix(unlist(y[signames[i], ]), length(inx),
-                              3, byrow = TRUE)
+    sigClust[inx, ] <- matrix(unlist(y[signames[i], ]),
+                              length(inx), 3L, byrow = TRUE)
   }
   rownames(sigClust) <- names(x$clusters)
-  sigClust[, 2] <- 1 - sigClust[, 2]
-  colnames(sigClust) <- c(colnames(y)[1], "absCor", colnames(y)[3])
-  sigClust <- as.data.frame(sigClust[sigClust[, 1] != 0, ,drop = FALSE])
+  sigClust[, 2L] <- 1 - sigClust[, 2L]
+  colnames(sigClust) <- c(colnames(y)[1L], "absCor", colnames(y)[3L])
+  sigClust <- as.data.frame(sigClust[sigClust[, 1L] != 0, ,drop = FALSE])
   out <- cbind(t(x$positions[, rownames(sigClust), drop = FALSE]),
                     sigClust)
   out
