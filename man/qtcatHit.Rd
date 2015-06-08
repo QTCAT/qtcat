@@ -4,8 +4,9 @@
 \alias{qtcatHit}
 \title{hit}
 \usage{
-qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, gamma = seq(0.05, 0.99, by =
-  0.01), max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...)
+qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, lambda.opt = c("lambda.min",
+  "lambda.1se"), gamma = seq(0.05, 0.99, by = 0.01), max.p.esti = 1,
+  mc.cores = 1L, trace = FALSE, ...)
 }
 \arguments{
 \item{pheno}{qtcatPheno object.}
@@ -16,6 +17,10 @@ qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, gamma = seq(0.05, 0.99, by =
 
 \item{p.samp1}{Fraction of data used for the LASSO. The ANOVA uses
 \code{1 - p.samp1}.}
+
+\item{lambda.opt}{criterion for optimum selection of cross validated lasso.
+Either 'lambda.min' (default) or 'lambda.1se'. See
+\code{\link[glmnet]{cv.glmnet}} for more details.}
 
 \item{gamma}{Vector of gamma-values.}
 

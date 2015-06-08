@@ -62,6 +62,9 @@ qtcatPheno <- function(x) {
 #' @param B Number of sample-splits.
 #' @param p.samp1 Fraction of data used for the LASSO. The ANOVA uses
 #' \code{1 - p.samp1}.
+#' @param lambda.opt criterion for optimum selection of cross validated lasso.
+#' Either 'lambda.min' (default) or 'lambda.1se'. See
+#' \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param gamma Vector of gamma-values.
 #' @param max.p.esti Maximum alpha level. All p-values above this value are set
 #' to one. Small \code{max.p.esti} values reduce computing time.
@@ -70,8 +73,9 @@ qtcatPheno <- function(x) {
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
 #' @export
-qtcatHit <- function(pheno, geno,
-                     B = 50, p.samp1 = 0.5, gamma = seq(0.05, 0.99, by=0.01),
+qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
+                     lambda.opt = c("lambda.min", "lambda.1se"),
+                     gamma = seq(0.05, 0.99, by=0.01),
                      max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
@@ -93,7 +97,7 @@ qtcatHit <- function(pheno, geno,
   }
   y <- pheno$pheno[phenoInx]
   fitHit <- hit(x, y, geno$hierarchy,
-                B, p.samp1, gamma, max.p.esti, mc.cores, trace,
+                B, p.samp1, lambda.opt, gamma, max.p.esti, mc.cores, trace,
                 standardize = FALSE)
   out <- c(fitHit,
            geno[3L:5L])
