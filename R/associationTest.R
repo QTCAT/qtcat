@@ -154,11 +154,11 @@ qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
   if (!length(id))
     stop("The ID intersect of 'pheno' and 'geno' is emty")
   if (length(id.uniqueGeno <- setdiff(rownames(geno$x), id)))
-    warning("The following individuals are part of 'geno' but not of 'pheno':\n",
-            paste(id.uniqueGeno, collapse=" "))
+    cat("The following individuals are part of 'geno' but not of 'pheno':\n",
+        paste(id.uniqueGeno, collapse = " "), "\n")
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
-    warning("The following individuals are part of 'pheno' but not of 'geno':\n",
-            paste(id.uniquePheno, collapse=" "))
+    cat("The following individuals are part of 'pheno' but not of 'geno':\n",
+        paste(id.uniquePheno, collapse = " "), "\n")
   sigClust <- summary(x, alpha, min.absCor)
   clusters <- split(rownames(sigClust), sigClust$clusters)
   medoids <- lapply(clusters, function(names, geno) {
