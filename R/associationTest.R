@@ -63,7 +63,7 @@ qtcatPheno <- function(x) {
 #' @param p.samp1 Fraction of data used for the LASSO. The ANOVA uses
 #' \code{1 - p.samp1}.
 #' @param lambda.opt criterion for optimum selection of cross validated lasso.
-#' Either 'lambda.min' (default) or 'lambda.1se'. See
+#' Either 'lambda.1se' (default) or 'lambda.min'. See
 #' \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param gamma Vector of gamma-values.
 #' @param max.p.esti Maximum alpha level. All p-values above this value are set
@@ -74,7 +74,7 @@ qtcatPheno <- function(x) {
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
-                     lambda.opt = c("lambda.min", "lambda.1se"),
+                     lambda.opt = c("lambda.1se", "lambda.min"),
                      gamma = seq(0.05, 0.99, by=0.01),
                      max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
