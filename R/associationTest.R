@@ -65,6 +65,8 @@ qtcatPheno <- function(x) {
 #' @param lambda.opt criterion for optimum selection of cross validated lasso.
 #' Either 'lambda.1se' (default) or 'lambda.min'. See
 #' \code{\link[glmnet]{cv.glmnet}} for more details.
+#' @param nfolds number of folds (default is 5), see
+#' \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param gamma Vector of gamma-values.
 #' @param max.p.esti Maximum alpha level. All p-values above this value are set
 #' to one. Small \code{max.p.esti} values reduce computing time.
@@ -74,7 +76,7 @@ qtcatPheno <- function(x) {
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
-                     lambda.opt = c("lambda.1se", "lambda.min"),
+                     lambda.opt = c("lambda.1se", "lambda.min"), nfolds = 5,
                      gamma = seq(0.05, 0.99, by=0.01),
                      max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
@@ -97,8 +99,8 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
   }
   y <- pheno$pheno[phenoInx]
   fitHit <- hit(x, y, geno$hierarchy,
-                B, p.samp1, lambda.opt, gamma, max.p.esti, mc.cores, trace,
-                standardize = FALSE)
+                B, p.samp1, lambda.opt, nfolds, gamma, max.p.esti, mc.cores,
+                trace, standardize = FALSE)
   out <- c(fitHit,
            geno[3L:5L])
   class(out) <- c("hit", "qtcatHit")
