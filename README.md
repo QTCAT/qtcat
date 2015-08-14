@@ -2,7 +2,7 @@
 <a name="logo"/>
 <div align="center">
 <a href="https://qtcat.github.io/" target="_blank">
-<img src="https://github.com/QTCAT/qtcat_logo/blob/master/logo/QTCAT_s.png?raw=true" width="150" height="150"></img>
+<img src="https://github.com/QTCAT/qtcat_logo/blob/master/logo/QTCAT_l.png?raw=true" width="300"></img>
 </a>
 </div>
 
