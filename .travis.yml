@@ -1,6 +1,6 @@
 language: R
 sudo: required
-warnings_are_errors: true
+#warnings_are_errors: true
 
 r_github_packages:
   - jrklasen/hit
