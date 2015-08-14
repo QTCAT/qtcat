@@ -27,7 +27,7 @@ qtcatDist <- function(x) {
 #' computing. See \code{\link[parallel]{mclapply}} for details.
 #' @importFrom parallel mclapply
 #' @export
-qtcatIdenticals <- function (x, mc.cores = 1) {
+qtcatIdenticals <- function(x, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   p <- ncol(x@snpData)
   s <- optimise(function(s, p, m) p * s + p / s * (p / s - 1) / 2 * s / m,
@@ -80,7 +80,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   if (missing(k))
     stop("'k' must be specifid")
   if (k < 2L)
-    stop ("'k' must be at least two")
+    stop("'k' must be at least two")
   # cluster optimisation by clarans in parallel
   clarans.i <- function(i, x, k, maxNeigbours) {
     # cluster optimisation by clarans
@@ -146,13 +146,13 @@ qtcatClust <- function(x, k, identicals = TRUE,
     k <- as.integer(ncol(x) / 10000L)
   if (k >= 2L) {
     if (identicals && length(identicalFit$medoids) <= k * 2)
-      stop ("Number of medoids from pefect correlated clustering is < k * 2")
+      stop("Number of medoids from pefect correlated clustering is < k * 2")
     if (trace)
       cat("Step 2: CLARANS is running, 'k' is:", k, "\n")
     clarFit <- qtcatClarans(x, k, maxNeigbours, nLocal, mc.cores)
     if (trace)
       cat("   objectives:",
-          format(clarFit$all.objectives, sort = TRUE, digits=4), "\n")
+          format(clarFit$all.objectives, sort = TRUE, digits = 4), "\n")
     # if cluster < 2 add to a bigger cluster
     clust.inx <- seq_len(k)
     cluster.size <- rep(NA, k)
@@ -231,13 +231,13 @@ qtcatCutClust <- function(x, absCor) {
 qtcatCutDend <- function(x, absCor) {
   stopifnot(is(x, "dendrogram"))
   stopifnot(!missing(absCor))
-  h <- 1-absCor
+  h <- 1 - absCor
   if (h >= attr(x, "height")) {
     names.clust <- labels(x)
     cluster <- rep(1, length(names.clust))
     names(cluster) <- names.clust
   } else {
-    cut.x <- cut(x, h=h)$lower
+    cut.x <- cut(x, h = h)$lower
     clust.member <- function(i, x) {
       names.clust <- labels(x[[i]])
       clust <- rep(i, length(names.clust))
@@ -254,7 +254,7 @@ qtcatCutDend <- function(x, absCor) {
 #' @param x An object of class \linkS4class{snpData}.
 #' @param clusters Vector of cluster groups \code{snpData}.
 #' @export
-qtcatMedoids <- function (x, clusters) {
+qtcatMedoids <- function(x, clusters) {
   stopifnot(is(x, "snpData"))
   medoids <- medoids(x@snpData, clusters)
   out <- rbind(clusters = clusters, medoids = medoids)

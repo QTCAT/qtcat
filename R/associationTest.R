@@ -10,7 +10,7 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   stopifnot(is(x, "snpData"))
   stopifnot(is(clusters, "qtcatClust"))
   if (!setequal(names(clusters$clusters), colnames(x))) {
-    stop ("SNP names of 'x' and 'clusters' differ")
+    stop("SNP names of 'x' and 'clusters' differ")
   }
   if (is.null(names <- clusters$medoids)) {
     names <- names(clusters)
@@ -21,7 +21,7 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
     hier <- hierarchy(clusters$dendrogram, max.height = 1 - min.absCor,
                       names = colnames(desMat))
   else
-    hier <- hierarchy(clusters$dendrogram, 1-absCor, 1-min.absCor,
+    hier <- hierarchy(clusters$dendrogram, 1 - absCor, 1 - min.absCor,
                       colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
@@ -39,13 +39,13 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
 qtcatPheno <- function(x) {
   if (any(is.na(x)))
     stop("Missing values are not allowed")
-  if(!identical(substring(tolower(colnames(x)[1L:2L]), 1L, 4L),
+  if (!identical(substring(tolower(colnames(x)[1L:2L]), 1L, 4L),
                 c("name", "phen")))
      stop("first column must be 'names', second column must be 'pheno'")
   if (!is.numeric(x[, 2L]))
     stop("phenotype is not numeric")
   if (ncol(x) > 2L) {
-    design <- model.matrix(~ . , data = x[, -1L:-2L])[, -1L, drop = FALSE]
+    design <- model.matrix(~ ., data = x[, -1L:-2L])[, -1L, drop = FALSE]
   } else {
     design <- matrix(nrow = nrow(x), ncol = 0L)
   }
@@ -77,7 +77,7 @@ qtcatPheno <- function(x) {
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
                      lambda.opt = c("lambda.1se", "lambda.min"), nfolds = 5,
-                     gamma = seq(0.05, 0.99, by=0.01),
+                     gamma = seq(.05, .99, by = .01),
                      max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
@@ -168,16 +168,16 @@ qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
       return(names[which.max(abs(cor(geno$x[, names])))])
     else
       return(names)
-  }, geno=geno)
+  }, geno = geno)
   xg <- geno$x[, colnames(geno$x) %in% unlist(medoids)]
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(xg))
   rownames(xg) <- NULL
   if (is.null(pheno$design))
-    dat <- data.frame(y=pheno$pheno[phenoInx], xg[genoInx, ])
+    dat <- data.frame(y = pheno$pheno[phenoInx], xg[genoInx, ])
   else
-    dat <- data.frame(y=pheno$pheno[phenoInx],
+    dat <- data.frame(y = pheno$pheno[phenoInx],
                       pheno$design[phenoInx, ],
                       xg[genoInx, ])
-    lm(y ~ ., data=dat)
+    lm(y ~ ., data = dat)
 }

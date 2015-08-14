@@ -49,11 +49,11 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
     lociNames <- make.unique(temp$lociNames)
   }
   out <- new("snpData",
-             snpData=temp$snpData,
-             position=temp$position,
-             alleles=temp$alleles,
-             dim=dim(temp$snpData),
-             dimnames=list(temp$indivNames, lociNames))
+             snpData = temp$snpData,
+             position = temp$position,
+             alleles = temp$alleles,
+             dim = dim(temp$snpData),
+             dimnames = list(temp$indivNames, lociNames))
   out
 } # read.snpData
 
@@ -125,15 +125,15 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
     newLabels <- as.raw(c(1, 2, 4, 5))
   }
   y <- matrix(raw(0), nrow(x), ncol(x))
-  for(i in 1:nLabels) {
+  for (i in 1:nLabels) {
     y[alleleCoding[i] == x] <- newLabels[i]
   }
   out <- new("snpData",
-             snpData=y,
-             position=position,
-             alleles=alleles,
-             dim=dim(y),
-             dimnames=list(indiv.names, loci.names))
+             snpData = y,
+             position = position,
+             alleles = alleles,
+             dim = dim(y),
+             dimnames = list(indiv.names, loci.names))
   out
 }
 
@@ -148,7 +148,7 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
 #' @param drop Not implemented.
 #' @importFrom methods setMethod signature new
 #' @export
-setMethod("[", signature(x="snpData", i="ANY", j="ANY", drop="missing"),
+setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
           function(x, i, j, ..., drop) {
             if (!missing(i)) {
               if (is.character(i)) {
@@ -160,14 +160,14 @@ setMethod("[", signature(x="snpData", i="ANY", j="ANY", drop="missing"),
                 j <- match(j, colnames(x))
               }
             }
-            snpData <- x@snpData[i, j, drop=FALSE]
+            snpData <- x@snpData[i, j, drop = FALSE]
             out <- new("snpData",
-                       snpData=snpData,
-                       position=x@position[, j, drop=FALSE],
-                       alleles=if(is.null(x@alleles)) NULL
-                       else x@alleles[, j, drop=FALSE],
-                       dim=dim(snpData),
-                       dimnames=list(rownames(x)[i], colnames(x)[j]))
+                       snpData = snpData,
+                       position = x@position[, j, drop = FALSE],
+                       alleles = if (is.null(x@alleles)) NULL
+                                 else x@alleles[, j, drop = FALSE],
+                       dim = dim(snpData),
+                       dimnames = list(rownames(x)[i], colnames(x)[j]))
             out
           }
 ) # `[`
@@ -180,21 +180,21 @@ setMethod("[", signature(x="snpData", i="ANY", j="ANY", drop="missing"),
 #' @param ... Not implemented.
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("as.matrix", signature(x="snpData"),
-          function(x, inx1=1:ncol(x), inx2=NULL, ...) {
+setMethod("as.matrix", signature(x = "snpData"),
+          function(x, inx1 = 1:ncol(x), inx2 = NULL, ...) {
             stopifnot(is(x, "snpData"))
             if (is.null(inx2)) {
-              out <- design(x@snpData, inx1-1, inx1-1)
+              out <- design(x@snpData, inx1 - 1, inx1 - 1)
               colnames(out) <- colnames(x)[inx1]
             } else {
-              out <- design(x@snpData, inx1-1, inx2-1)
+              out <- design(x@snpData, inx1 - 1, inx2 - 1)
               nam.dat <- data.frame(colnames(x)[inx1], colnames(x)[inx2],
-                                    stringsAsFactors=FALSE)
+                                    stringsAsFactors = FALSE)
               colnames(out) <- apply(nam.dat, 1, function(x) {
                 if (x[1] == x[2]) {
                   return(x[1])
                 } else {
-                  return(paste(x, collapse=":"))
+                  return(paste(x, collapse = ":"))
                 }
               }) # apply nam.dat
             } # if else is.null(inx2)
@@ -208,8 +208,8 @@ setMethod("as.matrix", signature(x="snpData"),
 #' @param object snpData object.
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("getPos", signature(object="snpData"),
-          function (object) {
+setMethod("getPos", signature(object = "snpData"),
+          function(object) {
             out <- object@position
             if (!is.null(out)) {
               colnames(out) <- colnames(object)
@@ -226,8 +226,8 @@ setMethod("getPos", signature(object="snpData"),
 #' @param x snpData object.
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("alleleFreq", signature(x="snpData"),
-          function (x) {
+setMethod("alleleFreq", signature(x = "snpData"),
+          function(x) {
             out <- freqs2(x@snpData)[[1]]
             names(out) <- colnames(x)
             out
@@ -240,8 +240,8 @@ setMethod("alleleFreq", signature(x="snpData"),
 #' @param dim Interger for dimension.
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("hetFreq", signature(x="snpData"),
-          function (x, dim=c(1, 2)) {
+setMethod("hetFreq", signature(x = "snpData"),
+          function(x, dim = c(1, 2)) {
             if (dim[1] == 2)
               return(freqs2(x@snpData)[[2]])
             if (dim[1] == 1)
