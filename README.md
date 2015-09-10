@@ -24,7 +24,7 @@ classical methods like the mixed model.
 
 ## Install:
 
-The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools/blob/master/README.md#updating-to-the-latest-version-of-devtools). If you haven't yet installed `devtools`, you have to do so first. In addition `hit` is a 
+The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools). If you haven't yet installed `devtools`, you have to do so first. In addition `hit` is a 
 dependency, which has to be installed first.
 
 ```R
