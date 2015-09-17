@@ -1,8 +1,8 @@
 
 <a name="logo"/>
 <div align="center">
-<a href="https://qtcat.github.io/" target="_blank">
-<img src="https://github.com/QTCAT/qtcat_logo/blob/master/logo/QTCAT_s.png?raw=true" width="150" height="150"></img>
+<a href="https://github.com/QTCAT" target="_blank">
+<img src="https://github.com/QTCAT/qtcat_logo/blob/master/logo/QTCAT_l.png?raw=true" width="600"></img>
 </a>
 </div>
 
@@ -24,9 +24,7 @@ classical methods like the mixed model.
 
 ## Install:
 
-The package can be installed from an R console via `devtools`. If you haven't 
-yet installed `devtools`, you have to do so first. In addition `hit` is a 
-dependency, which has to be installed first.
+The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools). If you haven't yet installed `devtools`, you have to do so first. In addition `hit` is a package dependency which has to be installed.
 
 ```R
 # install.packages("devtools")
