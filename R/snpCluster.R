@@ -6,6 +6,7 @@
 #' @param x An object of class \linkS4class{snpData}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
+#' @importFrom methods is
 #' @export
 qtcatDist <- function(x) {
   stopifnot(is(x, "snpData"))
@@ -26,6 +27,7 @@ qtcatDist <- function(x) {
 #' @param mc.cores A positive integer for the number of cores for parallel
 #' computing. See \code{\link[parallel]{mclapply}} for details.
 #' @importFrom parallel mclapply
+#' @importFrom methods is
 #' @export
 qtcatIdenticals <- function(x, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
@@ -74,6 +76,7 @@ qtcatIdenticals <- function(x, mc.cores = 1) {
 #' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
 #' \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 #' @importFrom parallel mclapply
+#' @importFrom methods is
 #' @export
 qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
@@ -124,6 +127,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @seealso qtcatClarans
 #' @importFrom parallel mclapply
 #' @importFrom stats hclust
+#' @importFrom methods is
 #' @export
 qtcatClust <- function(x, k, identicals = TRUE,
                        maxNeigbours = 100, nLocal = 10,
@@ -202,6 +206,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
 #' @title cluster qtcatClust object
 #' @param x qtcatClust object.
 #' @param absCor cutting height in absolute value of correlation.
+#' @importFrom methods is
 #' @export
 qtcatCutClust <- function(x, absCor) {
   stopifnot(is(x, "qtcatClust"))
@@ -227,6 +232,7 @@ qtcatCutClust <- function(x, absCor) {
 #' @title cluster dendrogram
 #' @param x dendrogram.
 #' @param absCor cutting height in absolute value of correlation.
+#' @importFrom methods is
 #' @export
 qtcatCutDend <- function(x, absCor) {
   stopifnot(is(x, "dendrogram"))
@@ -253,6 +259,7 @@ qtcatCutDend <- function(x, absCor) {
 #' @description Estimates clusters and medoids.
 #' @param x An object of class \linkS4class{snpData}.
 #' @param clusters Vector of cluster groups \code{snpData}.
+#' @importFrom methods is
 #' @export
 qtcatMedoids <- function(x, clusters) {
   stopifnot(is(x, "snpData"))

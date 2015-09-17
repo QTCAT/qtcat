@@ -5,6 +5,7 @@
 #' hierarchy.
 #' @param min.absCor Minimum absolute value of correlation considered.
 #' @importFrom hit hierarchy
+#' @importFrom methods is
 #' @export
 qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   stopifnot(is(x, "snpData"))
@@ -74,6 +75,7 @@ qtcatPheno <- function(x) {
 #' 'B'. For details see \code{\link[parallel]{mclapply}}.
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
+#' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
                      lambda.opt = c("lambda.1se", "lambda.min"), nfolds = 5,
@@ -113,6 +115,7 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
 #' @param alpha Alpha level.
 #' @param min.absCor Minimum absolute value of correlation considered.
 #' @importFrom hit hit
+#' @importFrom methods is
 #' @export
 qtcatSigClust <- function(x, alpha = 0.05, min.absCor) {
   stopifnot(is(x, "qtcatHit"))
@@ -147,6 +150,7 @@ qtcatSigClust <- function(x, alpha = 0.05, min.absCor) {
 #' @param alpha Alpha level.
 #' @param min.absCor Minimum absolute value of correlation considered.
 #' @importFrom hit hit
+#' @importFrom methods is
 #' @export
 qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
   stopifnot(is(x, "qtcatHit"))
