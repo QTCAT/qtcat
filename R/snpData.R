@@ -258,7 +258,7 @@ setMethod("alleleFreq", signature(x = "snpData"),
 #' snp <- read.snpData(file, sep = ",")
 #' hf1 <- hetFreq(snp, 1)
 #' hf2 <- hetFreq(snp, 2)
-#' importFrom methods setMethod signature
+#' @importFrom methods setMethod signature
 #' @export
 setMethod("hetFreq", signature(x = "snpData"),
           function(x, dim = c(1, 2)) {

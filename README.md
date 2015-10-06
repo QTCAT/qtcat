@@ -7,7 +7,6 @@
 </div>
 
 # Quantitative Trait Cluster Association Test
-
 The current built and test status for Linux 
 [![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)]
 (https://travis-ci.org/QTCAT/qtcat) and for Windows 
@@ -17,19 +16,28 @@ The current built and test status for Linux
 
 
 ## Description:
-An association mapping method which jointly analyses all SNPs at once and at the 
-same time accounts for the correlation among them. This makes correction for 
-population structure unnecessary and therefore increases power compared to 
+An association mapping method which jointly analyses all SNPs at once and at 
+the same time accounts for the correlation between them. This makes correction 
+for population structure unnecessary and therefore increases power compared to 
 classical methods like the mixed model.
 
 ## Install:
-
-The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools). If you haven't yet installed `devtools`, you have to do so first. In addition `hit` is a package dependency which has to be installed.
+The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools). If you haven't yet installed `devtools` please do so first. One of the R package dependency of `qtcat` is `hit` which is currently only available from github, therefore it has likewise to be installed before `qtcat`s instalation.
 
 ```R
 # install.packages("devtools")
 # devtools::install_github("jrklasen/hit")
 devtools::install_github("QTCAT/qtcat")
+```
+
+## Example:
+The `qtcatSigClust`-function example gives an overview of the functionality of 
+the package and can be accessed once the package is loaded (please be aware, 
+that running the example can take a few seconds).
+
+```R
+library(qtcat)
+example("qtcatSigClust")
 ```
 
 [![License]
