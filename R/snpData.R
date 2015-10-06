@@ -25,7 +25,7 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
   if (length(testRead[[1L]]) <= 3L)
     stop("In line one the separator character 'sep' doesn't exist")
   if (length(testRead[[1L]]) != length(testRead[[2L]]))
-    stop("Line one and tow are of differnt length")
+    stop("Line one and two are of differnt length")
   if (!identical(unique(testRead[[1L]]), testRead[[1L]]))
     stop("Column names are not unique")
   firstCols <- tolower(substring(testRead[[1L]][1L:3L], 1L, 3L))
