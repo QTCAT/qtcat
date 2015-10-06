@@ -14,4 +14,11 @@ qtcatCutDend(x, absCor)
 \description{
 cluster dendrogram
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+clust <- qtcatClust(snp)
+cdend <- qtcatCutDend(clust$dendrogram, .5)
+}
 

@@ -38,6 +38,12 @@ and the subset size have to be arbitrarily chosen by the user. The algorithm
 has two advantages: (i) the number of distance comparisons is dramatically
 reduced; and (ii) parallelizing is straightforward.
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+clust <- qtcatClarans(snp, 3)
+}
 \references{
 Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
 data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.

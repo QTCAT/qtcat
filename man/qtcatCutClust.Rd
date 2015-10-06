@@ -14,4 +14,11 @@ qtcatCutClust(x, absCor)
 \description{
 cluster qtcatClust object
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+clust <- qtcatClust(snp)
+cclust <- qtcatCutClust(clust, .5)
+}
 

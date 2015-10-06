@@ -13,4 +13,10 @@ Additional columns for additional variables.}
 \description{
 geno of xxx
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "phenodata.csv", package = "qtcat")
+pdat <- read.csv(file, header = TRUE)
+pheno <- qtcatPheno(pdat)
+}
 

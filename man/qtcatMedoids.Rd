@@ -14,4 +14,12 @@ qtcatMedoids(x, clusters)
 \description{
 Estimates clusters and medoids.
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+clust <- qtcatClust(snp)
+cclust <- qtcatCutClust(clust, .5)
+mclust <- qtcatMedoids(snp, cclust)
+}
 

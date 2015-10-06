@@ -13,4 +13,10 @@
 \description{
 Allele frequency
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+af <- alleleFreq(snp)
+}
 

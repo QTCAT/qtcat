@@ -16,4 +16,16 @@ qtcatSigClust(x, alpha = 0.05, min.absCor)
 \description{
 Include zero clusters.
 }
+\examples{
+# files containing example data
+pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
+gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+pdat <- read.csv(pfile, header = TRUE)
+pheno <- qtcatPheno(pdat)
+snp <- read.snpData(gfile, sep = ",")
+clust <- qtcatClust(snp)
+geno <- qtcatGeno(snp, clust)
+fitted <- qtcatHit(pheno, geno)
+qtcatSigClust(fitted)
+}
 

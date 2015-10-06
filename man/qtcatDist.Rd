@@ -18,6 +18,12 @@ combinations SNPs.
 \details{
 See \code{\link[stats]{dist}} for details about the output object.
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+dist <- qtcatDist(snp[, 1:10])
+}
 \seealso{
 \code{\link[stats]{dist}}
 }

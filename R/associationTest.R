@@ -4,6 +4,12 @@
 #' @param absCor Vector of absolute value of correlations considered in the
 #' hierarchy.
 #' @param min.absCor Minimum absolute value of correlation considered.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' clust <- qtcatClust(snp)
+#' geno <- qtcatGeno(snp, clust)
 #' @importFrom hit hierarchy
 #' @importFrom methods is
 #' @export
@@ -36,6 +42,11 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
 #' geno of xxx
 #' @param x data.frame, first column individual names, second column phenotype.
 #' Additional columns for additional variables.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "phenodata.csv", package = "qtcat")
+#' pdat <- read.csv(file, header = TRUE)
+#' pheno <- qtcatPheno(pdat)
 #' @export
 qtcatPheno <- function(x) {
   if (any(is.na(x)))
@@ -46,7 +57,8 @@ qtcatPheno <- function(x) {
   if (!is.numeric(x[, 2L]))
     stop("phenotype is not numeric")
   if (ncol(x) > 2L) {
-    design <- model.matrix(~ ., data = x[, -1L:-2L])[, -1L, drop = FALSE]
+    xdat <- x[, -(1L:2L), drop = FALSE]
+    design <- model.matrix(~ ., data = xdat)[, -1L, drop = FALSE]
   } else {
     design <- matrix(nrow = nrow(x), ncol = 0L)
   }
@@ -75,6 +87,16 @@ qtcatPheno <- function(x) {
 #' 'B'. For details see \code{\link[parallel]{mclapply}}.
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
+#' @examples 
+#' # files containing example data
+#' pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
+#' gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' pdat <- read.csv(pfile, header = TRUE)
+#' pheno <- qtcatPheno(pdat)
+#' snp <- read.snpData(gfile, sep = ",")
+#' clust <- qtcatClust(snp)
+#' geno <- qtcatGeno(snp, clust)
+#' fitted <- qtcatHit(pheno, geno)
 #' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
@@ -114,6 +136,17 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
 #' @param x hit object.
 #' @param alpha Alpha level.
 #' @param min.absCor Minimum absolute value of correlation considered.
+#' @examples 
+#' # files containing example data
+#' pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
+#' gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' pdat <- read.csv(pfile, header = TRUE)
+#' pheno <- qtcatPheno(pdat)
+#' snp <- read.snpData(gfile, sep = ",")
+#' clust <- qtcatClust(snp)
+#' geno <- qtcatGeno(snp, clust)
+#' fitted <- qtcatHit(pheno, geno)
+#' qtcatSigClust(fitted)
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export

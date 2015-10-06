@@ -33,6 +33,12 @@ in package parallel for details.}
 \description{
 Hirachical clustering for big data.
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+clust <- qtcatClust(snp)
+}
 \seealso{
 qtcatClarans
 }

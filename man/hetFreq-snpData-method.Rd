@@ -15,4 +15,12 @@
 \description{
 Heterozygosity
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+hf1 <- hetFreq(snp, 1)
+hf2 <- hetFreq(snp, 2)
+importFrom methods setMethod signature
+}
 

@@ -15,4 +15,10 @@ computing. See \code{\link[parallel]{mclapply}} for details.}
 \description{
 Cluster at distance zero in qtcatClust.
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+ident <- qtcatIdenticals(snp)
+}
 

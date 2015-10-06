@@ -6,6 +6,11 @@
 #' @param x An object of class \linkS4class{snpData}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' dist <- qtcatDist(snp[, 1:10])
 #' @importFrom methods is
 #' @export
 qtcatDist <- function(x) {
@@ -26,6 +31,11 @@ qtcatDist <- function(x) {
 #' @param x A object of class \linkS4class{snpData}.
 #' @param mc.cores A positive integer for the number of cores for parallel
 #' computing. See \code{\link[parallel]{mclapply}} for details.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' ident <- qtcatIdenticals(snp)
 #' @importFrom parallel mclapply
 #' @importFrom methods is
 #' @export
@@ -75,6 +85,11 @@ qtcatIdenticals <- function(x, mc.cores = 1) {
 #' Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
 #' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
 #' \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' clust <- qtcatClarans(snp, 3)
 #' @importFrom parallel mclapply
 #' @importFrom methods is
 #' @export
@@ -125,6 +140,11 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional agruments for \code{\link[stats]{hclust}}
 #' @seealso qtcatClarans
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' clust <- qtcatClust(snp)
 #' @importFrom parallel mclapply
 #' @importFrom stats hclust
 #' @importFrom methods is
@@ -206,6 +226,12 @@ qtcatClust <- function(x, k, identicals = TRUE,
 #' @title cluster qtcatClust object
 #' @param x qtcatClust object.
 #' @param absCor cutting height in absolute value of correlation.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' clust <- qtcatClust(snp)
+#' cclust <- qtcatCutClust(clust, .5)
 #' @importFrom methods is
 #' @export
 qtcatCutClust <- function(x, absCor) {
@@ -232,6 +258,12 @@ qtcatCutClust <- function(x, absCor) {
 #' @title cluster dendrogram
 #' @param x dendrogram.
 #' @param absCor cutting height in absolute value of correlation.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' clust <- qtcatClust(snp)
+#' cdend <- qtcatCutDend(clust$dendrogram, .5)
 #' @importFrom methods is
 #' @export
 qtcatCutDend <- function(x, absCor) {
@@ -259,6 +291,13 @@ qtcatCutDend <- function(x, absCor) {
 #' @description Estimates clusters and medoids.
 #' @param x An object of class \linkS4class{snpData}.
 #' @param clusters Vector of cluster groups \code{snpData}.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' clust <- qtcatClust(snp)
+#' cclust <- qtcatCutClust(clust, .5)
+#' mclust <- qtcatMedoids(snp, cclust)
 #' @importFrom methods is
 #' @export
 qtcatMedoids <- function(x, clusters) {

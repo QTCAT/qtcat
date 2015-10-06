@@ -11,6 +11,10 @@
 #' @param na.strings A character vector of strings which are to be interpreted
 #' as NA values. Is not implemented yet.
 #' @param nrows Integer, the maximum number of rows to read in.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
 #' @importFrom methods new
 #' @export
 read.snpData <- function(file, sep = " ",  quote = "\"",
@@ -206,6 +210,11 @@ setMethod("as.matrix", signature(x = "snpData"),
 #' @title Get position from snpData
 #' @docType methods
 #' @param object snpData object.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' pos <- getPos(snp)
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("getPos", signature(object = "snpData"),
@@ -224,6 +233,11 @@ setMethod("getPos", signature(object = "snpData"),
 #' @title Allele frequency
 #' @docType methods
 #' @param x snpData object.
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' af <- alleleFreq(snp)
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("alleleFreq", signature(x = "snpData"),
@@ -238,7 +252,13 @@ setMethod("alleleFreq", signature(x = "snpData"),
 #' @docType methods
 #' @param x snpData object.
 #' @param dim Interger for dimension.
-#' @importFrom methods setMethod signature
+#' @examples 
+#' # file containing example data
+#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(file, sep = ",")
+#' hf1 <- hetFreq(snp, 1)
+#' hf2 <- hetFreq(snp, 2)
+#' importFrom methods setMethod signature
 #' @export
 setMethod("hetFreq", signature(x = "snpData"),
           function(x, dim = c(1, 2)) {

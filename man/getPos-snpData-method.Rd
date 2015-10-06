@@ -13,4 +13,10 @@
 \description{
 Get position from snpData
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+pos <- getPos(snp)
+}
 

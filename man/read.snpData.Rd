@@ -26,4 +26,9 @@ as NA values. Is not implemented yet.}
 \description{
 Reads a file in table format and returns a 'snpData' object.
 }
+\examples{
+# file containing example data
+file <- system.file("extdata", "snpdata.csv", package = "qtcat")
+snp <- read.snpData(file, sep = ",")
+}
 

@@ -40,4 +40,15 @@ to one. Small \code{max.p.esti} values reduce computing time.}
 \description{
 hit
 }
+\examples{
+# files containing example data
+pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
+gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+pdat <- read.csv(pfile, header = TRUE)
+pheno <- qtcatPheno(pdat)
+snp <- read.snpData(gfile, sep = ",")
+clust <- qtcatClust(snp)
+geno <- qtcatGeno(snp, clust)
+fitted <- qtcatHit(pheno, geno)
+}
 
