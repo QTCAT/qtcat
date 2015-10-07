@@ -1,4 +1,3 @@
-
 <a name="logo"/>
 <div align="center">
 <a href="https://github.com/QTCAT" target="_blank">
@@ -13,7 +12,6 @@ The current built and test status for Linux
 [![AppVeyor Build status]
   (https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew?branch=master&svg=true)]
 (https://ci.appveyor.com/project/jrklasen/qtcat).
-
 
 ## Description:
 An association mapping method which jointly analyses all SNPs at once and at 
