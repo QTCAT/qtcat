@@ -18,7 +18,7 @@ Heterozygosity an object of class \linkS4class{snpData}.
 \examples{
 # file containing example data for SNP data
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
-snp <- read.snpData(gfile, sep = ",
+snp <- read.snpData(gfile, sep = ",")
 hf1 <- hetFreq(snp, 1)
 hf2 <- hetFreq(snp, 2)
 }

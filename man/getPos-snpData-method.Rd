@@ -17,7 +17,7 @@ Genetic position info from an object of class
 \examples{
 # file containing example data for SNP data
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
-snp <- read.snpData(gfile, sep = ",
+snp <- read.snpData(gfile, sep = ",")
 pos <- getPos(snp)
 }
 
