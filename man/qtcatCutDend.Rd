@@ -2,22 +2,22 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatCutDend}
 \alias{qtcatCutDend}
-\title{cluster dendrogram}
+\title{Cut a dendrogram}
 \usage{
 qtcatCutDend(x, absCor)
 }
 \arguments{
-\item{x}{dendrogram.}
+\item{x}{A dendrogram.}
 
-\item{absCor}{cutting height in absolute value of correlation.}
+\item{absCor}{Cutting height in absolute value of correlation.}
 }
 \description{
-cluster dendrogram
+Cut a dendrogram at a spcific hight.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 cdend <- qtcatCutDend(clust$dendrogram, .5)
 }

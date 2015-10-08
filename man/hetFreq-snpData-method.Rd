@@ -8,17 +8,17 @@
 \S4method{hetFreq}{snpData}(x, dim = c(1, 2))
 }
 \arguments{
-\item{x}{snpData object.}
+\item{x}{An object of class \linkS4class{snpData}.}
 
-\item{dim}{Interger for dimension.}
+\item{dim}{Integer for dimension.}
 }
 \description{
-Heterozygosity
+Heterozygosity an object of class \linkS4class{snpData}.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",
 hf1 <- hetFreq(snp, 1)
 hf2 <- hetFreq(snp, 2)
 }

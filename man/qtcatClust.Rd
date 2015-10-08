@@ -2,7 +2,7 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatClust}
 \alias{qtcatClust}
-\title{A three step approximated hirachical clustering among SNPs}
+\title{A three step approximated hierarchical clustering of SNPs}
 \usage{
 qtcatClust(x, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
   method = "complete", mc.cores = 1, trace = FALSE, ...)
@@ -28,15 +28,15 @@ in package parallel for details.}
 
 \item{trace}{If \code{TRUE} it prints current status of the program.}
 
-\item{...}{additional agruments for \code{\link[stats]{hclust}}}
+\item{...}{additional argruments for \code{\link[stats]{hclust}}}
 }
 \description{
-Hirachical clustering for big data.
+Hierarchical clustering for big SNP data sets.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 }
 \seealso{

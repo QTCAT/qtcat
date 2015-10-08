@@ -21,14 +21,14 @@ use \code{quote = ""}.}
 \item{na.strings}{A character vector of strings which are to be interpreted
 as NA values. Is not implemented yet.}
 
-\item{nrows}{Integer, the maximum number of rows to read in.}
+\item{nrows}{Integer, the maximum number of rows to read.}
 }
 \description{
 Reads a file in table format and returns a 'snpData' object.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 }
 

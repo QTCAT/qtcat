@@ -2,7 +2,7 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatClarans}
 \alias{qtcatClarans}
-\title{K-medoids clustering among SNPs using randomized search}
+\title{K-medoids clustering of SNPs using randomized search}
 \usage{
 qtcatClarans(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1)
 }
@@ -22,7 +22,7 @@ computing. See \code{\link[parallel]{mclapply}} for details.}
 }
 \description{
 Partitioning (clustering) into k clusters "around medoids" by
-randomized search. 1-abs(cor) among SNPs is used as distance.
+randomized search. 1-abs(cor) is used as distance among SNPs.
 }
 \details{
 The K-medoids clustering is implemented as clustering large
@@ -39,14 +39,14 @@ has two advantages: (i) the number of distance comparisons is dramatically
 reduced; and (ii) parallelizing is straightforward.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClarans(snp, 3)
 }
 \references{
-Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
-data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
-\url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
+Ng and J. Han (2002). CLARANS: A method for clustering objects
+for spatial data mining. \emph{IEEE Transactions on Knowledge and Data
+Engineering}. \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 }
 

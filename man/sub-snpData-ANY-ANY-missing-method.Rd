@@ -8,19 +8,19 @@
 \S4method{[}{snpData,ANY,ANY,missing}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
-\item{x}{snpData object.}
+\item{x}{An object of class \linkS4class{snpData}.}
 
 \item{i}{Indices specifying elements to extract or replace. Indices are
-numeric or character vectors.}
+booleans, numeric or character vectors.}
 
 \item{j}{indices specifying elements to extract or replace. Indices are
-numeric or character vectors.}
+booleans, numeric or character vectors.}
 
 \item{...}{Not implemented.}
 
 \item{drop}{Not implemented.}
 }
 \description{
-Sub snpData
+Subsetting an object of class \linkS4class{snpData}.
 }
 

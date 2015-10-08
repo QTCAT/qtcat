@@ -8,15 +8,23 @@
 \S4method{as.matrix}{snpData}(x, inx1 = 1:ncol(x), inx2 = NULL, ...)
 }
 \arguments{
-\item{x}{snpData object.}
+\item{x}{An object of class \linkS4class{snpData}.}
 
-\item{inx1}{...}
+\item{inx1}{An optional index vector for subsetting the data or in
+combination with \code{inx2} for the generation of interaction terms.}
 
-\item{inx2}{...}
+\item{inx2}{An optional index vector which in combination with \code{inx1}
+can be used to generate interaction terms of SNPs.}
 
 \item{...}{Not implemented.}
 }
 \description{
-snpData as matrix
+Matrix from an object of class \linkS4class{snpData}.
+}
+\examples{
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
+snpmat <- as.matrix(snp)
 }
 

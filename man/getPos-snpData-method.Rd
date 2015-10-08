@@ -8,15 +8,16 @@
 \S4method{getPos}{snpData}(object)
 }
 \arguments{
-\item{object}{snpData object.}
+\item{object}{An object of class \linkS4class{snpData}.}
 }
 \description{
-Get position from snpData
+Genetic position info from an object of class
+ \linkS4class{snpData}.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",
 pos <- getPos(snp)
 }
 

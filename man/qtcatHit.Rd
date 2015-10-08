@@ -2,53 +2,54 @@
 % Please edit documentation in R/associationTest.R
 \name{qtcatHit}
 \alias{qtcatHit}
-\title{hit}
+\title{Fitting Hierarchical Inference Testing}
 \usage{
 qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, lambda.opt = c("lambda.1se",
   "lambda.min"), nfolds = 5, gamma = seq(0.05, 0.99, by = 0.01),
   max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...)
 }
 \arguments{
-\item{pheno}{qtcatPheno object.}
+\item{pheno}{An object of class \code{\link{qtcatPheno}}.}
 
-\item{geno}{qtcatGeno object.}
+\item{geno}{An object of class \code{\link{qtcatGeno}}.}
 
-\item{B}{Number of sample-splits.}
+\item{B}{A integer indicating the number of sample-splits.}
 
-\item{p.samp1}{Fraction of data used for the LASSO. The ANOVA uses
-\code{1 - p.samp1}.}
+\item{p.samp1}{A value specifying the fraction of data used for the LASSO
+sample-split. The ANOVA sample-split is \code{1 - p.samp1}.}
 
-\item{lambda.opt}{criterion for optimum selection of cross validated lasso.
-Either 'lambda.1se' (default) or 'lambda.min'. See
-\code{\link[glmnet]{cv.glmnet}} for more details.}
+\item{lambda.opt}{Criterion for optimum selection of cross-validated in the
+LASSO data selection step. Either 'lambda.1se' (default) or 'lambda.min'.
+See \code{\link[glmnet]{cv.glmnet}} for more details.}
 
-\item{nfolds}{number of folds (default is 5), see
-\code{\link[glmnet]{cv.glmnet}} for more details.}
+\item{nfolds}{Number of folds for the LASSO cross-validated (default is 5),
+see \code{\link[glmnet]{cv.glmnet}} for details.}
 
-\item{gamma}{Vector of gamma-values.}
+\item{gamma}{Vector of gamma-values used in significant estimation.}
 
-\item{max.p.esti}{Maximum alpha level. All p-values above this value are set
+\item{max.p.esti}{Maximum for computed p-values. All p-values above this value are set
 to one. Small \code{max.p.esti} values reduce computing time.}
 
 \item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
-'B'. For details see \code{\link[parallel]{mclapply}}.}
+\code{'B'}. For details see \code{\link[parallel]{mclapply}}.}
 
 \item{trace}{If \code{TRUE} it prints current status of the program.}
 
 \item{...}{additional arguments for \code{\link[glmnet]{cv.glmnet}}.}
 }
 \description{
-hit
+Hierarchical inference testing for phenotype-SNP association.
 }
 \examples{
-# files containing example data
-pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
-gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+# files containing example data for SNP data and the phenotype
+pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 pdat <- read.csv(pfile, header = TRUE)
-pheno <- qtcatPheno(pdat)
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 geno <- qtcatGeno(snp, clust)
+pheno <- qtcatPheno(pdat)
+# fitting HIT
 fitted <- qtcatHit(pheno, geno)
 }
 

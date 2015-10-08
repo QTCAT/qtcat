@@ -2,21 +2,25 @@
 % Please edit documentation in R/associationTest.R
 \name{qtcatPheno}
 \alias{qtcatPheno}
-\title{geno of xxx}
+\title{A phenotype object constructor}
 \usage{
 qtcatPheno(x)
 }
 \arguments{
-\item{x}{data.frame, first column individual names, second column phenotype.
-Additional columns for additional variables.}
+\item{x}{A data frame, containing in the first column individual names, in
+the second column phenotypic observations and eventuality additional
+variables in additional columns.}
 }
 \description{
-geno of xxx
+Constructs an S3 object containing phenotype and if
+additional covariats exist a design matrix of those. This is needed for
+\code{\link{qtcatHit}} as input.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "phenodata.csv", package = "qtcat")
-pdat <- read.csv(file, header = TRUE)
+# file containing example data for a phenotype.
+pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+pdat <- read.csv(pfile, header = TRUE)
+# Construct phenotype object
 pheno <- qtcatPheno(pdat)
 }
 

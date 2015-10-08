@@ -2,28 +2,31 @@
 % Please edit documentation in R/associationTest.R
 \name{qtcatGeno}
 \alias{qtcatGeno}
-\title{geno data}
+\title{A genotype object constructor}
 \usage{
 qtcatGeno(x, clusters, absCor, min.absCor = 0.7)
 }
 \arguments{
-\item{x}{snpData object.}
+\item{x}{An object of S4 class \linkS4class{snpData}.}
 
-\item{clusters}{Clustering.}
+\item{clusters}{An object of class \code{\link{qtcatClust}}.}
 
 \item{absCor}{Vector of absolute value of correlations considered in the
 hierarchy.}
 
-\item{min.absCor}{Minimum absolute value of correlation considered.}
+\item{min.absCor}{Minimum absolute value of correlation considered. A value
+in the range from 0 to 1.}
 }
 \description{
-geno data
+Constructs an S3 object containing SNP matrix and SNP
+hierarchy. This is needed for \code{\link{qtcatHit}} as input.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
+# Construct geotype object
 geno <- qtcatGeno(snp, clust)
 }
 

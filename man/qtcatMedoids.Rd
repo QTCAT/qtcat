@@ -2,22 +2,22 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatMedoids}
 \alias{qtcatMedoids}
-\title{Estimates the medoids}
+\title{Find the medoid}
 \usage{
 qtcatMedoids(x, clusters)
 }
 \arguments{
 \item{x}{An object of class \linkS4class{snpData}.}
 
-\item{clusters}{Vector of cluster groups \code{snpData}.}
+\item{clusters}{Vector of cluster groups \code{qtcatCutClust}.}
 }
 \description{
-Estimates clusters and medoids.
+Find the medoid of each cluster.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 cclust <- qtcatCutClust(clust, .5)
 mclust <- qtcatMedoids(snp, cclust)

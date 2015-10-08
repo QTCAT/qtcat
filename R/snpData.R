@@ -1,5 +1,7 @@
 #' @title Read SNP tables to snpData object
+#'
 #' @description Reads a file in table format and returns a 'snpData' object.
+#'
 #' @param file The name of the file which the data are to be read from. If it
 #' does not contain an absolute path, the file name is relative to the current
 #' working directory, \code{getwd()}. Tilde-expansion is performed where
@@ -10,16 +12,17 @@
 #' use \code{quote = ""}.
 #' @param na.strings A character vector of strings which are to be interpreted
 #' as NA values. Is not implemented yet.
-#' @param nrows Integer, the maximum number of rows to read in.
-#' @examples 
-#' # file containing example data
-#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-#' snp <- read.snpData(file, sep = ",")
+#' @param nrows Integer, the maximum number of rows to read.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",")
+#'
 #' @importFrom methods new
 #' @export
 read.snpData <- function(file, sep = " ",  quote = "\"",
                          na.strings, nrows = -1L) {
-  # checks
   if (!file.exists(file))
     stop("No such file or directory")
   file <- normalizePath(file)
@@ -44,9 +47,7 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
   }
   if (any(nchar(snp1) != 2L))
     stop("Every position in the SNP-matrix has to be specified by two characters, missing values are not allowed")
-  # read data from file
   temp <- read_snpData(file, sep, quote, rowNames, "ZZZ", nrows)
-  # make snpData object
   if (identical(temp$lociNames, character(0))) {
     lociNames <- paste0("loci", seq_len(ncol(temp$snpData)))
   } else {
@@ -59,14 +60,19 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
              dim = dim(temp$snpData),
              dimnames = list(temp$indivNames, lociNames))
   out
-} # read.snpData
+}
 
-#' @title converts data to  snpData object
+
+#' @title snpData object constructor
+#'
+#' @description Constructs a \code{snpData} object from given data.
+#'
 #' @param x matrix with indoviduals in rows and SNPs in columns.
 #' @param position matrix with chromosome and position in rows and
 #' SNPs in columns.
 #' @param alleleCoding coding of \code{x} for hom het hom.
 #' @param alleles  labels of alleles, for each SNP.
+#'
 #' @importFrom methods new
 #' @export
 as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
@@ -141,15 +147,19 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
   out
 }
 
+
 #' @title Sub snpData
-#' @docType methods
-#' @param x snpData object.
+#'
+#' @description Subsetting an object of class \linkS4class{snpData}.
+#'
+#' @param x  An object of class \linkS4class{snpData}.
 #' @param i Indices specifying elements to extract or replace. Indices are
-#' numeric or character vectors.
+#' booleans, numeric or character vectors.
 #' @param j indices specifying elements to extract or replace. Indices are
-#' numeric or character vectors.
+#' booleans, numeric or character vectors.
 #' @param ... Not implemented.
 #' @param drop Not implemented.
+#'
 #' @importFrom methods setMethod signature new
 #' @export
 setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
@@ -174,14 +184,26 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
                        dimnames = list(rownames(x)[i], colnames(x)[j]))
             out
           }
-) # `[`
+)
+
 
 #' @title snpData as matrix
-#' @docType methods
-#' @param x snpData object.
-#' @param inx1 ...
-#' @param inx2 ...
+#'
+#' @description Matrix from an object of class \linkS4class{snpData}.
+#'
+#' @param x An object of class \linkS4class{snpData}.
+#' @param inx1 An optional index vector for subsetting the data or in
+#' combination with \code{inx2} for the generation of interaction terms.
+#' @param inx2 An optional index vector which in combination with \code{inx1}
+#' can be used to generate interaction terms of SNPs.
 #' @param ... Not implemented.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",")
+#' snpmat <- as.matrix(snp)
+#'
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("as.matrix", signature(x = "snpData"),
@@ -205,16 +227,22 @@ setMethod("as.matrix", signature(x = "snpData"),
             rownames(out) <- rownames(x)
             out
           }
-) # as.matrix
+)
+
 
 #' @title Get position from snpData
-#' @docType methods
-#' @param object snpData object.
-#' @examples 
-#' # file containing example data
-#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-#' snp <- read.snpData(file, sep = ",")
+#'
+#' @description Genetic position info from an object of class
+#'  \linkS4class{snpData}.
+#'
+#' @param object An object of class \linkS4class{snpData}.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",
 #' pos <- getPos(snp)
+#'
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("getPos", signature(object = "snpData"),
@@ -228,16 +256,22 @@ setMethod("getPos", signature(object = "snpData"),
             }
             out
           }
-) # getPos
+)
+
 
 #' @title Allele frequency
-#' @docType methods
-#' @param x snpData object.
-#' @examples 
-#' # file containing example data
-#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-#' snp <- read.snpData(file, sep = ",")
+#'
+#' @description Allele frequency an object of class \linkS4class{snpData}.
+#'
+#' @param x An object of class \linkS4class{snpData}.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",")
 #' af <- alleleFreq(snp)
+#'
+#'
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("alleleFreq", signature(x = "snpData"),
@@ -246,18 +280,23 @@ setMethod("alleleFreq", signature(x = "snpData"),
             names(out) <- colnames(x)
             out
           }
-) # alleleFreq
+)
+
 
 #' @title Heterozygosity
-#' @docType methods
-#' @param x snpData object.
-#' @param dim Interger for dimension.
-#' @examples 
-#' # file containing example data
-#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-#' snp <- read.snpData(file, sep = ",")
+#'
+#' @description Heterozygosity an object of class \linkS4class{snpData}.
+#'
+#' @param x An object of class \linkS4class{snpData}.
+#' @param dim Integer for dimension.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",
 #' hf1 <- hetFreq(snp, 1)
 #' hf2 <- hetFreq(snp, 2)
+#'
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("hetFreq", signature(x = "snpData"),
@@ -268,4 +307,4 @@ setMethod("hetFreq", signature(x = "snpData"),
               return(freq1(x@snpData))
             return(NULL)
           }
-) # "hetFreq"
+)

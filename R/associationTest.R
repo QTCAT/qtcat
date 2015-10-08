@@ -1,28 +1,34 @@
-#' geno data
-#' @param x snpData object.
-#' @param clusters Clustering.
+#' @title A genotype object constructor
+#'
+#' @description Constructs an S3 object containing SNP matrix and SNP
+#' hierarchy. This is needed for \code{\link{qtcatHit}} as input.
+#'
+#' @param x An object of S4 class \linkS4class{snpData}.
+#' @param clusters An object of class \code{\link{qtcatClust}}.
 #' @param absCor Vector of absolute value of correlations considered in the
 #' hierarchy.
-#' @param min.absCor Minimum absolute value of correlation considered.
-#' @examples 
-#' # file containing example data
-#' file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-#' snp <- read.snpData(file, sep = ",")
+#' @param min.absCor Minimum absolute value of correlation considered. A value
+#' in the range from 0 to 1.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
+#' # Construct geotype object
 #' geno <- qtcatGeno(snp, clust)
+#'
 #' @importFrom hit hierarchy
 #' @importFrom methods is
 #' @export
 qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   stopifnot(is(x, "snpData"))
   stopifnot(is(clusters, "qtcatClust"))
-  if (!setequal(names(clusters$clusters), colnames(x))) {
+  if (!setequal(names(clusters$clusters), colnames(x)))
     stop("SNP names of 'x' and 'clusters' differ")
-  }
-  if (is.null(names <- clusters$medoids)) {
+  if (is.null(names <- clusters$medoids))
     names <- names(clusters)
-  }
-  # TODO: chack alleleFreq
+  # TODO: chack alleleFreq?
   desMat <- as.matrix(x[, colnames(x) %in% names])
   if (missing(absCor))
     hier <- hierarchy(clusters$dendrogram, max.height = 1 - min.absCor,
@@ -39,14 +45,24 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   out
 }
 
-#' geno of xxx
-#' @param x data.frame, first column individual names, second column phenotype.
-#' Additional columns for additional variables.
-#' @examples 
-#' # file containing example data
-#' file <- system.file("extdata", "phenodata.csv", package = "qtcat")
-#' pdat <- read.csv(file, header = TRUE)
+
+#' @title A phenotype object constructor
+#'
+#' @description Constructs an S3 object containing phenotype and if
+#' additional covariats exist a design matrix of those. This is needed for
+#' \code{\link{qtcatHit}} as input.
+#'
+#' @param x A data frame, containing in the first column individual names, in
+#' the second column phenotypic observations and eventuality additional
+#' variables in additional columns.
+#'
+#' @examples
+#' # file containing example data for a phenotype.
+#' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+#' pdat <- read.csv(pfile, header = TRUE)
+#' # Construct phenotype object
 #' pheno <- qtcatPheno(pdat)
+#'
 #' @export
 qtcatPheno <- function(x) {
   if (any(is.na(x)))
@@ -58,7 +74,7 @@ qtcatPheno <- function(x) {
     stop("phenotype is not numeric")
   if (ncol(x) > 2L) {
     xdat <- x[, -(1L:2L), drop = FALSE]
-    design <- model.matrix(~ ., data = xdat)[, -1L, drop = FALSE]
+    design <- model.matrix(~., data = xdat)[, -1L, drop = FALSE]
   } else {
     design <- matrix(nrow = nrow(x), ncol = 0L)
   }
@@ -69,34 +85,41 @@ qtcatPheno <- function(x) {
   out
 }
 
-#' hit
-#' @param pheno qtcatPheno object.
-#' @param geno qtcatGeno object.
-#' @param B Number of sample-splits.
-#' @param p.samp1 Fraction of data used for the LASSO. The ANOVA uses
-#' \code{1 - p.samp1}.
-#' @param lambda.opt criterion for optimum selection of cross validated lasso.
-#' Either 'lambda.1se' (default) or 'lambda.min'. See
-#' \code{\link[glmnet]{cv.glmnet}} for more details.
-#' @param nfolds number of folds (default is 5), see
-#' \code{\link[glmnet]{cv.glmnet}} for more details.
-#' @param gamma Vector of gamma-values.
-#' @param max.p.esti Maximum alpha level. All p-values above this value are set
+
+#' @title Fitting Hierarchical Inference Testing
+#'
+#' @description Hierarchical inference testing for phenotype-SNP association.
+#'
+#' @param pheno An object of class \code{\link{qtcatPheno}}.
+#' @param geno An object of class \code{\link{qtcatGeno}}.
+#' @param B A integer indicating the number of sample-splits.
+#' @param p.samp1 A value specifying the fraction of data used for the LASSO
+#' sample-split. The ANOVA sample-split is \code{1 - p.samp1}.
+#' @param lambda.opt Criterion for optimum selection of cross-validated in the
+#' LASSO data selection step. Either 'lambda.1se' (default) or 'lambda.min'.
+#' See \code{\link[glmnet]{cv.glmnet}} for more details.
+#' @param nfolds Number of folds for the LASSO cross-validated (default is 5),
+#' see \code{\link[glmnet]{cv.glmnet}} for details.
+#' @param gamma Vector of gamma-values used in significant estimation.
+#' @param max.p.esti Maximum for computed p-values. All p-values above this value are set
 #' to one. Small \code{max.p.esti} values reduce computing time.
 #' @param mc.cores Number of cores for parallelising. Theoretical maximum is
-#' 'B'. For details see \code{\link[parallel]{mclapply}}.
+#' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
-#' @examples 
-#' # files containing example data
-#' pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
-#' gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#'
+#' @examples
+#' # files containing example data for SNP data and the phenotype
+#' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' pdat <- read.csv(pfile, header = TRUE)
-#' pheno <- qtcatPheno(pdat)
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
 #' geno <- qtcatGeno(snp, clust)
+#' pheno <- qtcatPheno(pdat)
+#' # fitting HIT
 #' fitted <- qtcatHit(pheno, geno)
+#'
 #' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
@@ -116,11 +139,10 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
             paste(id.uniquePheno, collapse = " "), "\n")
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(geno$x))
-  if (ncol(pheno$design) == 0L) {
+  if (ncol(pheno$design) == 0L)
     x <- geno$x[genoInx, ]
-  } else {
+  else
     x <- cbind(geno$x[genoInx, ], pheno$design[phenoInx, ])
-  }
   y <- pheno$pheno[phenoInx]
   fitHit <- hit(x, y, geno$hierarchy,
                 B, p.samp1, lambda.opt, nfolds, gamma, max.p.esti, mc.cores,
@@ -131,22 +153,29 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
   out
 }
 
-#' @title Include zero clusters x
-#' @description Include zero clusters.
-#' @param x hit object.
-#' @param alpha Alpha level.
+
+#' @title Summarize results of Hierarchical Inference Test
+#'
+#' @description Summarizing the QTCs (significant cluster of SNPs) and their
+#' position at the genome.
+#'
+#' @param x An object of class \code{\link{qtcatHit}}.
+#' @param alpha An alpha level for significance estimation.
 #' @param min.absCor Minimum absolute value of correlation considered.
-#' @examples 
-#' # files containing example data
-#' pfile <- system.file("extdata", "phenodata.csv", package = "qtcat")
-#' gfile <- system.file("extdata", "snpdata.csv", package = "qtcat")
+#'
+#' @examples
+#' # files containing example data for SNP data and the phenotype
+#' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' pdat <- read.csv(pfile, header = TRUE)
-#' pheno <- qtcatPheno(pdat)
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
 #' geno <- qtcatGeno(snp, clust)
+#' pheno <- qtcatPheno(pdat)
 #' fitted <- qtcatHit(pheno, geno)
+#' # Summarizing the QTCs
 #' qtcatSigClust(fitted)
+#'
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export
@@ -172,20 +201,37 @@ qtcatSigClust <- function(x, alpha = 0.05, min.absCor) {
   out <- cbind(t(x$positions[, rownames(sigClust), drop = FALSE]),
                     sigClust)
   out
-} # sigCluster
+}
 
-#' @title Linear model
-#' @description Linear model between phenotype amd medoids of significent SNP
-#' clusters.
-#' @param x hit object.
-#' @param pheno qtcatPheno object.
-#' @param geno qtcatGeno object.
-#' @param alpha Alpha level.
+
+#' @title Fitting a Linear Model to medoids
+#'
+#' @description Linear model between phenotype and medoids of QTCs (significant
+#' SNP clusters).
+#'
+#' @param x An object of class \code{\link{qtcatHit}}.
+#' @param pheno An object of class \code{\link{qtcatPheno}}.
+#' @param geno An object of class \code{\link{qtcatGeno}}.
+#' @param alpha An alpha level for significance estimation.
 #' @param min.absCor Minimum absolute value of correlation considered.
+#'
+#'@examples
+#' # files containing example data for SNP data and the phenotype
+#' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' pdat <- read.csv(pfile, header = TRUE)
+#' snp <- read.snpData(gfile, sep = ",")
+#' clust <- qtcatClust(snp)
+#' geno <- qtcatGeno(snp, clust)
+#' pheno <- qtcatPheno(pdat)
+#' fitted <- qtcatHit(pheno, geno)
+#' # fitting a LM to the phenotype and QTC medoids
+#' lmfitted <- qtcatLm(fitted, pheno, geno)
+#'
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export
-qtcatLM <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
+qtcatLm <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
   stopifnot(is(x, "qtcatHit"))
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))

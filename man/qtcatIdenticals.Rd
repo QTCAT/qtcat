@@ -2,23 +2,24 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatIdenticals}
 \alias{qtcatIdenticals}
-\title{Internal function}
+\title{Perfect simiarity  SNP clusters}
 \usage{
 qtcatIdenticals(x, mc.cores = 1)
 }
 \arguments{
-\item{x}{A object of class \linkS4class{snpData}.}
+\item{x}{An object of class \linkS4class{snpData}.}
 
 \item{mc.cores}{A positive integer for the number of cores for parallel
 computing. See \code{\link[parallel]{mclapply}} for details.}
 }
 \description{
-Cluster at distance zero in qtcatClust.
+Finds perfect similarity cluster of SNPs. This is specially
+us full in crossed populations.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 ident <- qtcatIdenticals(snp)
 }
 

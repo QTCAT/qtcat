@@ -3,15 +3,18 @@
 \docType{class}
 \name{snpData-class}
 \alias{snpData-class}
-\title{Class "snpData" for a SNP matrix (S4 class)}
+\title{An S4 class to represent a SNP matrix}
 \description{
-An S4 class for a SNP matrix. Storing SNP information using a
-byte-level (raw) storage scheme jointly with positions.
+An S4 class to represent a SNP matrix. Storing SNP information
+by using a byte-level (raw) storage scheme jointly with genomic positions
+and alleles.
 }
 \section{Slots}{
 
 \describe{
-\item{\code{snpData}}{A matrix of SNPs stored in type 'raw'.}
+\item{\code{snpData}}{A matrix of SNPs stored in type 'raw'. 0 is NA,
+1 homozygote AA, 2 and 4 heterozygote phased for AB and BA, and
+3 hetrozygoe unphased AB/BA.}
 
 \item{\code{position}}{A matrix with two rows. The first row contains the
 chromosomes the second row contains the positions.}

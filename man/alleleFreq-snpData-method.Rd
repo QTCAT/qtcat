@@ -8,15 +8,15 @@
 \S4method{alleleFreq}{snpData}(x)
 }
 \arguments{
-\item{x}{snpData object.}
+\item{x}{An object of class \linkS4class{snpData}.}
 }
 \description{
-Allele frequency
+Allele frequency an object of class \linkS4class{snpData}.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 af <- alleleFreq(snp)
 }
 

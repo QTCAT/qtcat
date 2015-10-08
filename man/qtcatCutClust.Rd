@@ -2,7 +2,7 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatCutClust}
 \alias{qtcatCutClust}
-\title{cluster qtcatClust object}
+\title{Cut a qtcatClust object}
 \usage{
 qtcatCutClust(x, absCor)
 }
@@ -12,12 +12,12 @@ qtcatCutClust(x, absCor)
 \item{absCor}{cutting height in absolute value of correlation.}
 }
 \description{
-cluster qtcatClust object
+Cut a qtcatClust object at an specific height.
 }
 \examples{
-# file containing example data
-file <- system.file("extdata", "snpdata.csv", package = "qtcat")
-snp <- read.snpData(file, sep = ",")
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 cclust <- qtcatCutClust(clust, .5)
 }

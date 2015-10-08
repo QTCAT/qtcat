@@ -2,7 +2,7 @@
 % Please edit documentation in R/snpData.R
 \name{as.snpData}
 \alias{as.snpData}
-\title{converts data to  snpData object}
+\title{snpData object constructor}
 \usage{
 as.snpData(x, position, alleleCoding = c(-1, 0, 1), alleles = NULL)
 }
@@ -17,6 +17,6 @@ SNPs in columns.}
 \item{alleles}{labels of alleles, for each SNP.}
 }
 \description{
-converts data to  snpData object
+Constructs a \code{snpData} object from given data.
 }
 
