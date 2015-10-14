@@ -37,7 +37,7 @@ that running the example can take a few seconds).
 library(qtcat)
 example("qtcatQtc")
 ```
-##
+----
 
 [![License]
   (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]
