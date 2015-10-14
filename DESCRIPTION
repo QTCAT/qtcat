@@ -1,13 +1,13 @@
 Package: qtcat
 Title: Quantitative Trait Cluster Association Test
-Description: An association mapping method which jointly analyses all SNPs at once and at
-the same time accounts for the correlation between them. This makes correction
-for population structure unnecessary and therefore increases power compared to
-classical methods like the mixed model.
+Description: An association mapping method which jointly analyses all SNPs at
+    once and at the same time accounts for the correlation between them. This
+    makes correction for population structure unnecessary and therefore
+    increases power compared to classical methods like the mixed model.
 Version: 0.0-3
-Authors@R: c( person("Jonas","Klasen", role=c("aut", "cph", "cre"),
-    email="maintainer@gmx.de"), person("Korbinian","Schneeberger",
-    role="ths") )
+Authors@R: c(person("Jonas", "Klasen", role = c("aut", "cph", "cre"),
+                    email = "maintainer@gmx.de"),
+             person("Korbinian", "Schneeberger", role = "ths") )
 Author: Jonas Klasen [aut, cph, cre], Korbinian Schneeberger [ths]
 Maintainer: Jonas Klasen <maintainer@gmx.de>
 Depends: R (>= 3.2.0)
