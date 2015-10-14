@@ -29,14 +29,15 @@ devtools::install_github("QTCAT/qtcat")
 ```
 
 ## Example:
-The `qtcatSigClust`-function example gives an overview of the functionality of 
+The `qtcatQtc`-function example gives an overview of the functionality of 
 the package and can be accessed once the package is loaded (please be aware, 
 that running the example can take a few seconds).
 
 ```R
 library(qtcat)
-example("qtcatSigClust")
+example("qtcatQtc")
 ```
+##
 
 [![License]
   (http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)]

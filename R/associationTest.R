@@ -174,12 +174,12 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
 #' pheno <- qtcatPheno(pdat)
 #' fitted <- qtcatHit(pheno, geno)
 #' # Summarizing the QTCs
-#' qtcatSigClust(fitted)
+#' qtcatQtc(fitted)
 #'
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export
-qtcatSigClust <- function(x, alpha = 0.05, min.absCor) {
+qtcatQtc <- function(x, alpha = 0.05, min.absCor) {
   stopifnot(is(x, "qtcatHit"))
   if (missing(min.absCor))
     y <- summary(x, alpha)
