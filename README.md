@@ -27,7 +27,7 @@ github and has therefore likewise to be installed before `qtcat`s installation.
 
 ```R
 # install.packages("devtools")
-# devtools::install_github("jrklasen/hit")
+# devtools::install_github("QTCAT/hit")
 devtools::install_github("QTCAT/qtcat")
 ```
 
