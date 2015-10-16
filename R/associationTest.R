@@ -18,7 +18,7 @@
 #' # Construct geotype object
 #' geno <- qtcatGeno(snp, clust)
 #'
-#' @importFrom hit hierarchy
+#' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
 qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
@@ -31,10 +31,10 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   # TODO: chack alleleFreq?
   desMat <- as.matrix(x[, colnames(x) %in% names])
   if (missing(absCor))
-    hier <- hierarchy(clusters$dendrogram, max.height = 1 - min.absCor,
+    hier <- as.hierarchy(clusters$dendrogram, max.height = 1 - min.absCor,
                       names = colnames(desMat))
   else
-    hier <- hierarchy(clusters$dendrogram, 1 - absCor, 1 - min.absCor,
+    hier <- as.hierarchy(clusters$dendrogram, 1 - absCor, 1 - min.absCor,
                       colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
