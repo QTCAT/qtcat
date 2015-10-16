@@ -44,65 +44,65 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// preClustIdenticals
-List preClustIdenticals(RawMatrix x, const int step);
-RcppExport SEXP qtcat_preClustIdenticals(SEXP xSEXP, SEXP stepSEXP) {
+// corPreIdenticals
+List corPreIdenticals(RawMatrix x, const int step);
+RcppExport SEXP qtcat_corPreIdenticals(SEXP xSEXP, SEXP stepSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< const int >::type step(stepSEXP);
-    __result = Rcpp::wrap(preClustIdenticals(x, step));
+    __result = Rcpp::wrap(corPreIdenticals(x, step));
     return __result;
 END_RCPP
 }
-// identicals
-List identicals(RawMatrix x, IntegerVector clustIdx);
-RcppExport SEXP qtcat_identicals(SEXP xSEXP, SEXP clustIdxSEXP) {
+// corIdenticals
+List corIdenticals(RawMatrix x, IntegerVector clustIdx);
+RcppExport SEXP qtcat_corIdenticals(SEXP xSEXP, SEXP clustIdxSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type clustIdx(clustIdxSEXP);
-    __result = Rcpp::wrap(identicals(x, clustIdx));
+    __result = Rcpp::wrap(corIdenticals(x, clustIdx));
     return __result;
 END_RCPP
 }
-// joinIdenticals
-List joinIdenticals(int n, List preclust, List ClustMedo);
-RcppExport SEXP qtcat_joinIdenticals(SEXP nSEXP, SEXP preclustSEXP, SEXP ClustMedoSEXP) {
+// joinCorIdenticals
+List joinCorIdenticals(int n, List preclust, List ClustMedo);
+RcppExport SEXP qtcat_joinCorIdenticals(SEXP nSEXP, SEXP preclustSEXP, SEXP ClustMedoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< int >::type n(nSEXP);
     Rcpp::traits::input_parameter< List >::type preclust(preclustSEXP);
     Rcpp::traits::input_parameter< List >::type ClustMedo(ClustMedoSEXP);
-    __result = Rcpp::wrap(joinIdenticals(n, preclust, ClustMedo));
+    __result = Rcpp::wrap(joinCorIdenticals(n, preclust, ClustMedo));
     return __result;
 END_RCPP
 }
-// clarans
-List clarans(RawMatrix x, const int k, const int maxNeigbours);
-RcppExport SEXP qtcat_clarans(SEXP xSEXP, SEXP kSEXP, SEXP maxNeigboursSEXP) {
+// corClarans
+List corClarans(RawMatrix x, const int k, const int maxNeigbours);
+RcppExport SEXP qtcat_corClarans(SEXP xSEXP, SEXP kSEXP, SEXP maxNeigboursSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< const int >::type k(kSEXP);
     Rcpp::traits::input_parameter< const int >::type maxNeigbours(maxNeigboursSEXP);
-    __result = Rcpp::wrap(clarans(x, k, maxNeigbours));
+    __result = Rcpp::wrap(corClarans(x, k, maxNeigbours));
     return __result;
 END_RCPP
 }
-// medoids
-IntegerVector medoids(RawMatrix x, IntegerVector clusters);
-RcppExport SEXP qtcat_medoids(SEXP xSEXP, SEXP clustersSEXP) {
+// corMedoids
+IntegerVector corMedoids(RawMatrix x, IntegerVector clusters);
+RcppExport SEXP qtcat_corMedoids(SEXP xSEXP, SEXP clustersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type clusters(clustersSEXP);
-    __result = Rcpp::wrap(medoids(x, clusters));
+    __result = Rcpp::wrap(corMedoids(x, clusters));
     return __result;
 END_RCPP
 }

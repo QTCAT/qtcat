@@ -13,24 +13,24 @@ corDists <- function(x) {
     .Call('qtcat_corDists', PACKAGE = 'qtcat', x)
 }
 
-preClustIdenticals <- function(x, step) {
-    .Call('qtcat_preClustIdenticals', PACKAGE = 'qtcat', x, step)
+corPreIdenticals <- function(x, step) {
+    .Call('qtcat_corPreIdenticals', PACKAGE = 'qtcat', x, step)
 }
 
-identicals <- function(x, clustIdx) {
-    .Call('qtcat_identicals', PACKAGE = 'qtcat', x, clustIdx)
+corIdenticals <- function(x, clustIdx) {
+    .Call('qtcat_corIdenticals', PACKAGE = 'qtcat', x, clustIdx)
 }
 
-joinIdenticals <- function(n, preclust, ClustMedo) {
-    .Call('qtcat_joinIdenticals', PACKAGE = 'qtcat', n, preclust, ClustMedo)
+joinCorIdenticals <- function(n, preclust, ClustMedo) {
+    .Call('qtcat_joinCorIdenticals', PACKAGE = 'qtcat', n, preclust, ClustMedo)
 }
 
-clarans <- function(x, k, maxNeigbours) {
-    .Call('qtcat_clarans', PACKAGE = 'qtcat', x, k, maxNeigbours)
+corClarans <- function(x, k, maxNeigbours) {
+    .Call('qtcat_corClarans', PACKAGE = 'qtcat', x, k, maxNeigbours)
 }
 
-medoids <- function(x, clusters) {
-    .Call('qtcat_medoids', PACKAGE = 'qtcat', x, clusters)
+corMedoids <- function(x, clusters) {
+    .Call('qtcat_corMedoids', PACKAGE = 'qtcat', x, clusters)
 }
 
 design <- function(x, inx1, inx2) {

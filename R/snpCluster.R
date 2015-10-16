@@ -13,11 +13,11 @@
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
-#' dist <- qtcatDist(snp[, 1:10])
+#' dist <- distCor(snp[, 1:10])
 #'
 #' @importFrom methods is
 #' @export
-qtcatDist <- function(x) {
+distCor <- function(x) {
   stopifnot(is(x, "snpData"))
   out <- corDists(x@snpData)
   attr(out,"Labels") <- colnames(x)
@@ -44,26 +44,26 @@ qtcatDist <- function(x) {
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
-#' ident <- qtcatIdenticals(snp)
+#' ident <- identicals(snp)
 #'
 #' @importFrom parallel mclapply
 #' @importFrom methods is
 #' @export
-qtcatIdenticals <- function(x, mc.cores = 1) {
+identicals <- function(x, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   p <- ncol(x@snpData)
   s <- optimise(function(s, p, m) p * s + p / s * (p / s - 1) / 2 * s / m,
                 interval = c(2, p - 1), p = p, m = mc.cores)$minimum
   step <- as.integer(p / (s + 1))
-  preclust <- unlist(preClustIdenticals(x@snpData, step), FALSE)
-  kidenticals <- mclapply(preclust, function(i, x) identicals(x, i),
+  preclust <- unlist(corPreIdenticals(x@snpData, step), FALSE)
+  kidenticals <- mclapply(preclust, function(i, x) corIdenticals(x, i),
                          x = x@snpData, mc.cores = mc.cores)
-  identclust <- joinIdenticals(ncol(x@snpData), preclust, kidenticals)
+  identclust <- joinCorIdenticals(ncol(x@snpData), preclust, kidenticals)
   clust <- identclust[[1L]]
   names(clust) <- colnames(x)
   out <- list(clusters = clust,
               medoids = colnames(x)[identclust[[2L]] + 1])
-  class(out) <- "qtcatIdenticals"
+  class(out) <- "identicals"
   out
 }
 
@@ -103,12 +103,12 @@ qtcatIdenticals <- function(x, mc.cores = 1) {
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
-#' clust <- qtcatClarans(snp, 3)
+#' clust <- clarans(snp, 3)
 #'
 #' @importFrom parallel mclapply
 #' @importFrom methods is
 #' @export
-qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
+clarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   stopifnot(is(x, "snpData"))
   if (missing(k))
     stop("'k' must be specifid")
@@ -117,7 +117,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
   # cluster optimisation by clarans in parallel
   clarans.i <- function(i, x, k, maxNeigbours) {
     # cluster optimisation by clarans
-    out <- clarans(x@snpData, k, maxNeigbours)
+    out <- corClarans(x@snpData, k, maxNeigbours)
     out
   } # clarans.i
   out.nLocal <- mclapply(1L:nLocal, clarans.i,
@@ -135,7 +135,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
               medoids = medoids,
               objective = out.opt[[3L]],
               all.objectives = all.objectives)
-  class(out) <- "qtcatClarans"
+  class(out) <- "k-medoids"
   out
 }
 
@@ -158,7 +158,7 @@ qtcatClarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... additional argruments for \code{\link[stats]{hclust}}
 #'
-#' @seealso qtcatClarans
+#' @seealso clarans
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -181,7 +181,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
     # identicals
     if (trace)
       cat("Step 1: Search for identicals is running\n")
-    identicalFit <- qtcatIdenticals(x, mc.cores)
+    identicalFit <- identicals(x, mc.cores)
     x <- x[, identicalFit$medoids]
   } else if (trace) {
     cat("Step 1: Search for identicals is switch off\n")
@@ -194,7 +194,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
       stop("Number of medoids from pefect correlated clustering is < k * 2")
     if (trace)
       cat("Step 2: CLARANS is running, 'k' is:", k, "\n")
-    clarFit <- qtcatClarans(x, k, maxNeigbours, nLocal, mc.cores)
+    clarFit <- clarans(x, k, maxNeigbours, nLocal, mc.cores)
     if (trace)
       cat("   objectives:",
           format(clarFit$all.objectives, sort = TRUE, digits = 4), "\n")
@@ -216,7 +216,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
       cat("Step 3: HClust is running\n")
     hclust.sub <- function(i, x, clarFit, method, ...) {
       inx.i <- which(clarFit$clusters == i)
-      out <- as.dendrogram(hclust(qtcatDist(x[, inx.i]), method, ...))
+      out <- as.dendrogram(hclust(distCor(x[, inx.i]), method, ...))
       out
     } # hclust.sub
     hclustFit <- mclapply(clust.inx, hclust.sub,
@@ -229,7 +229,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
     # HClust
     if (trace)
       cat("Step 2: CLARANS is switch off\nStep 3: HClust is running\n")
-    dendro <- as.dendrogram(hclust(qtcatDist(x), method, ...))
+    dendro <- as.dendrogram(hclust(distCor(x), method, ...))
   }
   if (identicals) {
     out <- list(dendrogram = dendro,
@@ -257,14 +257,14 @@ qtcatClust <- function(x, k, identicals = TRUE,
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
-#' cclust <- qtcatCutClust(clust, .5)
+#' cclust <- cutClust(clust, .5)
 #'
 #' @importFrom methods is
 #' @export
-qtcatCutClust <- function(x, absCor) {
+cutClust <- function(x, absCor) {
   stopifnot(is(x, "qtcatClust"))
   stopifnot(!missing(absCor))
-  clust.dend <- qtcatCutDend(x$dendrogram, absCor)
+  clust.dend <- cutDend(x$dendrogram, absCor)
   if (!is.null(x$clusters)) {
     inx.names <- match(names(clust.dend), names(x$clusters))
     inx.list <- list()
@@ -295,11 +295,11 @@ qtcatCutClust <- function(x, absCor) {
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
-#' cdend <- qtcatCutDend(clust$dendrogram, .5)
+#' cdend <- cutDend(clust$dendrogram, .5)
 #'
 #' @importFrom methods is
 #' @export
-qtcatCutDend <- function(x, absCor) {
+cutDend <- function(x, absCor) {
   stopifnot(is(x, "dendrogram"))
   stopifnot(!missing(absCor))
   h <- 1 - absCor
@@ -326,22 +326,22 @@ qtcatCutDend <- function(x, absCor) {
 #' @description Find the medoid of each cluster.
 #'
 #' @param x An object of class \linkS4class{snpData}.
-#' @param clusters Vector of cluster groups \code{qtcatCutClust}.
+#' @param clusters Vector of cluster groups \code{cutClust}.
 #'
 #' @examples
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
-#' cclust <- qtcatCutClust(clust, .5)
-#' mclust <- qtcatMedoids(snp, cclust)
+#' cclust <- cutClust(clust, .5)
+#' mclust <- medoids(snp, cclust)
 #'
 #' @importFrom methods is
 #' @export
-qtcatMedoids <- function(x, clusters) {
+medoids <- function(x, clusters) {
   stopifnot(is(x, "snpData"))
-  medoids <- medoids(x@snpData, clusters)
+  medoids <- corMedoids(x@snpData, clusters)
   out <- rbind(clusters = clusters, medoids = medoids)
-  class(out) <- "qtcatMedoids"
+  class(out) <- "medoids"
   out
 }

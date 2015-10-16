@@ -2,25 +2,25 @@
 
 using namespace Rcpp;
 
-// correlation 
+// correlation
 double cor(RawVector x, RawVector y) {
     int n = x.size();
     IntegerVector X(n), Y(n);
-    double ex = 0, ey = 0, xt = 0, yt = 0, 
+    double ex = 0, ey = 0, xt = 0, yt = 0,
            sxx = 0, syy = 0, sxy = 0;
     // setup variables and find the mean
     for (int i = 0; i < n; i++) {
         if (x[i] == 0x05)  {
             X[i] = 4;
-        } else if (x[i] == 0x02 | 
-                   x[i] == 0x03 | 
+        } else if (x[i] == 0x02 |
+                   x[i] == 0x03 |
                    x[i] == 0x04) {
             X[i] = 2;
         }
         if (y[i] == 0x05)  {
             Y[i] = 4;
-        } else if (y[i] == 0x02 | 
-                   y[i] == 0x03 | 
+        } else if (y[i] == 0x02 |
+                   y[i] == 0x03 |
                    y[i] == 0x04) {
             Y[i] = 2;
         }
@@ -65,7 +65,7 @@ NumericVector corDists(RawMatrix x) {
 
 //pre cluster for identical search
 // [[Rcpp::export]]
-List preClustIdenticals(RawMatrix x, const int step) {
+List corPreIdenticals(RawMatrix x, const int step) {
     int n = x.ncol();
     IntegerVector clusters(n);
     std::map< int, std::vector<int> > preclust;
@@ -115,7 +115,7 @@ List preClustIdenticals(RawMatrix x, const int step) {
 
 // find identicals
 // [[Rcpp::export]]
-List identicals(RawMatrix x, IntegerVector clustIdx) {
+List corIdenticals(RawMatrix x, IntegerVector clustIdx) {
     int nCluster = clustIdx.size();
     double dist = 0;
     IntegerVector clusters(nCluster);
@@ -148,7 +148,7 @@ List identicals(RawMatrix x, IntegerVector clustIdx) {
 
 // join data to one object
 // [[Rcpp::export]]
-List joinIdenticals(int n, List preclust, List ClustMedo) {
+List joinCorIdenticals(int n, List preclust, List ClustMedo) {
      IntegerVector clusters(n);
      std::vector<int> medoInx;
      List SubClustMedo;
@@ -174,7 +174,7 @@ List joinIdenticals(int n, List preclust, List ClustMedo) {
 
 // clustering of IDB by correlation dictamce with CLARANS
 // [[Rcpp::export]]
-List clarans(RawMatrix x, const int k, const int maxNeigbours) {
+List corClarans(RawMatrix x, const int k, const int maxNeigbours) {
     RNGScope scope;
     Environment base("package:base");
     Function sample_int = base["sample.int"];
@@ -187,7 +187,7 @@ List clarans(RawMatrix x, const int k, const int maxNeigbours) {
     NumericVector pdist(n, 1.0);
     int m = 0;
     for (int c = 0; c < k; c ++) {
-        // starting medoid 
+        // starting medoid
         m = as<int>(sample_int(n, 1, false, pdist))-1;
         medoInx[c] = m;
         for (int i= 0; i < n; i ++) {
@@ -242,7 +242,7 @@ List clarans(RawMatrix x, const int k, const int maxNeigbours) {
             for (int j = 0; j < n; j ++) {
                 clusters[j] = which_min(medoDist(j, _));
             }
-            // restarting loop 
+            // restarting loop
             iter = 0;
         } else {
             iter ++;
@@ -252,9 +252,9 @@ List clarans(RawMatrix x, const int k, const int maxNeigbours) {
     return List::create(clusters+1, medoInx, objective);
 } // clarans
 
-// medoids of SNP clusters 
+// medoids of SNP clusters
 // [[Rcpp::export]]
-IntegerVector medoids(RawMatrix x, IntegerVector clusters) {
+IntegerVector corMedoids(RawMatrix x, IntegerVector clusters) {
     int n = clusters.size();
     // map of vectors with cluster indexes
     std::map< int, std::vector<int> > indexMap;
@@ -267,7 +267,7 @@ IntegerVector medoids(RawMatrix x, IntegerVector clusters) {
     double dist = 0;
     int dist_j, dist_i, medoInx;
     IntegerVector medoids(n);
-    for (std::map< int, std::vector<int> >::iterator it = indexMap.begin(); 
+    for (std::map< int, std::vector<int> >::iterator it = indexMap.begin();
          it != indexMap.end(); ++ it) {
         clustInx = it->second;
         nClust = clustInx.size();

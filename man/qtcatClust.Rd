@@ -40,6 +40,6 @@ snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 }
 \seealso{
-qtcatClarans
+clarans
 }
 

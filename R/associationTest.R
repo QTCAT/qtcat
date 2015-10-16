@@ -226,12 +226,12 @@ qtcatQtc <- function(x, alpha = 0.05, min.absCor) {
 #' pheno <- qtcatPheno(pdat)
 #' fitted <- qtcatHit(pheno, geno)
 #' # fitting a LM to the phenotype and QTC medoids
-#' lmfitted <- qtcatLm(fitted, pheno, geno)
+#' lmfitted <- medoidsLm(fitted, pheno, geno)
 #'
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export
-qtcatLm <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
+medoidsLm <- function(x, pheno, geno, alpha = 0.05, min.absCor) {
   stopifnot(is(x, "qtcatHit"))
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
