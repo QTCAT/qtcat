@@ -4,12 +4,12 @@ Description: An association mapping method which jointly analyses all SNPs at
     once and at the same time accounts for the correlation between them. This
     makes correction for population structure unnecessary and therefore
     increases power compared to classical methods like the mixed model.
+Authors@R: c(person("Jonas", "Klasen", role = c("aut", "cre"),
+                    email = "qtcat@gmx.de"),
+             person("Korbinian", "Schneeberger", role = "ths"))
 Version: 0.0-3
-Authors@R: c(person("Jonas", "Klasen", role = c("aut", "cph", "cre"),
-                    email = "maintainer@gmx.de"),
-             person("Korbinian", "Schneeberger", role = "ths") )
-Author: Jonas Klasen [aut, cph, cre], Korbinian Schneeberger [ths]
-Maintainer: Jonas Klasen <maintainer@gmx.de>
+URL: http://github.com/QTCAT/qtcat
+BugReports: https://github.com/QTCAT/qtcat/issues
 Depends: R (>= 3.2.0)
 Imports: methods, stats, parallel, Rcpp (>= 0.11.0), hit
 Suggests: fastcluster, testthat
