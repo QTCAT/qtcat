@@ -21,13 +21,10 @@ classical methods like the mixed model.
 
 ## Install:
 The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools)
-. If you haven't yet installed `devtools` please do so first. One of the R 
-package dependency of `qtcat` is `hit` which is currently only available from 
-github and has therefore likewise to be installed before `qtcat`s installation.
+(If you haven't yet installed `devtools` please do so first). 
 
 ```R
 # install.packages("devtools")
-# devtools::install_github("QTCAT/hit")
 devtools::install_github("QTCAT/qtcat")
 ```
 
