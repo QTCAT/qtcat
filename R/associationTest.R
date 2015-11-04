@@ -31,10 +31,10 @@ qtcatGeno <- function(x, clusters, absCor, min.absCor=.7) {
   # TODO: chack alleleFreq?
   desMat <- as.matrix(x[, colnames(x) %in% names])
   if (missing(absCor))
-    hier <- as.hierarchy(clusters$dendrogram, max.height = 1 - min.absCor,
-                      names = colnames(desMat))
+    hier <- as.hierarchy(clusters$dendrogram, 1 - min.absCor,
+                         names = colnames(desMat))
   else
-    hier <- as.hierarchy(clusters$dendrogram, 1 - absCor, 1 - min.absCor,
+    hier <- as.hierarchy(clusters$dendrogram, 1 - min.absCor, 1 - absCor,
                       colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
