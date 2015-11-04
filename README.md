@@ -19,7 +19,7 @@ the same time accounts for the correlation between them. This makes correction
 for population structure unnecessary and therefore increases power compared to 
 classical methods like the mixed model.
 
-## Install:
+## Installation:
 The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools)
 (If you haven't yet installed `devtools` please do so first). 
 
