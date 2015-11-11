@@ -4,10 +4,10 @@
 \alias{identicals}
 \title{Perfect simiarity  SNP clusters}
 \usage{
-identicals(x, mc.cores = 1)
+identicals(snp, mc.cores = 1)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpData}.}
 
 \item{mc.cores}{A positive integer for the number of cores for parallel
 computing. See \code{\link[parallel]{mclapply}} for details.}

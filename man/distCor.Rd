@@ -4,10 +4,10 @@
 \alias{distCor}
 \title{Correlation based distance among SNPs}
 \usage{
-distCor(x)
+distCor(snp)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpData}.}
 }
 \description{
 This function computes and returns a distance matrix.

@@ -4,10 +4,10 @@
 \alias{cutDend}
 \title{Cut a dendrogram}
 \usage{
-cutDend(x, absCor)
+cutDend(dend, absCor)
 }
 \arguments{
-\item{x}{A dendrogram.}
+\item{dend}{A dendrogram.}
 
 \item{absCor}{Cutting height in absolute value of correlation.}
 }

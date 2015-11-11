@@ -4,10 +4,10 @@
 \alias{cutClust}
 \title{Cut a qtcatClust object}
 \usage{
-cutClust(x, absCor)
+cutClust(clust, absCor)
 }
 \arguments{
-\item{x}{qtcatClust object.}
+\item{clust}{qtcatClust object.}
 
 \item{absCor}{cutting height in absolute value of correlation.}
 }

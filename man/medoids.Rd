@@ -4,10 +4,10 @@
 \alias{medoids}
 \title{Find the medoid}
 \usage{
-medoids(x, clusters)
+medoids(snp, clusters)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpData}.}
 
 \item{clusters}{Vector of cluster groups \code{cutClust}.}
 }

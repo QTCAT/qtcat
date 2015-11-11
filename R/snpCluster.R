@@ -5,7 +5,7 @@
 #' coefficient 1-abs(cor). The estimation is computed for all pairwise
 #' combinations SNPs.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpData}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
 #'
@@ -17,14 +17,14 @@
 #'
 #' @importFrom methods is
 #' @export
-distCor <- function(x) {
-  stopifnot(is(x, "snpData"))
-  out <- corDists(x@snpData)
-  attr(out,"Labels") <- colnames(x)
-  attr(out,"Size") <- ncol(x)
+distCor <- function(snp) {
+  stopifnot(is(snp, "snpData"))
+  out <- corDists(snp@snpData)
+  attr(out,"Labels") <- colnames(snp)
+  attr(out,"Size") <- ncol(snp)
   attr(out,"Diag") <- FALSE
   attr(out,"Upper") <- FALSE
-  attr(out,"method") <- "1-abs(cor(x))"
+  attr(out,"method") <- "1-abs(cor(snp))"
   attr(out,"call") <- match.call()
   class(out) <- "dist"
   out
@@ -36,7 +36,7 @@ distCor <- function(x) {
 #' @description Finds perfect similarity cluster of SNPs. This is specially
 #' us full in crossed populations.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpData}.
 #' @param mc.cores A positive integer for the number of cores for parallel
 #' computing. See \code{\link[parallel]{mclapply}} for details.
 #'
@@ -49,20 +49,20 @@ distCor <- function(x) {
 #' @importFrom parallel mclapply
 #' @importFrom methods is
 #' @export
-identicals <- function(x, mc.cores = 1) {
-  stopifnot(is(x, "snpData"))
-  p <- ncol(x@snpData)
+identicals <- function(snp, mc.cores = 1) {
+  stopifnot(is(snp, "snpData"))
+  p <- ncol(snp@snpData)
   s <- optimise(function(s, p, m) p * s + p / s * (p / s - 1) / 2 * s / m,
                 interval = c(2, p - 1), p = p, m = mc.cores)$minimum
   step <- as.integer(p / (s + 1))
-  preclust <- unlist(corPreIdenticals(x@snpData, step), FALSE)
-  kidenticals <- mclapply(preclust, function(i, x) corIdenticals(x, i),
-                         x = x@snpData, mc.cores = mc.cores)
-  identclust <- joinCorIdenticals(ncol(x@snpData), preclust, kidenticals)
+  preclust <- unlist(corPreIdenticals(snp@snpData, step), FALSE)
+  kidenticals <- mclapply(preclust, function(i, snp) corIdenticals(snp, i),
+                         snp = snp@snpData, mc.cores = mc.cores)
+  identclust <- joinCorIdenticals(ncol(snp@snpData), preclust, kidenticals)
   clust <- identclust[[1L]]
-  names(clust) <- colnames(x)
+  names(clust) <- colnames(snp)
   out <- list(clusters = clust,
-              medoids = colnames(x)[identclust[[2L]] + 1])
+              medoids = colnames(snp)[identclust[[2L]] + 1])
   class(out) <- "identicals"
   out
 }
@@ -73,7 +73,7 @@ identicals <- function(x, mc.cores = 1) {
 #' @description Partitioning (clustering) into k clusters "around medoids" by
 #' randomized search. 1-abs(cor) is used as distance among SNPs.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpData}.
 #' @param k A positive integer specifying the number of clusters, greater than
 #' one and less than the number of SNPs.
 #' @param maxNeigbours A positive integer specifying the maximum number of
@@ -108,28 +108,28 @@ identicals <- function(x, mc.cores = 1) {
 #' @importFrom parallel mclapply
 #' @importFrom methods is
 #' @export
-clarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
-  stopifnot(is(x, "snpData"))
+clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
+  stopifnot(is(snp, "snpData"))
   if (missing(k))
     stop("'k' must be specifid")
   if (k < 2L)
     stop("'k' must be at least two")
   # cluster optimisation by clarans in parallel
-  clarans.i <- function(i, x, k, maxNeigbours) {
+  clarans.i <- function(i, snp, k, maxNeigbours) {
     # cluster optimisation by clarans
-    out <- corClarans(x@snpData, k, maxNeigbours)
+    out <- corClarans(snp@snpData, k, maxNeigbours)
     out
   } # clarans.i
   out.nLocal <- mclapply(1L:nLocal, clarans.i,
-                            x, k, maxNeigbours,
+                            snp, k, maxNeigbours,
                             mc.cores = mc.cores)
-  opt.func <- function(i, x) {x[[i]][[3L]]}
+  opt.func <- function(i, snp) {snp[[i]][[3L]]}
   all.objectives <- sapply(1:nLocal, opt.func, out.nLocal)
   out.opt <- out.nLocal[[which.min(all.objectives)]]
   clusters <- out.opt[[1L]]
-  names(clusters) <- colnames(x)
+  names(clusters) <- colnames(snp)
   medoids <- out.opt[[2L]] + 1
-  names(medoids) <- colnames(x)[medoids]
+  names(medoids) <- colnames(snp)[medoids]
   # output
   out <- list(clusters = clusters,
               medoids = medoids,
@@ -144,14 +144,14 @@ clarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #'
 #' @description Hierarchical clustering for big SNP data sets.
 #'
-#' @param x A object of class \linkS4class{snpData}.
+#' @param snp A object of class \linkS4class{snpData}.
 #' @param k A positive integer specifying the number of clusters, less than
 #' the number of observations.
 #' @param identicals Logical, if zero clustering.
 #' @param maxNeigbours Positive integer, specifying the maximum number of
 #' randomized searches.
 #' @param nLocal Positive integer, specifying the number of optimisation runs.
-#' Columns have to be similar to \code{x}.
+#' Columns have to be similar to \code{snp}.
 #' @param method See hclust.
 #' @param mc.cores Number of cores for parallel computing. See \code{mclapply}
 #' in package parallel for details.
@@ -170,31 +170,31 @@ clarans <- function(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @importFrom stats hclust
 #' @importFrom methods is
 #' @export
-qtcatClust <- function(x, k, identicals = TRUE,
+qtcatClust <- function(snp, k, identicals = TRUE,
                        maxNeigbours = 100, nLocal = 10,
                        method = "complete", mc.cores = 1, trace = FALSE, ...) {
   if (is.element("fastcluster", rownames(installed.packages()))) {
     hclust <- fastcluster::hclust
   }
-  stopifnot(is(x, "snpData"))
+  stopifnot(is(snp, "snpData"))
   if (identicals) {
     # identicals
     if (trace)
       cat("Step 1: Search for identicals is running\n")
-    identicalFit <- identicals(x, mc.cores)
-    x <- x[, identicalFit$medoids]
+    identicalFit <- identicals(snp, mc.cores)
+    snp <- snp[, identicalFit$medoids]
   } else if (trace) {
     cat("Step 1: Search for identicals is switch off\n")
   }
   # CLARANS
   if (missing(k))
-    k <- as.integer(ncol(x) / 10000L)
+    k <- as.integer(ncol(snp) / 10000L)
   if (k >= 2L) {
     if (identicals && length(identicalFit$medoids) <= k * 2)
       stop("Number of medoids from pefect correlated clustering is < k * 2")
     if (trace)
       cat("Step 2: CLARANS is running, 'k' is:", k, "\n")
-    clarFit <- clarans(x, k, maxNeigbours, nLocal, mc.cores)
+    clarFit <- clarans(snp, k, maxNeigbours, nLocal, mc.cores)
     if (trace)
       cat("   objectives:",
           format(clarFit$all.objectives, sort = TRUE, digits = 4), "\n")
@@ -214,31 +214,34 @@ qtcatClust <- function(x, k, identicals = TRUE,
     # HClust
     if (trace)
       cat("Step 3: HClust is running\n")
-    hclust.sub <- function(i, x, clarFit, method, ...) {
+    hclust.sub <- function(i, snp, clarFit, method, ...) {
       inx.i <- which(clarFit$clusters == i)
-      out <- as.dendrogram(hclust(distCor(x[, inx.i]), method, ...))
+      out <- as.dendrogram(hclust(distCor(snp[, inx.i]), method, ...))
       out
     } # hclust.sub
     hclustFit <- mclapply(clust.inx, hclust.sub,
-                          x, clarFit, method, ...,
+                          snp, clarFit, method, ...,
                           mc.cores = mc.cores)
     dendro <- do.call(merge, c(hclustFit, height = 1, adjust = "add.max"))
   } else {
-    if (ncol(x) > 65536L)
+    if (ncol(snp) > 65536L)
       stop("Data size is to big for hclust, choose larger 'k'")
     # HClust
     if (trace)
       cat("Step 2: CLARANS is switch off\nStep 3: HClust is running\n")
-    dendro <- as.dendrogram(hclust(distCor(x), method, ...))
+    dendro <- as.dendrogram(hclust(distCor(snp), method, ...))
   }
   if (identicals) {
     out <- list(dendrogram = dendro,
                 clusters = identicalFit$clusters,
                 medoids = identicalFit$medoids)
   } else {
+    medos <- labels(dendro)
+    clust <- 1:length(medos)
+    names(clust) <- medos
     out <- list(dendrogram = dendro,
-                clusters = NULL,
-                medoids = NULL)
+                clusters = clust,
+                medoids = medos)
   }
   class(out) <- "qtcatClust"
   out
@@ -249,7 +252,7 @@ qtcatClust <- function(x, k, identicals = TRUE,
 #'
 #' @description Cut a qtcatClust object at an specific height.
 #'
-#' @param x qtcatClust object.
+#' @param clust qtcatClust object.
 #' @param absCor cutting height in absolute value of correlation.
 #'
 #' @examples
@@ -261,21 +264,21 @@ qtcatClust <- function(x, k, identicals = TRUE,
 #'
 #' @importFrom methods is
 #' @export
-cutClust <- function(x, absCor) {
-  stopifnot(is(x, "qtcatClust"))
+cutClust <- function(clust, absCor) {
+  stopifnot(is(clust, "qtcatClust"))
   stopifnot(!missing(absCor))
-  clust.dend <- cutDend(x$dendrogram, absCor)
-  if (!is.null(x$clusters)) {
-    inx.names <- match(names(clust.dend), names(x$clusters))
+  clust.dend <- cutDend(clust$dendrogram, absCor)
+  if (!is.null(clust$clusters)) {
+    inx.names <- match(names(clust.dend), names(clust$clusters))
     inx.list <- list()
     clust.list <- list()
     for (i in unique(clust.dend)) {
       inx.i <- inx.names[clust.dend == i]
-      inx.list[[i]] <- which(x$clusters %in% x$clusters[inx.i])
+      inx.list[[i]] <- which(clust$clusters %in% clust$clusters[inx.i])
       clust.list[[i]] <- rep(i, length(inx.list[[i]]))
     }
     out <- unlist(clust.list)[order(unlist(inx.list))]
-    names(out) <- names(x$clusters)
+    names(out) <- names(clust$clusters)
   } else {
     out <- clust.dend
   }
@@ -287,7 +290,7 @@ cutClust <- function(x, absCor) {
 #'
 #' @description Cut a dendrogram at a spcific hight.
 #'
-#' @param x A dendrogram.
+#' @param dend A dendrogram.
 #' @param absCor Cutting height in absolute value of correlation.
 #'
 #' @examples
@@ -299,23 +302,23 @@ cutClust <- function(x, absCor) {
 #'
 #' @importFrom methods is
 #' @export
-cutDend <- function(x, absCor) {
-  stopifnot(is(x, "dendrogram"))
+cutDend <- function(dend, absCor) {
+  stopifnot(is(dend, "dendrogram"))
   stopifnot(!missing(absCor))
   h <- 1 - absCor
-  if (h >= attr(x, "height")) {
-    names.clust <- labels(x)
+  if (h >= attr(dend, "height")) {
+    names.clust <- labels(dend)
     cluster <- rep(1, length(names.clust))
     names(cluster) <- names.clust
   } else {
-    cut.x <- cut(x, h = h)$lower
-    clust.member <- function(i, x) {
-      names.clust <- labels(x[[i]])
+    cut.dend <- cut(dend, h = h)$lower
+    clust.member <- function(i, dend) {
+      names.clust <- labels(dend[[i]])
       clust <- rep(i, length(names.clust))
       names(clust) <- names.clust
       return(clust)
     }
-    cluster <- lapply(1:length(cut.x), clust.member, cut.x)
+    cluster <- lapply(1:length(cut.dend), clust.member, cut.dend)
   }
   unlist(cluster)
 }
@@ -325,7 +328,7 @@ cutDend <- function(x, absCor) {
 #'
 #' @description Find the medoid of each cluster.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpData}.
 #' @param clusters Vector of cluster groups \code{cutClust}.
 #'
 #' @examples
@@ -338,9 +341,9 @@ cutDend <- function(x, absCor) {
 #'
 #' @importFrom methods is
 #' @export
-medoids <- function(x, clusters) {
-  stopifnot(is(x, "snpData"))
-  medoids <- corMedoids(x@snpData, clusters)
+medoids <- function(snp, clusters) {
+  stopifnot(is(snp, "snpData"))
+  medoids <- corMedoids(snp@snpData, clusters)
   out <- rbind(clusters = clusters, medoids = medoids)
   class(out) <- "medoids"
   out

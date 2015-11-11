@@ -4,11 +4,11 @@
 \alias{qtcatClust}
 \title{A three step approximated hierarchical clustering of SNPs}
 \usage{
-qtcatClust(x, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
+qtcatClust(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
   method = "complete", mc.cores = 1, trace = FALSE, ...)
 }
 \arguments{
-\item{x}{A object of class \linkS4class{snpData}.}
+\item{snp}{A object of class \linkS4class{snpData}.}
 
 \item{k}{A positive integer specifying the number of clusters, less than
 the number of observations.}
@@ -19,7 +19,7 @@ the number of observations.}
 randomized searches.}
 
 \item{nLocal}{Positive integer, specifying the number of optimisation runs.
-Columns have to be similar to \code{x}.}
+Columns have to be similar to \code{snp}.}
 
 \item{method}{See hclust.}
 

@@ -4,10 +4,10 @@
 \alias{clarans}
 \title{K-medoids clustering of SNPs using randomized search}
 \usage{
-clarans(x, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1)
+clarans(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpData}.}
 
 \item{k}{A positive integer specifying the number of clusters, greater than
 one and less than the number of SNPs.}
