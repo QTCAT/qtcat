@@ -4,10 +4,10 @@
 \alias{qtcatGeno}
 \title{A genotype object constructor}
 \usage{
-qtcatGeno(x, clusters, absCor, min.absCor = 0.7)
+qtcatGeno(snp, clusters, absCor, min.absCor = 0.7)
 }
 \arguments{
-\item{x}{An object of S4 class \linkS4class{snpData}.}
+\item{snp}{An object of S4 class \linkS4class{snpData}.}
 
 \item{clusters}{An object of class \code{\link{qtcatClust}}.}
 

@@ -4,10 +4,10 @@
 \alias{medoidsLm}
 \title{Fitting a Linear Model to medoids}
 \usage{
-medoidsLm(x, pheno, geno, alpha = 0.05, min.absCor)
+medoidsLm(object, pheno, geno, alpha = 0.05, min.absCor)
 }
 \arguments{
-\item{x}{An object of class \code{\link{qtcatHit}}.}
+\item{object}{An object of class \code{\link{qtcatHit}}.}
 
 \item{pheno}{An object of class \code{\link{qtcatPheno}}.}
 
@@ -22,6 +22,9 @@ Linear model between phenotype and medoids of QTCs (significant
 SNP clusters).
 }
 \examples{
+# If you want to run the examples, use:
+# example(medoidsLm, run.dontrun = TRUE)
+\dontrun{
 # files containing example data for SNP data and the phenotype
 pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
@@ -29,9 +32,13 @@ pdat <- read.csv(pfile, header = TRUE)
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 geno <- qtcatGeno(snp, clust)
-pheno <- qtcatPheno(pdat)
+pheno <- qtcatPheno(names = pdat[, 1],
+                    pheno = pdat[, 2],
+                    covariates = model.matrix(~ pdat[, 3]))
 fitted <- qtcatHit(pheno, geno)
+
 # fitting a LM to the phenotype and QTC medoids
 lmfitted <- medoidsLm(fitted, pheno, geno)
+}
 }
 
