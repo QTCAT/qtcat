@@ -33,7 +33,7 @@ pheno <- qtcatPheno(names = pdat[, 1],
                     covariates = model.matrix(~ pdat[, 3]))
 fitted <- qtcatHit(pheno, geno)
 
-# Summarizing the QTCs
+# Summarizing the QTCs (loci37, loci260, and loci367 are causal)
 qtcatQtc(fitted)
 }
 }

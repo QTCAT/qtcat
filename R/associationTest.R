@@ -89,6 +89,7 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
     }
   } else {
     covariates <- matrix(nrow = nn, ncol = 0L)
+    nc <- nn
   }
   if (is.vector(pheno)) {
     np <- length(pheno)
@@ -215,7 +216,7 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
 #'                     covariates = model.matrix(~ pdat[, 3]))
 #' fitted <- qtcatHit(pheno, geno)
 #'
-#' # Summarizing the QTCs
+#' # Summarizing the QTCs (loci37, loci260, and loci367 are causal)
 #' qtcatQtc(fitted)
 #' }
 #'
