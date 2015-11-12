@@ -22,6 +22,7 @@ See \code{\link[stats]{dist}} for details about the output object.
 # file containing example data for SNP data
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
+
 dist <- distCor(snp[, 1:10])
 }
 \seealso{

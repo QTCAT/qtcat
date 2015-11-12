@@ -4,10 +4,10 @@
 \alias{cutClust}
 \title{Cut a qtcatClust object}
 \usage{
-cutClust(clust, absCor)
+cutClust(snpClust, absCor)
 }
 \arguments{
-\item{clust}{qtcatClust object.}
+\item{snpClust}{An object of class \code{\link{qtcatClust}}.}
 
 \item{absCor}{cutting height in absolute value of correlation.}
 }
@@ -19,6 +19,7 @@ Cut a qtcatClust object at an specific height.
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
+
 cclust <- cutClust(clust, .5)
 }
 

@@ -13,6 +13,7 @@
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
+#'
 #' dist <- distCor(snp[, 1:10])
 #'
 #' @importFrom methods is
@@ -44,6 +45,7 @@ distCor <- function(snp) {
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
+#'
 #' ident <- identicals(snp)
 #'
 #' @importFrom parallel mclapply
@@ -103,6 +105,7 @@ identicals <- function(snp, mc.cores = 1) {
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
+#'
 #' clust <- clarans(snp, 3)
 #'
 #' @importFrom parallel mclapply
@@ -164,6 +167,7 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
+#'
 #' clust <- qtcatClust(snp)
 #'
 #' @importFrom parallel mclapply
@@ -252,7 +256,7 @@ qtcatClust <- function(snp, k, identicals = TRUE,
 #'
 #' @description Cut a qtcatClust object at an specific height.
 #'
-#' @param clust qtcatClust object.
+#' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param absCor cutting height in absolute value of correlation.
 #'
 #' @examples
@@ -260,25 +264,26 @@ qtcatClust <- function(snp, k, identicals = TRUE,
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
+#'
 #' cclust <- cutClust(clust, .5)
 #'
 #' @importFrom methods is
 #' @export
-cutClust <- function(clust, absCor) {
-  stopifnot(is(clust, "qtcatClust"))
+cutClust <- function(snpClust, absCor) {
+  stopifnot(is(snpClust, "qtcatClust"))
   stopifnot(!missing(absCor))
-  clust.dend <- cutDend(clust$dendrogram, absCor)
-  if (!is.null(clust$clusters)) {
-    inx.names <- match(names(clust.dend), names(clust$clusters))
+  clust.dend <- cutDend(snpClust$dendrogram, absCor)
+  if (!is.null(snpClust$clusters)) {
+    inx.names <- match(names(clust.dend), names(snpClust$clusters))
     inx.list <- list()
     clust.list <- list()
     for (i in unique(clust.dend)) {
       inx.i <- inx.names[clust.dend == i]
-      inx.list[[i]] <- which(clust$clusters %in% clust$clusters[inx.i])
+      inx.list[[i]] <- which(snpClust$clusters %in% snpClust$clusters[inx.i])
       clust.list[[i]] <- rep(i, length(inx.list[[i]]))
     }
     out <- unlist(clust.list)[order(unlist(inx.list))]
-    names(out) <- names(clust$clusters)
+    names(out) <- names(snpClust$clusters)
   } else {
     out <- clust.dend
   }
@@ -298,6 +303,7 @@ cutClust <- function(clust, absCor) {
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
+#'
 #' cdend <- cutDend(clust$dendrogram, .5)
 #'
 #' @importFrom methods is
@@ -324,25 +330,27 @@ cutDend <- function(dend, absCor) {
 }
 
 
-#' @title Find the medoid
+#' @title Find medoids of SNP clusters
 #'
-#' @description Find the medoid of each cluster.
+#' @description Find the medoid of each SNP cluster.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
-#' @param clusters Vector of cluster groups \code{cutClust}.
+#' @param snpClust An object of class \code{\link{qtcatClust}}.
+#' @param absCor cutting height in absolute value of correlation.
 #'
 #' @examples
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
-#' cclust <- cutClust(clust, .5)
-#' mclust <- medoids(snp, cclust)
+#'
+#' mclust <- medoids(snp, clust, .5)
 #'
 #' @importFrom methods is
 #' @export
-medoids <- function(snp, clusters) {
+medoids <- function(snp, snpClust, absCor) {
   stopifnot(is(snp, "snpData"))
+  clusters <- cutClust(snpClust, absCor)
   medoids <- corMedoids(snp@snpData, clusters)
   out <- rbind(clusters = clusters, medoids = medoids)
   class(out) <- "medoids"

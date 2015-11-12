@@ -42,6 +42,7 @@ reduced; and (ii) parallelizing is straightforward.
 # file containing example data for SNP data
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
+
 clust <- clarans(snp, 3)
 }
 \references{

@@ -19,6 +19,7 @@ Cut a dendrogram at a spcific hight.
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
+
 cdend <- cutDend(clust$dendrogram, .5)
 }
 

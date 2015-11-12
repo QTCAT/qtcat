@@ -36,8 +36,8 @@ is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.}
 
 \item{gamma}{Vector of gamma-values used in significant estimation.}
 
-\item{max.p.esti}{Maximum for computed p-values. All p-values above this value are set
-to one. Small \code{max.p.esti} values reduce computing time.}
+\item{max.p.esti}{Maximum for computed p-values. All p-values above this
+value are set to one. Small \code{max.p.esti} values reduce computing time.}
 
 \item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
 \code{'B'}. For details see \code{\link[parallel]{mclapply}}.}
@@ -63,6 +63,7 @@ geno <- qtcatGeno(snp, clust)
 pheno <- qtcatPheno(names = pdat[, 1],
                     pheno = pdat[, 2],
                     covariates = model.matrix(~ pdat[, 3]))
+
 # fitting HIT
 fitted <- qtcatHit(pheno, geno)
 }

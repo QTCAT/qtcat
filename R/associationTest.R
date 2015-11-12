@@ -4,7 +4,7 @@
 #' hierarchy. This is needed for \code{\link{qtcatHit}} as input.
 #'
 #' @param snp An object of S4 class \linkS4class{snpData}.
-#' @param clusters An object of class \code{\link{qtcatClust}}.
+#' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param absCor Vector of absolute value of correlations considered in the
 #' hierarchy.
 #' @param min.absCor Minimum absolute value of correlation considered. A value
@@ -15,34 +15,35 @@
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
 #' clust <- qtcatClust(snp)
+#'
 #' # Construct geotype object
 #' geno <- qtcatGeno(snp, clust)
 #'
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, clusters, absCor, min.absCor=.7) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor=.7) {
   stopifnot(is(snp, "snpData"))
-  stopifnot(is(clusters, "qtcatClust"))
-  if (!setequal(names(clusters$clusters), colnames(snp)))
-    stop("SNP names of 'snp' and 'clusters' differ")
-  if (is.null(names <- clusters$medoids))
-    names <- names(clusters)
+  stopifnot(is(snpClust, "qtcatClust"))
+  if (!setequal(names(snpClust$clusters), colnames(snp)))
+    stop("Names of 'snp' and 'snpClust' differ")
+  if (is.null(names <- snpClust$medoids))
+    names <- names(snpClust)
   # TODO: chack alleleFreq?
   if (any(is.na(snp@snpData)))
     stop("Missing values in 'snp' are not allowed")
   # TODO: use clustering for imputation of SNPs!
   desMat <- as.matrix(snp[, colnames(snp) %in% names])
   if (missing(absCor))
-    hier <- as.hierarchy(clusters$dendrogram, 1 - min.absCor,
+    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor,
                          names = colnames(desMat))
   else
-    hier <- as.hierarchy(clusters$dendrogram, 1 - min.absCor, 1 - absCor,
+    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, 1 - absCor,
                       colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
-              clusters = clusters$clusters,
-              medoids = clusters$medoids,
+              clusters = snpClust$clusters,
+              medoids = snpClust$medoids,
               positions = getPos(snp))
   class(out) <- "qtcatGeno"
   out
@@ -68,6 +69,7 @@ qtcatGeno <- function(snp, clusters, absCor, min.absCor=.7) {
 #' # file containing example data for a phenotype.
 #' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
 #' pdat <- read.csv(pfile, header = TRUE)
+#'
 #' # Construct phenotype object
 #' pheno <- qtcatPheno(names = pdat[, 1],
 #'                     pheno = pdat[, 2],
@@ -130,8 +132,8 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' Either "lambda.1se" (default) or "lambda.min". Ignored if \code{sel.method}
 #' is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param gamma Vector of gamma-values used in significant estimation.
-#' @param max.p.esti Maximum for computed p-values. All p-values above this value are set
-#' to one. Small \code{max.p.esti} values reduce computing time.
+#' @param max.p.esti Maximum for computed p-values. All p-values above this
+#' value are set to one. Small \code{max.p.esti} values reduce computing time.
 #' @param mc.cores Number of cores for parallelising. Theoretical maximum is
 #' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #' @param trace If \code{TRUE} it prints current status of the program.
@@ -151,6 +153,7 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' pheno <- qtcatPheno(names = pdat[, 1],
 #'                     pheno = pdat[, 2],
 #'                     covariates = model.matrix(~ pdat[, 3]))
+#'
 #' # fitting HIT
 #' fitted <- qtcatHit(pheno, geno)
 #' }

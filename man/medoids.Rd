@@ -2,24 +2,26 @@
 % Please edit documentation in R/snpCluster.R
 \name{medoids}
 \alias{medoids}
-\title{Find the medoid}
+\title{Find medoids of SNP clusters}
 \usage{
-medoids(snp, clusters)
+medoids(snp, snpClust, absCor)
 }
 \arguments{
 \item{snp}{An object of class \linkS4class{snpData}.}
 
-\item{clusters}{Vector of cluster groups \code{cutClust}.}
+\item{snpClust}{An object of class \code{\link{qtcatClust}}.}
+
+\item{absCor}{cutting height in absolute value of correlation.}
 }
 \description{
-Find the medoid of each cluster.
+Find the medoid of each SNP cluster.
 }
 \examples{
 # file containing example data for SNP data
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
-cclust <- cutClust(clust, .5)
-mclust <- medoids(snp, cclust)
+
+mclust <- medoids(snp, clust, .5)
 }
 

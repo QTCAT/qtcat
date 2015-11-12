@@ -28,6 +28,7 @@ additional covariats exist a design matrix of those. This is needed for
 # file containing example data for a phenotype.
 pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
 pdat <- read.csv(pfile, header = TRUE)
+
 # Construct phenotype object
 pheno <- qtcatPheno(names = pdat[, 1],
                     pheno = pdat[, 2],

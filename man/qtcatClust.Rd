@@ -37,6 +37,7 @@ Hierarchical clustering for big SNP data sets.
 # file containing example data for SNP data
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
+
 clust <- qtcatClust(snp)
 }
 \seealso{

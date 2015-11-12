@@ -4,12 +4,12 @@
 \alias{qtcatGeno}
 \title{A genotype object constructor}
 \usage{
-qtcatGeno(snp, clusters, absCor, min.absCor = 0.7)
+qtcatGeno(snp, snpClust, absCor, min.absCor = 0.7)
 }
 \arguments{
 \item{snp}{An object of S4 class \linkS4class{snpData}.}
 
-\item{clusters}{An object of class \code{\link{qtcatClust}}.}
+\item{snpClust}{An object of class \code{\link{qtcatClust}}.}
 
 \item{absCor}{Vector of absolute value of correlations considered in the
 hierarchy.}
@@ -26,6 +26,7 @@ hierarchy. This is needed for \code{\link{qtcatHit}} as input.
 gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
+
 # Construct geotype object
 geno <- qtcatGeno(snp, clust)
 }
