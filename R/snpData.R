@@ -271,7 +271,6 @@ setMethod("getPos", signature(object = "snpData"),
 #' snp <- read.snpData(gfile, sep = ",")
 #' af <- alleleFreq(snp)
 #'
-#'
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("alleleFreq", signature(x = "snpData"),
