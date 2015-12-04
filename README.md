@@ -35,7 +35,7 @@ that running the example can take a few seconds).
 
 ```R
 library(qtcat)
-example("qtcatQtc")
+example(qtcatQtc, run.dontrun = TRUE)
 ```
 
 --------------------------------------------------------------------------------
