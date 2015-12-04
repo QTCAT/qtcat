@@ -22,7 +22,7 @@
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, snpClust, absCor, min.absCor=.7) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor = .7) {
   stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
@@ -161,7 +161,7 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
-                     sel.method = c("AF", "CV"), act.freq = 2 / 3,
+                     sel.method = c("AF", "CV"), act.freq = .6,
                      nfolds = 10, lambda.opt = c("lambda.1se", "lambda.min"),
                      gamma = seq(.05, .99, by = .01),
                      max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {

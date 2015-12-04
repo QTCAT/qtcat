@@ -5,7 +5,7 @@
 \title{Fitting Hierarchical Inference Testing}
 \usage{
 qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, sel.method = c("AF", "CV"),
-  act.freq = 2/3, nfolds = 10, lambda.opt = c("lambda.1se", "lambda.min"),
+  act.freq = 0.6, nfolds = 10, lambda.opt = c("lambda.1se", "lambda.min"),
   gamma = seq(0.05, 0.99, by = 0.01), max.p.esti = 1, mc.cores = 1L,
   trace = FALSE, ...)
 }
