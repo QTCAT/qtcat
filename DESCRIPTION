@@ -10,17 +10,20 @@ Authors@R: c(person("Jonas", "Klasen", role = c("aut", "cre"),
 Version: 0.0-4
 URL: http://github.com/QTCAT/qtcat
 BugReports: https://github.com/QTCAT/qtcat/issues
-Depends:
+Depends: 
     R (>= 3.2.0)
-Imports:
+Imports: 
     methods,
     stats,
     parallel,
     Rcpp (>= 0.11.0),
     hit
-Suggests:
+Suggests: 
     fastcluster,
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 LinkingTo: Rcpp
 License: GPL (>= 2)
 RoxygenNote: 5.0.1
+VignetteBuilder: knitr
