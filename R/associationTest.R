@@ -120,17 +120,11 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @param B A integer indicating the number of sample-splits.
 #' @param p.samp1 A value specifying the fraction of data used for the LASSO
 #' sample-split. The ANOVA sample-split is \code{1 - p.samp1}.
-#' @param sel.method Name of method for the selection of covariates via the
-#' LASSO, either "AF" (default), the occurrence frequenze of covariates along
-#' the lambda path or "CV" n-fold cross-validation.
-#' @param act.freq Frequency in which a covariate has to occur along the
-#' lambda path to be selected in the active set. Ignored if \code{sel.method}
-#' is "CV".
-#' @param nfolds Number of folds (default is 10). Ignored if \code{sel.method}
-#' is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.
+#' @param nfolds Number of folds (default is 10).
+#' See \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param lambda.opt Criterion for optimum selection of cross validated lasso.
-#' Either "lambda.1se" (default) or "lambda.min". Ignored if \code{sel.method}
-#' is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.
+#' Either "lambda.1se" (default) or "lambda.min". See
+#' \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param gamma Vector of gamma-values used in significant estimation.
 #' @param max.p.esti Maximum for computed p-values. All p-values above this
 #' value are set to one. Small \code{max.p.esti} values reduce computing time.
@@ -161,8 +155,7 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
-                     sel.method = c("AF", "CV"), act.freq = 2 / 3,
-                     nfolds = 10, lambda.opt = c("lambda.1se", "lambda.min"),
+                     nfolds = 10, lambda.opt = "lambda.1se",
                      gamma = seq(.05, .99, by = .01),
                      max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
@@ -183,12 +176,11 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
   else
     x <- cbind(geno$x[genoInx, ], pheno$covariates[phenoInx, ])
   y <- pheno$pheno[phenoInx]
-  fitHit <- hit(x, y, geno$hierarchy, pheno$family, B, p.samp1,
-                sel.method, act.freq,nfolds, lambda.opt,
+  fitHit <- hit(x, y, geno$hierarchy, pheno$family,
+                B, p.samp1, nfolds, lambda.opt,
                 gamma, max.p.esti, mc.cores,
                 trace, standardize = FALSE)
-  out <- c(fitHit,
-           geno[3L:5L])
+  out <- c(fitHit, geno[3L:5L])
   class(out) <- c("hit", "qtcatHit")
   out
 }
