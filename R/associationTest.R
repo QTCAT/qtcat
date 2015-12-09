@@ -22,7 +22,7 @@
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, snpClust, absCor, min.absCor=.7) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor = .7) {
   stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
