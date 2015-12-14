@@ -4,7 +4,7 @@
 \alias{medoidsLm}
 \title{Fitting a Linear Model to medoids}
 \usage{
-medoidsLm(object, pheno, geno, alpha = 0.05, min.absCor)
+medoidsLm(object, pheno, geno, alpha = 0.05, min.absCor = 0.05)
 }
 \arguments{
 \item{object}{An object of class \code{\link{qtcatHit}}.}
