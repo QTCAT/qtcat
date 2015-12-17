@@ -4,7 +4,7 @@
 \alias{qtcatQtc}
 \title{Summarize results of Hierarchical Inference Test}
 \usage{
-qtcatQtc(object, alpha = 0.05, min.absCor)
+qtcatQtc(object, alpha = 0.05, min.absCor = 0.05)
 }
 \arguments{
 \item{object}{An object of class \code{\link{qtcatHit}}.}

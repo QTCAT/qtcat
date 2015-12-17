@@ -22,7 +22,7 @@
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, snpClust, absCor, min.absCor = .7) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5) {
   stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
@@ -120,17 +120,14 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @param B A integer indicating the number of sample-splits.
 #' @param p.samp1 A value specifying the fraction of data used for the LASSO
 #' sample-split. The ANOVA sample-split is \code{1 - p.samp1}.
-#' @param sel.method Name of method for the selection of covariates via the
-#' LASSO, either "AF" (default), the occurrence frequenze of covariates along
-#' the lambda path or "CV" n-fold cross-validation.
-#' @param act.freq Frequency in which a covariate has to occur along the
-#' lambda path to be selected in the active set. Ignored if \code{sel.method}
-#' is "CV".
-#' @param nfolds Number of folds (default is 10). Ignored if \code{sel.method}
-#' is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.
+#' @param nfolds Number of folds (default is 5).
+#' See \code{\link[glmnet]{cv.glmnet}} for more details.
 #' @param lambda.opt Criterion for optimum selection of cross validated lasso.
-#' Either "lambda.1se" (default) or "lambda.min". Ignored if \code{sel.method}
-#' is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.
+#' Either "lambda.1se" (default) or "lambda.min". See
+#' \code{\link[glmnet]{cv.glmnet}} for more details.
+#' @param alpha A single value or a vector of values in the range of 0 to 1 for
+#' the elastic net mixing parameter. If more than one value are given, the best
+#' is selected during cross-validation.
 #' @param gamma Vector of gamma-values used in significant estimation.
 #' @param max.p.esti Maximum for computed p-values. All p-values above this
 #' value are set to one. Small \code{max.p.esti} values reduce computing time.
@@ -161,10 +158,10 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
-                     sel.method = c("AF", "CV"), act.freq = .6,
-                     nfolds = 10, lambda.opt = c("lambda.1se", "lambda.min"),
-                     gamma = seq(.05, .99, by = .01),
-                     max.p.esti = 1, mc.cores = 1L, trace = FALSE, ...) {
+                     nfolds = 5, lambda.opt = "lambda.1se", # "lambda.min" as defauld ?
+                     alpha = seq(1, .5, length.out = 11),
+                     gamma = seq(0.05, 0.99, by = 0.01),
+                     max.p.esti = 1, mc.cores = 1, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
   id <- intersect(pheno$names, rownames(geno$x))
@@ -183,12 +180,11 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
   else
     x <- cbind(geno$x[genoInx, ], pheno$covariates[phenoInx, ])
   y <- pheno$pheno[phenoInx]
-  fitHit <- hit(x, y, geno$hierarchy, pheno$family, B, p.samp1,
-                sel.method, act.freq,nfolds, lambda.opt,
+  fitHit <- hit(x, y, geno$hierarchy, pheno$family,
+                B, p.samp1, nfolds, lambda.opt, alpha,
                 gamma, max.p.esti, mc.cores,
                 trace, standardize = FALSE)
-  out <- c(fitHit,
-           geno[3L:5L])
+  out <- c(fitHit, geno[3L:5L])
   class(out) <- c("hit", "qtcatHit")
   out
 }
@@ -226,12 +222,9 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export
-qtcatQtc <- function(object, alpha = 0.05, min.absCor) {
+qtcatQtc <- function(object, alpha = 0.05, min.absCor = 0.05) {
   stopifnot(is(object, "qtcatHit"))
-  if (missing(min.absCor))
-    y <- summary(object, alpha)
-  else
-    y <- summary(object, alpha, 1 - min.absCor)
+  y <- summary(object, alpha, 1 - min.absCor)
   signames <- rownames(y)
   sigclust <- match(signames, object$medoids)
   sigClust <- matrix(0, length(object$clusters), 3L)
@@ -285,7 +278,7 @@ qtcatQtc <- function(object, alpha = 0.05, min.absCor) {
 #' @importFrom hit hit
 #' @importFrom methods is
 #' @export
-medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor) {
+medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
   stopifnot(is(object, "qtcatHit"))
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))

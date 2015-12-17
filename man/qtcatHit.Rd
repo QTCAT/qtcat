@@ -4,9 +4,9 @@
 \alias{qtcatHit}
 \title{Fitting Hierarchical Inference Testing}
 \usage{
-qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, sel.method = c("AF", "CV"),
-  act.freq = 0.6, nfolds = 10, lambda.opt = c("lambda.1se", "lambda.min"),
-  gamma = seq(0.05, 0.99, by = 0.01), max.p.esti = 1, mc.cores = 1L,
+qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, nfolds = 5,
+  lambda.opt = "lambda.1se", alpha = seq(1, 0.5, length.out = 11),
+  gamma = seq(0.05, 0.99, by = 0.01), max.p.esti = 1, mc.cores = 1,
   trace = FALSE, ...)
 }
 \arguments{
@@ -19,20 +19,16 @@ qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, sel.method = c("AF", "CV"),
 \item{p.samp1}{A value specifying the fraction of data used for the LASSO
 sample-split. The ANOVA sample-split is \code{1 - p.samp1}.}
 
-\item{sel.method}{Name of method for the selection of covariates via the
-LASSO, either "AF" (default), the occurrence frequenze of covariates along
-the lambda path or "CV" n-fold cross-validation.}
-
-\item{act.freq}{Frequency in which a covariate has to occur along the
-lambda path to be selected in the active set. Ignored if \code{sel.method}
-is "CV".}
-
-\item{nfolds}{Number of folds (default is 10). Ignored if \code{sel.method}
-is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.}
+\item{nfolds}{Number of folds (default is 5).
+See \code{\link[glmnet]{cv.glmnet}} for more details.}
 
 \item{lambda.opt}{Criterion for optimum selection of cross validated lasso.
-Either "lambda.1se" (default) or "lambda.min". Ignored if \code{sel.method}
-is "AF". See \code{\link[glmnet]{cv.glmnet}} for more details.}
+Either "lambda.1se" (default) or "lambda.min". See
+\code{\link[glmnet]{cv.glmnet}} for more details.}
+
+\item{alpha}{A single value or a vector of values in the range of 0 to 1 for
+the elastic net mixing parameter. If more than one value are given, the best
+is selected during cross-validation.}
 
 \item{gamma}{Vector of gamma-values used in significant estimation.}
 
