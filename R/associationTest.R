@@ -157,10 +157,9 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #'
 #' @importFrom methods is
 #' @export
-qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.5,
-                     nfolds = 5, lambda.opt = "lambda.1se", # "lambda.min" as defauld ?
-                     alpha = seq(1, .5, length.out = 11),
-                     gamma = seq(0.05, 0.99, by = 0.01),
+qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.35,
+                     nfolds = 5, lambda.opt = "lambda.1se",
+                     alpha = 1, gamma = seq(0.05, 0.99, by = 0.01),
                      max.p.esti = 1, mc.cores = 1, trace = FALSE, ...) {
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))

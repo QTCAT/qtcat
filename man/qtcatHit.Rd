@@ -4,10 +4,9 @@
 \alias{qtcatHit}
 \title{Fitting Hierarchical Inference Testing}
 \usage{
-qtcatHit(pheno, geno, B = 50, p.samp1 = 0.5, nfolds = 5,
-  lambda.opt = "lambda.1se", alpha = seq(1, 0.5, length.out = 11),
-  gamma = seq(0.05, 0.99, by = 0.01), max.p.esti = 1, mc.cores = 1,
-  trace = FALSE, ...)
+qtcatHit(pheno, geno, B = 50, p.samp1 = 0.35, nfolds = 5,
+  lambda.opt = "lambda.1se", alpha = 1, gamma = seq(0.05, 0.99, by =
+  0.01), max.p.esti = 1, mc.cores = 1, trace = FALSE, ...)
 }
 \arguments{
 \item{pheno}{An object of class \code{\link{qtcatPheno}}.}
