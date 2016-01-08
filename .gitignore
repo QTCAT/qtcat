@@ -1,4 +1,4 @@
-.Rproj.user/
+.Rproj.user
 .Rhistory
 .Rprofile
 .RData
@@ -7,5 +7,4 @@ src/*.o
 src/*.so
 src/*.dll
 inst/doc
-packrat/lib*/
-
+packrat/lib*

@@ -4,55 +4,58 @@ author: "Jonas Klasen"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{QTCAT workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+## Principle idea of QTCAT
+An association mapping method which jointly analyses all SNPs at once and at 
+the same time accounts for the correlation between them. This makes correction 
+for population structure unnecessary and therefore increases power compared to 
+classical methods like the mixed model.
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+## Data preparation 
+```R
+require(qtcat)
+# read data
+pDat <- read.table("xxx")
+?read.snpData #the help is not yet a great help but it exist
+snp <- read.snpData(file = "xxx")
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```R
+# data checks
+dim(snp) # matrix (n indiv * p snps)
+snp <- snp[, alleleFreq(snp) >= .05] # minor allele freq greater than 5%
+hist(hetFreq(snp, 2)) # het per snp
+hist(hetFreq(snp, 1)) # het per indiv
 ```
 
-Also a quote using `>`:
+## Clustering of SNPs
+```R
+# clustering
+clustSnp <- qtcatClust(snp)
+```
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+## Phenotype and genotype object
+```R
+# prepare data for hit
+pheno <- qtcatPheno(pDat)
+geno <- qtcatGeno(snp, clustSnp)
+```
+
+## HIT analysis
+```R
+# qtcat hit
+qtcFit <- qtcatHit(pheno, geno)
+qtcatSigClust(qtcFit) # result summary
+```
+
+## Summary of QTCs
+```R
+# run lm at pheno and medoids of significant clusters
+qtcLmFit <- qtcatLM(qtcFit, pheno, geno)
+plot(qtcLmFit) # check model assumptions (normality, ...)
+summary(qtcLmFit)r.squared # explained variance
+```
