@@ -1,11 +1,10 @@
-.Rproj.user/
+.Rproj.user
 .Rhistory
+.Rprofile
 .RData
 qtcat.Rproj
 src/*.o
 src/*.so
 src/*.dll
-.Rproj.user
-packrat/lib*/
-.Rprofile
-
+inst/doc
+packrat/lib*

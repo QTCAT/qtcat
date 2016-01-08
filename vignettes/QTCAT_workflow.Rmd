@@ -1,0 +1,61 @@
+---
+title: "QTCAT workflow"
+author: "Jonas Klasen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{QTCAT workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Principle idea of QTCAT
+An association mapping method which jointly analyses all SNPs at once and at 
+the same time accounts for the correlation between them. This makes correction 
+for population structure unnecessary and therefore increases power compared to 
+classical methods like the mixed model.
+
+## Data preparation 
+```R
+require(qtcat)
+# read data
+pDat <- read.table("xxx")
+?read.snpData #the help is not yet a great help but it exist
+snp <- read.snpData(file = "xxx")
+```
+
+```R
+# data checks
+dim(snp) # matrix (n indiv * p snps)
+snp <- snp[, alleleFreq(snp) >= .05] # minor allele freq greater than 5%
+hist(hetFreq(snp, 2)) # het per snp
+hist(hetFreq(snp, 1)) # het per indiv
+```
+
+## Clustering of SNPs
+```R
+# clustering
+clustSnp <- qtcatClust(snp)
+```
+
+## Phenotype and genotype object
+```R
+# prepare data for hit
+pheno <- qtcatPheno(pDat)
+geno <- qtcatGeno(snp, clustSnp)
+```
+
+## HIT analysis
+```R
+# qtcat hit
+qtcFit <- qtcatHit(pheno, geno)
+qtcatSigClust(qtcFit) # result summary
+```
+
+## Summary of QTCs
+```R
+# run lm at pheno and medoids of significant clusters
+qtcLmFit <- qtcatLM(qtcFit, pheno, geno)
+plot(qtcLmFit) # check model assumptions (normality, ...)
+summary(qtcLmFit)r.squared # explained variance
+```
