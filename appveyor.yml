@@ -16,7 +16,7 @@ environment:
 
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_github jrklasen/hit
+  - travis-tool.sh install_github QTCAT/hit
 
 test_script:
   - travis-tool.sh run_tests
@@ -42,4 +42,4 @@ artifacts:
 
   - path: '\*_*.zip'
     name: Bits
-    
+
