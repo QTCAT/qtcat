@@ -9,8 +9,8 @@
 
 # Quantitative Trait Cluster Association Test
 The current built and test status for Linux (Mac)
-[![Travis-CI Build Status](https://travis-ci.org/QTCAT/qtcat.png?branch=master)](https://travis-ci.org/QTCAT/qtcat) and for Windows 
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew/branch/master?svg=true)](https://ci.appveyor.com/project/jrklasen/qtcat)
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/QTCAT/qtcat) and for Windows 
+[![AppVeyor](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg)](https://ci.appveyor.com/project/QTCAT/qtcat)
 .
 
 ## Description:
@@ -40,5 +40,5 @@ example(qtcatQtc, run.dontrun = TRUE)
 
 --------------------------------------------------------------------------------
 
-[![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 &copy; 2015 JR Klasen
