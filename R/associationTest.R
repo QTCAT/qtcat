@@ -282,6 +282,7 @@ medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
   id <- intersect(pheno$names, rownames(geno$x))
+  phenoInx <- which(pheno$names %in% id)
   if (!length(id))
     stop("The ID intersect of 'pheno' and 'geno' is emty")
   if (length(id.uniqueGeno <- setdiff(rownames(geno$x), id)))
@@ -291,27 +292,30 @@ medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
     cat("The following individuals are part of 'pheno' but not of 'geno':\n",
         paste(id.uniquePheno, collapse = " "), "\n")
   sigClust <- summary(object, alpha, min.absCor)
-  clusters <- split(rownames(sigClust), sigClust$clusters)
-  medoids <- lapply(clusters, function(names, geno) {
-    if (length(names) > 1L)
-      return(names[which.max(abs(cor(geno$x[, names])))])
-    else
-      return(names)
-  }, geno = geno)
-  xg <- geno$x[, colnames(geno$x) %in% unlist(medoids), drop = FALSE]
-  phenoInx <- which(pheno$names %in% id)
-  genoInx <- match(pheno$names[phenoInx], rownames(xg))
-  rownames(xg) <- NULL
-  if (ncol(pheno$covariates) == 0L)
-    dat <- data.frame(y = pheno$pheno[phenoInx], xg[genoInx, ])
-  else
+  if (nrow(sigClust)) {
+    clusters <- split(rownames(sigClust), sigClust$clusters)
+    medoids <- lapply(clusters, function(names, geno) {
+      if (length(names) > 1L)
+        return(names[which.max(abs(cor(geno$x[, names])))])
+      else
+        return(names)
+    }, geno = geno)
+    xg <- geno$x[, colnames(geno$x) %in% unlist(medoids), drop = FALSE]
+    genoInx <- match(pheno$names[phenoInx], rownames(xg))
+    rownames(xg) <- NULL
+    if (ncol(pheno$covariates)) {
+      dat <- data.frame(y = pheno$pheno[phenoInx],
+                        pheno$covariates[phenoInx, ],
+                        xg[genoInx, ])
+    } else {
+      dat <- data.frame(y = pheno$pheno[phenoInx], xg[genoInx, ])
+    }
+  } else if (ncol(pheno$covariates)) {
     dat <- data.frame(y = pheno$pheno[phenoInx],
-                      pheno$covariates[phenoInx, ],
-                      xg[genoInx, ])
-  if (nrow(dat)) {
-    out <- lm(y ~ ., data = dat)
+                      pheno$covariates[phenoInx, ])
   } else {
-    out <- c()
+    dat <- data.frame(y = pheno$pheno[phenoInx])
   }
+  out <- lm(y ~ ., data = dat)
   out
 }
