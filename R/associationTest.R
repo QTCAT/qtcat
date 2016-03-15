@@ -39,7 +39,7 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5) {
                          names = colnames(desMat))
   else
     hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, 1 - absCor,
-                      colnames(desMat))
+                         colnames(desMat))
   out <- list(x = desMat,
               hierarchy = hier,
               clusters = snpClust$clusters,
@@ -103,9 +103,9 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
     stop("'pheno' has to be a 'vector' or in in case of binomial family a 'matrix'")
   }
   if (nn == nc && nn == np)
-  out <- list(names = as.character(names),
-              pheno = pheno,
-              covariates = covariates)
+    out <- list(names = as.character(names),
+                pheno = pheno,
+                covariates = covariates)
   class(out) <- "qtcatPheno"
   out
 }
@@ -168,10 +168,10 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.35,
     stop("The ID intersect of 'pheno' and 'geno' is emty")
   if (length(id.uniqueGeno <- setdiff(rownames(geno$x), id)))
     cat("The following individuals are part of 'geno' but not of 'pheno':\n",
-            paste(id.uniqueGeno, collapse = " "), "\n")
+        paste(id.uniqueGeno, collapse = " "), "\n")
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
     cat("The following individuals are part of 'pheno' but not of 'geno':\n",
-            paste(id.uniquePheno, collapse = " "), "\n")
+        paste(id.uniquePheno, collapse = " "), "\n")
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(geno$x))
   if (ncol(pheno$covariates) == 0L)
@@ -238,7 +238,7 @@ qtcatQtc <- function(object, alpha = 0.05, min.absCor = 0.05) {
   colnames(sigClust) <- c(colnames(y)[1L], "absCor", colnames(y)[3L])
   sigClust <- as.data.frame(sigClust[sigClust[, 1L] != 0, ,drop = FALSE])
   out <- cbind(t(object$positions[, rownames(sigClust), drop = FALSE]),
-                    sigClust)
+               sigClust)
   out
 }
 
@@ -298,7 +298,7 @@ medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
     else
       return(names)
   }, geno = geno)
-  xg <- geno$x[, colnames(geno$x) %in% unlist(medoids)]
+  xg <- geno$x[, colnames(geno$x) %in% unlist(medoids), drop = FALSE]
   phenoInx <- which(pheno$names %in% id)
   genoInx <- match(pheno$names[phenoInx], rownames(xg))
   rownames(xg) <- NULL
@@ -308,5 +308,10 @@ medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
     dat <- data.frame(y = pheno$pheno[phenoInx],
                       pheno$covariates[phenoInx, ],
                       xg[genoInx, ])
-    lm(y ~ ., data = dat)
+  if (nrow(dat)) {
+    out <- lm(y ~ ., data = dat)
+  } else {
+    out <- c()
+  }
+  out
 }
