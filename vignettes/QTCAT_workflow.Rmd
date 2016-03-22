@@ -57,16 +57,17 @@ geno <- qtcatGeno(snp, clustSnp)
 ```R
 # qtcat hit
 qtcFit <- qtcatHit(pheno, geno)
-qtcatSigClust(qtcFit) # result summary
+# result summary
+(qtc <- qtcatQtc(qtcFit, alpha = 0.05)) 
 
 ```
 
 ## Summary of QTCs
 ```R
 # run lm at pheno and medoids of significant clusters
-qtcLmFit <- qtcatLM(qtcFit, pheno, geno)
+qtcLmFit <- medoidsLm(qtcFit, pheno, geno)
 plot(qtcLmFit) # check model assumptions (normality, ...)
-# explained variance (includes covariates if part of pheno object like in this case)
-summary(qtcLmFit)r.squared 
+# explained variance (includes covariates if they are part of pheno object)
+summary(qtcLmFit)$r.squared 
 
 ```
