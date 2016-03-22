@@ -19,9 +19,11 @@ classical methods like the mixed model.
 ```R
 require(qtcat)
 # read data
-pDat <- read.table("xxx")
-?read.snpData #the help is not yet a great help but it exist
-snp <- read.snpData(file = "xxx")
+pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+pdat <- read.csv(pfile, header = TRUE)
+snp <- read.snpData(gfile, sep = ",")
+
 ```
 
 ```R
@@ -30,19 +32,25 @@ dim(snp) # matrix (n indiv * p snps)
 snp <- snp[, alleleFreq(snp) >= .05] # minor allele freq greater than 5%
 hist(hetFreq(snp, 2)) # het per snp
 hist(hetFreq(snp, 1)) # het per indiv
+
 ```
 
 ## Clustering of SNPs
 ```R
 # clustering
 clustSnp <- qtcatClust(snp)
+
 ```
 
 ## Phenotype and genotype object
 ```R
 # prepare data for hit
-pheno <- qtcatPheno(pDat)
+# Construct phenotype object
+pheno <- qtcatPheno(names = pdat[, 1],
+                    pheno = pdat[, 2],
+                    covariates = model.matrix(~ pdat[, 3]))
 geno <- qtcatGeno(snp, clustSnp)
+
 ```
 
 ## HIT analysis
@@ -50,6 +58,7 @@ geno <- qtcatGeno(snp, clustSnp)
 # qtcat hit
 qtcFit <- qtcatHit(pheno, geno)
 qtcatSigClust(qtcFit) # result summary
+
 ```
 
 ## Summary of QTCs
@@ -57,5 +66,7 @@ qtcatSigClust(qtcFit) # result summary
 # run lm at pheno and medoids of significant clusters
 qtcLmFit <- qtcatLM(qtcFit, pheno, geno)
 plot(qtcLmFit) # check model assumptions (normality, ...)
-summary(qtcLmFit)r.squared # explained variance
+# explained variance (includes covariates if part of pheno object like in this case)
+summary(qtcLmFit)r.squared 
+
 ```
