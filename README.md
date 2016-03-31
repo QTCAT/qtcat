@@ -26,7 +26,8 @@ The package can be installed from an R console via [`devtools`](https://github.c
 
 ```R
 # install.packages("devtools")
-devtools::install_github("QTCAT/qtcat")
+devtools::install_github("QTCAT/qtcat") 
+
 ```
 
 ## Example:
@@ -37,6 +38,7 @@ that running the example can take a few seconds).
 ```R
 library(qtcat)
 example(qtcatQtc, run.dontrun = TRUE)
+
 ```
 
 --------------------------------------------------------------------------------

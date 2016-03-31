@@ -55,16 +55,16 @@ geno <- qtcatGeno(snp, clustSnp)
 
 ## HIT analysis
 ```R
-# qtcat hit
+# Hierarchical Inference Testing
 qtcFit <- qtcatHit(pheno, geno)
-# result summary
+# result of QTCAT
 (qtc <- qtcatQtc(qtcFit, alpha = 0.05)) 
 
 ```
 
-## Summary of QTCs
+## Additional model validation steps
 ```R
-# run lm at pheno and medoids of significant clusters
+# run lm at pheno and medoids of significant QTCs
 qtcLmFit <- medoidsLm(qtcFit, pheno, geno)
 plot(qtcLmFit) # check model assumptions (normality, ...)
 # explained variance (includes covariates if they are part of pheno object)
