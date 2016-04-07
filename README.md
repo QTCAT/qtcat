@@ -41,6 +41,8 @@ example(qtcatQtc, run.dontrun = TRUE)
 
 ```
 
+Also see the [Arabidopsis example](https://github.com/QTCAT/qtcat.data)
+
 --------------------------------------------------------------------------------
 
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
