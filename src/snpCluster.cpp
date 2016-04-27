@@ -12,16 +12,16 @@ double cor(RawVector x, RawVector y) {
     for (int i = 0; i < n; i++) {
         if (x[i] == 0x05)  {
             X[i] = 4;
-        } else if (x[i] == 0x02 |
-                   x[i] == 0x03 |
-                   x[i] == 0x04) {
+        } else if ((x[i] == 0x02) |
+                   (x[i] == 0x03) |
+                   (x[i] == 0x04)) {
             X[i] = 2;
         }
         if (y[i] == 0x05)  {
             Y[i] = 4;
-        } else if (y[i] == 0x02 |
-                   y[i] == 0x03 |
-                   y[i] == 0x04) {
+        } else if ((y[i] == 0x02) |
+                   (y[i] == 0x03) |
+                   (y[i] == 0x04)) {
             Y[i] = 2;
         }
         ex += X[i];
@@ -71,7 +71,6 @@ List corPreIdenticals(RawMatrix x, const int step) {
     std::map< int, std::vector<int> > preclust;
     std::vector<int> premedoInx;
     int k = 0;
-    int i0, j0;
     if (n >= step * 2) {
         // medoids equally distributed over the search space
         bool smallDist = false;
@@ -94,6 +93,7 @@ List corPreIdenticals(RawMatrix x, const int step) {
         }
         k = premedoInx.size();
     }
+    int j0;
     if (k > 1) {
         // cluster all variables to the nearest medoid
         NumericVector predist(k);
@@ -108,7 +108,7 @@ List corPreIdenticals(RawMatrix x, const int step) {
         for (int i = 0; i < n; i ++) {
             preclust[0].push_back(i);
         }
-        k=1;
+        k = 1;
     }
     return List::create(preclust);
 } // preClustIdenticals

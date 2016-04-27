@@ -30,7 +30,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     }
     // split string in to vector of strings
     split(oneLine, sep, lineElements);
-    int row = lineElements.size();
+    unsigned int row = lineElements.size();
     // Individual names
     Rcpp::CharacterVector indivNames = Rcpp::wrap(lineElements);
     // 
@@ -63,11 +63,11 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         split(oneLine, sep, lineElements);
         // length of line
         if (row != lineElements.size()){
-            Rcpp::stop("Error: Length of line ", col+2, " is ",
+            Rcpp::stop("Error: Length of line ", col + 2, " is ",
                 lineElements.size(), " instead of ", row);
         }
         // detect Nucleotides in this line (SNP)
-        for (int i = dataStart; i < lineElements.size(); i++) {
+        for (unsigned int i = dataStart; i < lineElements.size(); ++ i) {
             if (lineElements[i] != naStr) {
                 allelesSet.insert(lineElements[i].begin(), 
                                   lineElements[i].end());
@@ -76,7 +76,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         vector<char> allele(allelesSet.begin(), allelesSet.end());
         // if more not two alleles skip
         if (allele.size() != 2) {
-            Rcpp::Rcerr << "warning: Line " << col+2 << 
+            Rcpp::Rcerr << "warning: Line " << col + 2 << 
                 " has more or less than two alleles and therefore the line is skipt" 
                 << endl;
             continue;
@@ -89,7 +89,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         BA = allele[1]; BA += allele[0];
         BB = allele[1]; BB += allele[1];
         // raw coding of line (SNP) 
-        for (int i = dataStart; i < lineElements.size(); ++i) {
+        for (unsigned int i = dataStart; i < lineElements.size(); ++ i) {
             if (lineElements[i] == AA) {
                 snpData.push_back(0x01);
             } else if (lineElements[i] == AB) {
@@ -109,9 +109,9 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         }
         // genetic positions
          pos.push_back(atoi(lineElements[posStart].c_str()));
-         pos.push_back(atoi(lineElements[posStart +1].c_str()));
-        ++col;
-        if (nrows > 0 && nrows <= col+1) {
+         pos.push_back(atoi(lineElements[posStart + 1].c_str()));
+        ++ col;
+        if (nrows > 0 && nrows <= col + 1) {
             break;
         }
     }

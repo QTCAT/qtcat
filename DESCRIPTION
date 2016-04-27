@@ -7,7 +7,7 @@ Description: An association mapping method which jointly analyses all SNPs at
 Authors@R: c(person("Jonas", "Klasen", role = c("aut", "cre"),
                     email = "qtcat@gmx.de"),
              person("Korbinian", "Schneeberger", role = "ths"))
-Version: 0.0-5
+Version: 0.1-0
 URL: http://github.com/QTCAT/qtcat
 BugReports: https://github.com/QTCAT/qtcat/issues
 Depends:

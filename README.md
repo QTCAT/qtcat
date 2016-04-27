@@ -32,8 +32,7 @@ devtools::install_github("QTCAT/qtcat")
 
 ## Example:
 The `qtcatQtc`-function example gives an overview of the functionality of 
-the package and can be accessed once the package is loaded (please be aware, 
-that running the example can take a few seconds).
+the package and can be accessed once the package is loaded.
 
 ```R
 library(qtcat)
@@ -41,7 +40,7 @@ example(qtcatQtc, run.dontrun = TRUE)
 
 ```
 
-Also see the [Arabidopsis example](https://github.com/QTCAT/qtcat.data)
+There is also a [Arabidopsis example](https://github.com/QTCAT/qtcat.data) available.
 
 --------------------------------------------------------------------------------
 
