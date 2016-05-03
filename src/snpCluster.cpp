@@ -5,34 +5,27 @@ using namespace Rcpp;
 // correlation
 double cor(RawVector x, RawVector y) {
     int n = x.size();
-    IntegerVector X(n), Y(n);
-    double ex = 0, ey = 0, xt = 0, yt = 0,
-           sxx = 0, syy = 0, sxy = 0;
+    int n_na = 0;
+    double ex = 0, ey = 0, xt = 0, yt = 0, sxx = 0, syy = 0, sxy = 0;
     // setup variables and find the mean
     for (int i = 0; i < n; i++) {
-        if (x[i] == 0x05)  {
-            X[i] = 4;
-        } else if ((x[i] == 0x02) |
-                   (x[i] == 0x03) |
-                   (x[i] == 0x04)) {
-            X[i] = 2;
+        if ((x[i] == 0x00) | (y[i] == 0x00)) {
+            n_na ++;
+            continue;
         }
-        if (y[i] == 0x05)  {
-            Y[i] = 4;
-        } else if ((y[i] == 0x02) |
-                   (y[i] == 0x03) |
-                   (y[i] == 0x04)) {
-            Y[i] = 2;
-        }
-        ex += X[i];
-        ey += Y[i];
+        ex += x[i];
+        ey += y[i];
     }
-    ex /= n;
-    ey /= n;
+    if ((n - n_na) < 1)
+        stop("estination of correlation not possible, no complete element pairs");
+    ex /= (n - n_na);
+    ey /= (n - n_na);
     // correlation coefficent
     for (int i = 0; i < n; i++) {
-        xt = X[i] - ex;
-        yt = Y[i] - ey;
+        if ((x[i] == 0x00) | (y[i] == 0x00))
+            continue;
+        xt = x[i] - ex;
+        yt = y[i] - ey;
         sxx += xt * xt;
         syy += yt * yt;
         sxy += xt * yt;

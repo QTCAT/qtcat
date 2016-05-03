@@ -30,3 +30,15 @@ setGeneric("alleleFreq", function(x) standardGeneric("alleleFreq"))
 #' @importFrom methods setGeneric
 #' @export
 setGeneric("hetFreq", function(x, dim=1L) standardGeneric("hetFreq"))
+
+
+#' @title Frequency of NAs in data.
+#'
+#' @description Frequency of NAs in data.
+#'
+#' @param x An object.
+#' @param dim Dimension over which heterozygosity is estimated.
+#'
+#' @importFrom methods setGeneric
+#' @export
+setGeneric("naFreq", function(x, dim=1L) standardGeneric("naFreq"))

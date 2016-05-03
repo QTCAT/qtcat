@@ -10,8 +10,7 @@
 #' are separated by this character.
 #' @param quote The set of quoting characters. To disable quoting altogether,
 #' use \code{quote = ""}.
-#' @param na.strings A character vector of strings which are to be interpreted
-#' as NA values. Is not implemented yet.
+#' @param na.string A string which is  interpreted as NA value.
 #' @param nrows Integer, the maximum number of rows to read.
 #'
 #' @examples
@@ -22,13 +21,13 @@
 #' @importFrom methods new
 #' @export
 read.snpData <- function(file, sep = " ",  quote = "\"",
-                         na.strings, nrows = -1L) {
+                         na.string = "NA", nrows = -1L) {
   if (!file.exists(file))
     stop("No such file or directory")
   file <- normalizePath(file)
-  if (!missing(na.strings))
-    stop("'qtcat' dos not allowed missing values in the SNP-matrix")
   testRead <- strsplit(readLines(file, n = 2L), sep)
+  if (sep != "")
+    testRead <- lapply(testRead, function(x, sep) gsub(sep, '',x), sep = sep)
   if (length(testRead[[1L]]) <= 3L)
     stop("In line one the separator character 'sep' doesn't exist")
   if (length(testRead[[1L]]) != length(testRead[[2L]]))
@@ -47,7 +46,11 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
   }
   if (any(nchar(snp1) != 2L))
     stop("Every position in the SNP-matrix has to be specified by two characters, missing values are not allowed")
-  temp <- read_snpData(file, sep, quote, rowNames, "ZZZ", nrows)
+  if (na.string !=  "") {
+    na.string <- as.character(na.string)
+    na.string[is.na(na.string)] <- "NA"
+  }
+  temp <- read_snpData(file, sep, quote, rowNames, na.string, nrows)
   if (identical(temp$lociNames, character(0))) {
     lociNames <- paste0("loci", seq_len(ncol(temp$snpData)))
   } else {
@@ -128,11 +131,9 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
   attr(position, 'dimnames') <- NULL
   nLabels <- length(alleleCoding)
   if (nLabels == 2L) {
-    newLabels <- as.raw(c(1, 5))
+    newLabels <- as.raw(c(1, 3))
   } else if (nLabels == 3L) {
-    newLabels <- as.raw(c(1, 3, 5))
-  } else if (nLabels == 4L) {
-    newLabels <- as.raw(c(1, 2, 4, 5))
+    newLabels <- as.raw(c(1, 2, 3))
   }
   y <- matrix(raw(0), nrow(x), ncol(x))
   for (i in 1:nLabels) {
@@ -275,7 +276,7 @@ setMethod("getPos", signature(object = "snpData"),
 #' @export
 setMethod("alleleFreq", signature(x = "snpData"),
           function(x) {
-            out <- freqs2(x@snpData)[[1]]
+            out <- mafreq(x@snpData)
             names(out) <- colnames(x)
             out
           }
@@ -299,11 +300,74 @@ setMethod("alleleFreq", signature(x = "snpData"),
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("hetFreq", signature(x = "snpData"),
-          function(x, dim = c(1, 2)) {
-            if (dim[1] == 2)
-              return(freqs2(x@snpData)[[2]])
-            if (dim[1] == 1)
-              return(freq1(x@snpData))
-            return(NULL)
+          function(x, dim = 1) {
+            if (dim != 1L && dim != 2L)
+              stop("'dim' must be '1' or '2'")
+            out <- hetfreq(x@snpData, dim)
+            if (dim == 1L)
+              names(out) <- rownames(x)
+            else if (dim == 2L)
+              names(out) <- colnames(x)
+            return(out)
           }
 )
+
+
+#' @title NA frequency
+#'
+#' @description NA frequency in an object of class \linkS4class{snpData}.
+#'
+#' @param x An object of class \linkS4class{snpData}.
+#' @param dim Integer for dimension.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",")
+#' na1 <- naFreq(snp, 1)
+#' na2 <- naFreq(snp, 2)
+#'
+#' @importFrom methods setMethod signature
+#' @export
+setMethod("naFreq", signature(x = "snpData"),
+          function(x, dim = 1) {
+            if (dim != 1L && dim != 2L)
+              stop("'dim' must be '1' or '2'")
+            out <- nafreq(x@snpData, dim)
+            if (dim == 1L)
+              names(out) <- rownames(x)
+            else if (dim == 2L)
+              names(out) <- colnames(x)
+            return(out)
+          }
+)
+
+
+#' @title Impute missing information at each SNP
+#'
+#' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
+#' positions with missing values.
+#'
+#' @param snp An object of class \linkS4class{snpData}.
+#' @param snpClust An object of class \code{\link{qtcatClust}}.
+#' @param min.absCor A minimum value of correlation. If missing values still exist if this
+#' point in the hierarchy is reached, imputing is done via allele frequencies.
+#'
+#' @importFrom hit as.hierarchy
+#' @importFrom stats reorder
+#' @export
+imputSnpData <- function(snp, snpClust, min.absCor = .25) {
+  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snpClust, "qtcatClust"))
+  hier <- reorder(as.hierarchy(snpClust$dendrogram), colnames(snp))
+  snp <- imputeMenoids(snp, snpClust$clusters, hier, min.absCor)
+  # impute non medoid SNPs (if exist)
+  nonMedo <- which(!names(snpClust$clusters) %in% snpClust$medoids)
+  if (length(nonMedo))
+    for (i in nonMedo) {
+      m <- snpClust$clusters[i]
+      pos <- which(snp@snpData[, i] == is.raw(0))
+      snp@snpData[pos, i] <- snp@snpData[pos, m]
+    }
+  snp
+}

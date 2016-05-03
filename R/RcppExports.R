@@ -37,11 +37,15 @@ design <- function(x, inx1, inx2) {
     .Call('qtcat_design', PACKAGE = 'qtcat', x, inx1, inx2)
 }
 
-freqs2 <- function(x) {
-    .Call('qtcat_freqs2', PACKAGE = 'qtcat', x)
+mafreq <- function(x) {
+    .Call('qtcat_mafreq', PACKAGE = 'qtcat', x)
 }
 
-freq1 <- function(x) {
-    .Call('qtcat_freq1', PACKAGE = 'qtcat', x)
+hetfreq <- function(x, dim) {
+    .Call('qtcat_hetfreq', PACKAGE = 'qtcat', x, dim)
+}
+
+nafreq <- function(x, dim) {
+    .Call('qtcat_nafreq', PACKAGE = 'qtcat', x, dim)
 }
 

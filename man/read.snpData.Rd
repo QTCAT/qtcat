@@ -4,7 +4,8 @@
 \alias{read.snpData}
 \title{Read SNP tables to snpData object}
 \usage{
-read.snpData(file, sep = " ", quote = "\\"", na.strings, nrows = -1L)
+read.snpData(file, sep = " ", quote = "\\"", na.string = "NA",
+  nrows = -1L)
 }
 \arguments{
 \item{file}{The name of the file which the data are to be read from. If it
@@ -18,8 +19,7 @@ are separated by this character.}
 \item{quote}{The set of quoting characters. To disable quoting altogether,
 use \code{quote = ""}.}
 
-\item{na.strings}{A character vector of strings which are to be interpreted
-as NA values. Is not implemented yet.}
+\item{na.string}{A string which is  interpreted as NA value.}
 
 \item{nrows}{Integer, the maximum number of rows to read.}
 }
