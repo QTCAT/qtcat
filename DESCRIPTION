@@ -16,6 +16,7 @@ Imports:
     methods,
     stats,
     parallel,
+    graphics,
     Rcpp (>= 0.11.0),
     hit
 Suggests:
