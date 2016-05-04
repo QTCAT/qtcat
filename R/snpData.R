@@ -341,33 +341,3 @@ setMethod("naFreq", signature(x = "snpData"),
             return(out)
           }
 )
-
-
-#' @title Impute missing information at each SNP
-#'
-#' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
-#' positions with missing values.
-#'
-#' @param snp An object of class \linkS4class{snpData}.
-#' @param snpClust An object of class \code{\link{qtcatClust}}.
-#' @param min.absCor A minimum value of correlation. If missing values still exist if this
-#' point in the hierarchy is reached, imputing is done via allele frequencies.
-#'
-#' @importFrom hit as.hierarchy
-#' @importFrom stats reorder
-#' @export
-imputSnpData <- function(snp, snpClust, min.absCor = .25) {
-  stopifnot(is(snp, "snpData"))
-  stopifnot(is(snpClust, "qtcatClust"))
-  hier <- reorder(as.hierarchy(snpClust$dendrogram), colnames(snp))
-  snp <- imputeMenoids(snp, snpClust$clusters, hier, min.absCor)
-  # impute non medoid SNPs (if exist)
-  nonMedo <- which(!names(snpClust$clusters) %in% snpClust$medoids)
-  if (length(nonMedo))
-    for (i in nonMedo) {
-      m <- snpClust$clusters[i]
-      pos <- which(snp@snpData[, i] == is.raw(0))
-      snp@snpData[pos, i] <- snp@snpData[pos, m]
-    }
-  snp
-}
