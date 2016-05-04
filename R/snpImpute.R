@@ -1,5 +1,3 @@
-
-
 #' @title Impute missing information at each SNP
 #'
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
@@ -28,6 +26,7 @@ imputSnpData <- function(snp, snpClust, min.absCor = .25) {
     }
   snp
 }
+
 
 #' @title Impute missing information at medoid SNPs
 #'

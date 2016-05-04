@@ -27,7 +27,6 @@ setClass("snpData",
                    alleles = "matrixOrNULL",
                    dim = "integer",
                    dimnames = "list"))
-# TODO: validity check of class
-#    - names individuals and snps unique?
-#    - no NAs
+# TODO: check validity of class
+#    - dims of slots
 #    - ...
