@@ -4,7 +4,7 @@
 \alias{imputeMedo}
 \title{Impute missing information at medoid SNPs}
 \usage{
-imputeMedo(SNP, clust, hier, min.absCor = 0.25)
+imputeMedo(SNP, clust, hier, flipAlleles, min.absCor = 0.25)
 }
 \arguments{
 \item{clust}{A named vector of clusters.}
