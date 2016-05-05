@@ -70,6 +70,8 @@ NumericVector afreq(RawMatrix x, bool maf) {
             } else {
                 allfreq[i] = 1 - af;
             }
+        } else {
+            allfreq[i] = af;
         }
         n_na = 0;
         a = 0;

@@ -100,11 +100,10 @@ as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
   x.allele <- na.omit(unique(c(x)))
   if (!all(c(x.allele %in% alleleCoding, alleleCoding %in% x.allele)))
     stop("'alleleCoding' do not match to 'x'")
-  if (is.null(allele.1))
-    allele.1 <- rep(alleleCoding[1L], ncol(x))
-  nLabels <- length(alleleCoding)
-  if (is.null(allele.2))
-    allele.2 <- rep(alleleCoding[nLabels], ncol(x))
+  if (is.null(allele.1) || is.null(allele.2)) {
+    allele.1 <- rep("A", ncol(x))
+    allele.2 <- rep("B", ncol(x))
+  }
   if (is.null(rownames(x))) {
     indiv.names <- paste0("indiv", seq_len(nrow(x)))
   } else {
@@ -113,6 +112,7 @@ as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
   loci.names <- colnames(x)
   attr(x, 'dimnames') <- NULL
   attr(position, 'dimnames') <- NULL
+  nLabels <- length(alleleCoding)
   if (nLabels == 2L) {
     newLabels <- as.raw(c(1, 3))
   } else if (nLabels == 3L) {
