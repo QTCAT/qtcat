@@ -1,12 +1,12 @@
-#' @title Extract position information from object.
+#' @title Extract position and allele information from object.
 #'
-#' @description Extract position information from object.
+#' @description Extract position and allele information from object.
 #'
 #' @param object An object.
 #'
 #' @importFrom methods setGeneric
 #' @export
-setGeneric("getPos", function(object) standardGeneric("getPos"))
+setGeneric("snpInfo", function(object) standardGeneric("snpInfo"))
 
 
 #' @title Frequency of alleles in data.
@@ -14,10 +14,12 @@ setGeneric("getPos", function(object) standardGeneric("getPos"))
 #' @description Frequency of alleles in data.
 #'
 #' @param x An object.
+#' @param maf If true minor allele frequency (default), other ways allele frequency of 
+#' 'allele.1'.
 #'
 #' @importFrom methods setGeneric
 #' @export
-setGeneric("alleleFreq", function(x) standardGeneric("alleleFreq"))
+setGeneric("alleleFreq", function(x, maf = TRUE) standardGeneric("alleleFreq"))
 
 
 #' @title Frequency of heterozygosity in data.
@@ -29,7 +31,7 @@ setGeneric("alleleFreq", function(x) standardGeneric("alleleFreq"))
 #'
 #' @importFrom methods setGeneric
 #' @export
-setGeneric("hetFreq", function(x, dim=1L) standardGeneric("hetFreq"))
+setGeneric("hetFreq", function(x, dim = 1L) standardGeneric("hetFreq"))
 
 
 #' @title Frequency of NAs in data.

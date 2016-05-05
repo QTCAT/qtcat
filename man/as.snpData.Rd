@@ -4,17 +4,21 @@
 \alias{as.snpData}
 \title{snpData object constructor}
 \usage{
-as.snpData(x, position, alleleCoding = c(-1, 0, 1), alleles = NULL)
+as.snpData(x, chr, pos, alleleCoding = c(-1, 0, 1), allele.1 = NULL,
+  allele.2 = NULL)
 }
 \arguments{
-\item{x}{matrix with indoviduals in rows and SNPs in columns.}
+\item{x}{A matrix with indoviduals in rows and SNPs in columns.}
 
-\item{position}{matrix with chromosome and position in rows and
-SNPs in columns.}
+\item{chr}{A vector with chromosoms at which SNPs are located.}
 
-\item{alleleCoding}{coding of \code{x} for hom het hom.}
+\item{pos}{A vector with genomic positions at which SNPs are located.}
 
-\item{alleles}{labels of alleles, for each SNP.}
+\item{alleleCoding}{A coding scheme of \code{x} for hom het hom.}
+
+\item{allele.1}{Labels of allele one, for each SNP.}
+
+\item{allele.2}{Labels of allele two, for each SNP.}
 }
 \description{
 Constructs a \code{snpData} object from given data.

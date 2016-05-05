@@ -8,16 +8,15 @@ read.snpData(file, sep = " ", quote = "\\"", na.string = "NA",
   nrows = -1L)
 }
 \arguments{
-\item{file}{The name of the file which the data are to be read from. If it
-does not contain an absolute path, the file name is relative to the current
-working directory, \code{getwd()}. Tilde-expansion is performed where
-supported.}
+\item{file}{The name of the file which the data are to be read from. If it does not 
+contain an absolute path, the file name is relative to the current working directory, 
+\code{getwd()}. Tilde-expansion is performed where supported.}
 
-\item{sep}{The field separator character. Values on each line of the file
-are separated by this character.}
+\item{sep}{The field separator character. Values on each line of the file are separated 
+by this character.}
 
-\item{quote}{The set of quoting characters. To disable quoting altogether,
-use \code{quote = ""}.}
+\item{quote}{The set of quoting characters. To disable quoting altogether, use 
+\code{quote = ""}.}
 
 \item{na.string}{A string which is  interpreted as NA value.}
 

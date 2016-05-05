@@ -119,14 +119,15 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// mafreq
-NumericVector mafreq(RawMatrix x);
-RcppExport SEXP qtcat_mafreq(SEXP xSEXP) {
+// afreq
+NumericVector afreq(RawMatrix x, bool maf);
+RcppExport SEXP qtcat_afreq(SEXP xSEXP, SEXP mafSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
-    __result = Rcpp::wrap(mafreq(x));
+    Rcpp::traits::input_parameter< bool >::type maf(mafSEXP);
+    __result = Rcpp::wrap(afreq(x, maf));
     return __result;
 END_RCPP
 }

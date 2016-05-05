@@ -46,33 +46,35 @@ NumericMatrix design(RawMatrix x, IntegerVector inx1, IntegerVector inx2) {
 
 
 // [[Rcpp::export]]
-NumericVector mafreq(RawMatrix x) {
-  size_t p = x.ncol();
-  size_t n = x.nrow();
-  size_t n_na = 0;
-  double a = 0;
-  double af = 0;
-  NumericVector maf(p);
-  for (size_t i = 0; i < p; i ++) {
-    for (size_t j = 0; j < n; j ++) {
-      if (x(j, i) == 0x00) {
-        n_na ++;
-      } else if (x(j, i) == 0x01) {
-        a ++;
-      } else if (x(j, i) == 0x02) {
-        a += .5;
-      }
+NumericVector afreq(RawMatrix x, bool maf) {
+    size_t p = x.ncol();
+    size_t n = x.nrow();
+    size_t n_na = 0;
+    double a = 0;
+    double af = 0;
+    NumericVector allfreq(p);
+    for (size_t i = 0; i < p; i ++) {
+        for (size_t j = 0; j < n; j ++) {
+            if (x(j, i) == 0x00) {
+                n_na ++;
+            } else if (x(j, i) == 0x01) {
+                a ++;
+            } else if (x(j, i) == 0x02) {
+                a += .5;
+            }
+        }
+        af = a / (n - n_na);
+        if (maf) {
+            if (af <= .5) {
+                allfreq[i] = af;
+            } else {
+                allfreq[i] = 1 - af;
+            }
+        }
+        n_na = 0;
+        a = 0;
     }
-    af = a / (n - n_na);
-    if (af <= .5) {
-      maf[i] = af;
-    } else {
-      maf[i] = 1 - af;
-    }
-    n_na = 0;
-    a = 0;
-  }
-  return maf;
+    return allfreq;
 }
 
 
@@ -92,16 +94,16 @@ NumericVector hetfreq(RawMatrix x, int dim) {
     for (size_t i = 0; i < k; i ++) {
         for (size_t j = 0; j < l; j ++) {
             if (dim == 1) {
-              if (x(i, j) == 0x00) {
-                  l_na ++;
-              } else if (x(i, j) == 0x02) {
-                  het ++;
-              }
+                if (x(i, j) == 0x00) {
+                    l_na ++;
+                } else if (x(i, j) == 0x02) {
+                    het ++;
+                }
             } else {
                 if (x(j, i) == 0x00) {
-                  l_na ++;
+                    l_na ++;
                 } else if (x(j, i) == 0x02) {
-                  het ++;
+                    het ++;
                 }
             }
         }
