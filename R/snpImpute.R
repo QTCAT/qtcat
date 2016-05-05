@@ -15,14 +15,14 @@ imputSnpData <- function(snp, snpClust, min.absCor = .25) {
   stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   hier <- reorder(as.hierarchy(snpClust$dendrogram), colnames(snp))
-  snp <- imputeMenoids(snp, snpClust$clusters, hier, min.absCor)
+  snp <- imputeMedo(snp, snpClust$clusters, hier, min.absCor)
   # impute non medoid SNPs (if exist)
-  nonMedo <- which(!names(snpClust$clusters) %in% snpClust$medoids)
+  nonMedo <- which(!(names(snpClust$clusters) %in% snpClust$medoids))
   if (length(nonMedo))
     for (i in nonMedo) {
       m <- snpClust$clusters[i]
-      pos <- which(snp@snpData[, i] == is.raw(0))
-      snp@snpData[pos, i] <- snp@snpData[pos, m]
+      js <- which(snp@snpData[, i] == is.raw(0))
+      snp@snpData[js, i] <- snp@snpData[js, m]
     }
   snp
 }
@@ -40,17 +40,17 @@ imputSnpData <- function(snp, snpClust, min.absCor = .25) {
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @keywords internal
-imputeMenoids <- function(SNP, clust, hier, min.absCor = .25) {
+imputeMedo <- function(SNP, clust, hier, min.absCor = .25) {
   # function which is altering the 'SNP' input by imputing info from 'grp' to 'snpOfInt'
   imputSnp <- function(snpOfInt, snpsToComp, unsolved) {
     n <- length(snpsToComp)
-    j <- 1
-    while (unsolved && j <= n) {
-      zeroPos <- which(SNP@snpData[, snpOfInt] == as.raw(0))
-      snpInfoPos <- SNP@snpData[zeroPos, snpsToComp[j]]
-      SNP@snpData[zeroPos, snpOfInt] <<- snpInfoPos
-      unsolved <- any(snpInfoPos == as.raw(0))
-      j <- j + 1
+    i <- 1
+    while (unsolved && i <= n) {
+      js <- which(SNP@snpData[, snpOfInt] == as.raw(0))
+      jAllele <- SNP@snpData[js, snpsToComp[i]]
+      SNP@snpData[js, snpOfInt] <<- jAllele
+      unsolved <- any(jAllele == as.raw(0))
+      i <- i + 1
     }
     unsolved
   }
@@ -58,7 +58,7 @@ imputeMenoids <- function(SNP, clust, hier, min.absCor = .25) {
   leafs_hiersnp <- unlist(hier[leafs_hier])
   naSnps <- which(naFreq(SNP, 2) > 0 & colnames(SNP) %in% labels(hier))
   # run thru all SNPs with NAs
-  for (i in seq_along(naSnps)) { # i <- 1
+  for (i in seq_along(naSnps)) {
     unsolved <- TRUE
     snpOfInt_snp <- snpsNotComp <- naSnps[i]
     # check in clusters of identicals
@@ -85,11 +85,11 @@ imputeMenoids <- function(SNP, clust, hier, min.absCor = .25) {
     }
     # if height threshold is reached use alle frequency for imputing
     if (unsolved) {
-      zeroPos <- which(SNP@snpData[, snpOfInt_snp] == as.raw(0))
+      js <- which(SNP@snpData[, snpOfInt_snp] == as.raw(0))
       alleleNo <- table(as.integer(SNP@snpData[, snpOfInt_snp]), exclude = 0L)
       alleles <- as.raw(names(alleleNo))
       prob <- alleleNo / sum(alleleNo)
-      SNP@snpData[zeroPos, snpOfInt_snp] <- sample(alleles, length(zeroPos), TRUE, prob)
+      SNP@snpData[js, snpOfInt_snp] <- sample(alleles, length(js), TRUE, prob)
     }
   }
   SNP

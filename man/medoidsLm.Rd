@@ -18,8 +18,8 @@ medoidsLm(object, pheno, geno, alpha = 0.05, min.absCor = 0.05)
 \item{min.absCor}{Minimum absolute value of correlation considered.}
 }
 \description{
-Linear model between phenotype and medoids of QTCs (significant
-SNP clusters).
+Linear model between phenotype and medoids of QTCs (significant SNP 
+clusters).
 }
 \examples{
 # If you want to run the examples, use:

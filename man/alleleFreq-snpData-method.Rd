@@ -5,10 +5,13 @@
 \alias{alleleFreq,snpData-method}
 \title{Allele frequency}
 \usage{
-\S4method{alleleFreq}{snpData}(x)
+\S4method{alleleFreq}{snpData}(x, maf = TRUE)
 }
 \arguments{
 \item{x}{An object of class \linkS4class{snpData}.}
+
+\item{maf}{If true minor allele frequency (default), other ways allele frequency of 
+'allele.1'.}
 }
 \description{
 Allele frequency an object of class \linkS4class{snpData}.

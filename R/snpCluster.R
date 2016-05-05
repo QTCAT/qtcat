@@ -1,9 +1,8 @@
 #' @title Correlation based distance among SNPs
 #'
-#' @description This function computes and returns a distance matrix.
-#' Distance is estimated as one minus absolute value of the correlation
-#' coefficient 1-abs(cor). The estimation is computed for all pairwise
-#' combinations SNPs.
+#' @description This function computes and returns a distance matrix. Distance is estimated 
+#' as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is 
+#' computed for all pairwise combinations SNPs.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
@@ -34,12 +33,12 @@ distCor <- function(snp) {
 
 #' @title Perfect simiarity  SNP clusters
 #'
-#' @description Finds perfect similarity cluster of SNPs. This is specially
-#' us full in crossed populations.
+#' @description Finds perfect similarity cluster of SNPs. This is specially us full in 
+#' crossed populations.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
-#' @param mc.cores A positive integer for the number of cores for parallel
-#' computing. See \code{\link[parallel]{mclapply}} for details.
+#' @param mc.cores A positive integer for the number of cores for parallel computing. See 
+#' \code{\link[parallel]{mclapply}} for details.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -63,7 +62,7 @@ identicals <- function(snp, mc.cores = 1) {
   identclust <- joinCorIdenticals(ncol(snp@snpData), preclust, kidenticals)
   clust <- identclust[[1L]]
   names(clust) <- colnames(snp)
-  out <- list(clusters = clust,
+  out <- list(clusters = clust, 
               medoids = colnames(snp)[identclust[[2L]] + 1])
   class(out) <- "identicals"
   out
@@ -72,34 +71,32 @@ identicals <- function(snp, mc.cores = 1) {
 
 #' @title K-medoids clustering of SNPs using randomized search
 #'
-#' @description Partitioning (clustering) into k clusters "around medoids" by
-#' randomized search. 1-abs(cor) is used as distance among SNPs.
+#' @description Partitioning (clustering) into k clusters "around medoids" by randomized 
+#' search. 1-abs(cor) is used as distance among SNPs.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
-#' @param k A positive integer specifying the number of clusters, greater than
-#' one and less than the number of SNPs.
-#' @param maxNeigbours A positive integer specifying the maximum number of
-#' randomized searches.
+#' @param k A positive integer specifying the number of clusters, greater than one and less 
+#' than the number of SNPs.
+#' @param maxNeigbours A positive integer specifying the maximum number of randomized 
+#' searches.
 #' @param nLocal A positive integer specifying the number of optimisation runs.
-#' @param mc.cores A positive integer for the number of cores for parallel
-#' computing. See \code{\link[parallel]{mclapply}} for details.
+#' @param mc.cores A positive integer for the number of cores for parallel computing. See 
+#' \code{\link[parallel]{mclapply}} for details.
 #'
-#' @details The K-medoids clustering is implemented as clustering large
-#' applications based upon randomized search (CLARANS) algorithm
-#' (Ng and Han 2002). CLARANS is a modification of the partitioning around
-#' medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the PAM
-#' algorithm is estimating all distances between SNPs and the
-#' respective medoids SNPs, CLARANS is searching a random subset of the SNPs.
-#' This is independently repeated several times and the result which minimises
-#' the average distance the most is reported. This produces results close to
-#' those of the PAM algorithm (Ng and Han 2002), even though the number of runs
-#' and the subset size have to be arbitrarily chosen by the user. The algorithm
-#' has two advantages: (i) the number of distance comparisons is dramatically
+#' @details The K-medoids clustering is implemented as clustering large applications based 
+#' upon randomized search (CLARANS) algorithm (Ng and Han 2002). CLARANS is a modification 
+#' of the partitioning around medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the 
+#' PAM algorithm is estimating all distances between SNPs and the respective medoids SNPs, 
+#' CLARANS is searching a random subset of the SNPs. This is independently repeated several 
+#' times and the result which minimises the average distance the most is reported. This 
+#' produces results close to those of the PAM algorithm (Ng and Han 2002), even though the 
+#' number of runs and the subset size have to be arbitrarily chosen by the user. The 
+#' algorithm has two advantages: (i) the number of distance comparisons is dramatically
 #' reduced; and (ii) parallelizing is straightforward.
 #'
-#' @references Ng and J. Han (2002). CLARANS: A method for clustering objects
-#' for spatial data mining. \emph{IEEE Transactions on Knowledge and Data
-#' Engineering}. \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
+#' @references Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial 
+#' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}. 
+#' \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -124,8 +121,8 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
     out
   } # clarans.i
   out.nLocal <- mclapply(1L:nLocal, clarans.i,
-                            snp, k, maxNeigbours,
-                            mc.cores = mc.cores)
+                         snp, k, maxNeigbours,
+                         mc.cores = mc.cores)
   opt.func <- function(i, snp) {snp[[i]][[3L]]}
   all.objectives <- sapply(1:nLocal, opt.func, out.nLocal)
   out.opt <- out.nLocal[[which.min(all.objectives)]]
@@ -148,18 +145,18 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @description Hierarchical clustering for big SNP data sets.
 #'
 #' @param snp A object of class \linkS4class{snpData}.
-#' @param k A positive integer specifying the number of clusters, less than
-#' the number of observations.
+#' @param k A positive integer specifying the number of clusters, less than the number of 
+#' observations.
 #' @param identicals Logical, if zero clustering.
-#' @param maxNeigbours Positive integer, specifying the maximum number of
-#' randomized searches.
-#' @param nLocal Positive integer, specifying the number of optimisation runs.
-#' Columns have to be similar to \code{snp}.
+#' @param maxNeigbours Positive integer, specifying the maximum number of randomized 
+#' searches.
+#' @param nLocal Positive integer, specifying the number of optimisation runs. Columns have 
+#' to be similar to \code{snp}.
 #' @param method See hclust.
-#' @param mc.cores Number of cores for parallel computing. See \code{mclapply}
-#' in package parallel for details.
+#' @param mc.cores Number of cores for parallel computing. See \code{mclapply} in package 
+#' parallel for details.
 #' @param trace If \code{TRUE} it prints current status of the program.
-#' @param ... additional argruments for \code{\link[stats]{hclust}}
+#' @param ... Additional argruments for \code{\link[stats]{hclust}}
 #'
 #' @seealso clarans
 #'
@@ -174,8 +171,7 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @importFrom stats hclust
 #' @importFrom methods is
 #' @export
-qtcatClust <- function(snp, k, identicals = TRUE,
-                       maxNeigbours = 100, nLocal = 10,
+qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
                        method = "complete", mc.cores = 1, trace = FALSE, ...) {
   if (is.element("fastcluster", rownames(installed.packages()))) {
     hclust <- fastcluster::hclust

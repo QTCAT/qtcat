@@ -11,15 +11,14 @@ qtcatGeno(snp, snpClust, absCor, min.absCor = 0.5)
 
 \item{snpClust}{An object of class \code{\link{qtcatClust}}.}
 
-\item{absCor}{Vector of absolute value of correlations considered in the
-hierarchy.}
+\item{absCor}{Vector of absolute value of correlations considered in the hierarchy.}
 
-\item{min.absCor}{Minimum absolute value of correlation considered. A value
-in the range from 0 to 1.}
+\item{min.absCor}{Minimum absolute value of correlation considered. A value in the range 
+from 0 to 1.}
 }
 \description{
-Constructs an S3 object containing SNP matrix and SNP
-hierarchy. This is needed for \code{\link{qtcatHit}} as input.
+Constructs an S3 object containing SNP matrix and SNP hierarchy. This is 
+needed for \code{\link{qtcatHit}} as input.
 }
 \examples{
 # file containing example data for SNP data
