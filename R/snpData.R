@@ -2,16 +2,14 @@
 #'
 #' @description Reads a file in table format and returns a 'snpData' object.
 #'
-#' @param file The name of the file which the data are to be read from. If it
-#' does not contain an absolute path, the file name is relative to the current
-#' working directory, \code{getwd()}. Tilde-expansion is performed where
-#' supported.
-#' @param sep The field separator character. Values on each line of the file
-#' are separated by this character.
-#' @param quote The set of quoting characters. To disable quoting altogether,
-#' use \code{quote = ""}.
-#' @param na.strings A character vector of strings which are to be interpreted
-#' as NA values. Is not implemented yet.
+#' @param file The name of the file which the data are to be read from. If it does not 
+#' contain an absolute path, the file name is relative to the current working directory, 
+#' \code{getwd()}. Tilde-expansion is performed where supported.
+#' @param sep The field separator character. Values on each line of the file are separated 
+#' by this character.
+#' @param quote The set of quoting characters. To disable quoting altogether, use 
+#' \code{quote = ""}.
+#' @param na.string A string which is  interpreted as NA value.
 #' @param nrows Integer, the maximum number of rows to read.
 #'
 #' @examples
@@ -22,13 +20,13 @@
 #' @importFrom methods new
 #' @export
 read.snpData <- function(file, sep = " ",  quote = "\"",
-                         na.strings, nrows = -1L) {
+                         na.string = "NA", nrows = -1L) {
   if (!file.exists(file))
     stop("No such file or directory")
   file <- normalizePath(file)
-  if (!missing(na.strings))
-    stop("'qtcat' dos not allowed missing values in the SNP-matrix")
   testRead <- strsplit(readLines(file, n = 2L), sep)
+  if (sep != "")
+    testRead <- lapply(testRead, function(x, sep) gsub(sep, '',x), sep = sep)
   if (length(testRead[[1L]]) <= 3L)
     stop("In line one the separator character 'sep' doesn't exist")
   if (length(testRead[[1L]]) != length(testRead[[2L]]))
@@ -47,16 +45,25 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
   }
   if (any(nchar(snp1) != 2L))
     stop("Every position in the SNP-matrix has to be specified by two characters, missing values are not allowed")
-  temp <- read_snpData(file, sep, quote, rowNames, "ZZZ", nrows)
-  if (identical(temp$lociNames, character(0))) {
+  if (na.string !=  "") {
+    na.string <- as.character(na.string)
+    na.string[is.na(na.string)] <- "NA"
+  }
+  temp <- read_snpData(file, sep, quote, rowNames, na.string, nrows)
+  if (!length(temp$lociNames)) {
     lociNames <- paste0("loci", seq_len(ncol(temp$snpData)))
   } else {
     lociNames <- make.unique(temp$lociNames)
   }
+  chr <- suppressWarnings(as.numeric(temp$chr))
+  if (any(is.na(chr)))
+    chr <- temp$chr
   out <- new("snpData",
              snpData = temp$snpData,
-             position = temp$position,
-             alleles = temp$alleles,
+             snpInfo = data.frame(chr = chr,
+                                   pos = temp$pos,
+                                   allele = t(temp$alleles),
+                                   row.names = lociNames),
              dim = dim(temp$snpData),
              dimnames = list(temp$indivNames, lociNames))
   out
@@ -67,56 +74,35 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
 #'
 #' @description Constructs a \code{snpData} object from given data.
 #'
-#' @param x matrix with indoviduals in rows and SNPs in columns.
-#' @param position matrix with chromosome and position in rows and
-#' SNPs in columns.
-#' @param alleleCoding coding of \code{x} for hom het hom.
-#' @param alleles  labels of alleles, for each SNP.
+#' @param x A matrix with indoviduals in rows and SNPs in columns.
+#' @param chr A vector with chromosoms at which SNPs are located.
+#' @param pos A vector with genomic positions at which SNPs are located.
+#' @param alleleCoding A coding scheme of \code{x} for hom het hom.
+#' @param allele.1 Labels of allele one, for each SNP.
+#' @param allele.2 Labels of allele two, for each SNP.
 #'
 #' @importFrom methods new
 #' @export
-as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
-                       alleles = NULL) {
-  if (!is.matrix(x)) {
+as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
+                       allele.1 = NULL, allele.2 = NULL) {
+  if (!is.matrix(x))
     x <- as.matrix(x)
-  }
-  if (is.null(colnames(x))) {
+  if (is.null(colnames(x)))
     stop("Column names are missing for 'x'")
-  }
-  if (ncol(x) < 2L) {
+  if (ncol(x) < 2L)
     stop("'x' has less than two columns")
-  }
-  if (missing(position)) {
-    stop("'position' must be specified")
-  } else {
-    if (nrow(position) != 2L) {
-      stop("'position' must have two rows")
-    }
-    if (is.null(colnames(position))) {
-      stop("Column names are missing for 'position'")
-    }
-    if (any(colnames(x) != colnames(position))) {
-      stop("Column names of 'x' and 'position' differ")
-    }
-  }
-  if (!is.vector(alleleCoding)) {
+  if (missing(chr))
+    stop("'chr' must be specified")
+  if (missing(pos)) 
+    stop("'pos' must be specified")
+  if (!is.vector(alleleCoding))
     stop("'alleleCoding' is not a vector")
-  }
   x.allele <- na.omit(unique(c(x)))
-  if (!all(c(x.allele %in% alleleCoding, alleleCoding %in% x.allele))) {
+  if (!all(c(x.allele %in% alleleCoding, alleleCoding %in% x.allele)))
     stop("'alleleCoding' do not match to 'x'")
-  }
-  if (!is.null(alleles)) {
-    if (nrow(alleles) != 2L) {
-      stop("'alleles' must have two rows")
-    }
-    if (is.null(colnames(alleles))) {
-      stop("Column names are missing for 'alleles'")
-    }
-    if (any(colnames(x) != colnames(alleles))) {
-      stop("Column names of 'x' and 'alleles' differ")
-    }
-    attr(alleles, 'dimnames') <- NULL
+  if (is.null(allele.1) || is.null(allele.2)) {
+    allele.1 <- rep("A", ncol(x))
+    allele.2 <- rep("B", ncol(x))
   }
   if (is.null(rownames(x))) {
     indiv.names <- paste0("indiv", seq_len(nrow(x)))
@@ -128,20 +114,20 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
   attr(position, 'dimnames') <- NULL
   nLabels <- length(alleleCoding)
   if (nLabels == 2L) {
-    newLabels <- as.raw(c(1, 5))
+    newLabels <- as.raw(c(1, 3))
   } else if (nLabels == 3L) {
-    newLabels <- as.raw(c(1, 3, 5))
-  } else if (nLabels == 4L) {
-    newLabels <- as.raw(c(1, 2, 4, 5))
+    newLabels <- as.raw(c(1, 2, 3))
   }
   y <- matrix(raw(0), nrow(x), ncol(x))
-  for (i in 1:nLabels) {
+  for (i in 1:nLabels)
     y[alleleCoding[i] == x] <- newLabels[i]
-  }
   out <- new("snpData",
              snpData = y,
-             position = position,
-             alleles = alleles,
+             snpInfo = data.frame(chr = chr,
+                                  pos = pos,
+                                  allele.1 = allele.1,
+                                  allele.2 = allele.2,
+                                  row.names = loci.names),
              dim = dim(y),
              dimnames = list(indiv.names, loci.names))
   out
@@ -153,10 +139,10 @@ as.snpData <- function(x, position, alleleCoding = c(-1, 0, 1),
 #' @description Subsetting an object of class \linkS4class{snpData}.
 #'
 #' @param x  An object of class \linkS4class{snpData}.
-#' @param i Indices specifying elements to extract or replace. Indices are
-#' booleans, numeric or character vectors.
-#' @param j indices specifying elements to extract or replace. Indices are
-#' booleans, numeric or character vectors.
+#' @param i Indices specifying elements to extract or replace. Indices are booleans, 
+#' numeric or character vectors.
+#' @param j indices specifying elements to extract or replace. Indices are booleans, 
+#' numeric or character vectors.
 #' @param ... Not implemented.
 #' @param drop Not implemented.
 #'
@@ -177,9 +163,7 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
             snpData <- x@snpData[i, j, drop = FALSE]
             out <- new("snpData",
                        snpData = snpData,
-                       position = x@position[, j, drop = FALSE],
-                       alleles = if (is.null(x@alleles)) NULL
-                                 else x@alleles[, j, drop = FALSE],
+                       snpInfo = x@snpInfo[j, ],
                        dim = dim(snpData),
                        dimnames = list(rownames(x)[i], colnames(x)[j]))
             out
@@ -192,10 +176,10 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
 #' @description Matrix from an object of class \linkS4class{snpData}.
 #'
 #' @param x An object of class \linkS4class{snpData}.
-#' @param inx1 An optional index vector for subsetting the data or in
-#' combination with \code{inx2} for the generation of interaction terms.
-#' @param inx2 An optional index vector which in combination with \code{inx1}
-#' can be used to generate interaction terms of SNPs.
+#' @param inx1 An optional index vector for subsetting the data or in combination with 
+#' \code{inx2} for the generation of interaction terms.
+#' @param inx2 An optional index vector which in combination with \code{inx1} can be used 
+#' to generate interaction terms of SNPs.
 #' @param ... Not implemented.
 #'
 #' @examples
@@ -222,8 +206,8 @@ setMethod("as.matrix", signature(x = "snpData"),
                 } else {
                   return(paste(x, collapse = ":"))
                 }
-              }) # apply nam.dat
-            } # if else is.null(inx2)
+              })
+            }
             rownames(out) <- rownames(x)
             out
           }
@@ -241,17 +225,14 @@ setMethod("as.matrix", signature(x = "snpData"),
 #' # file containing example data for SNP data
 #' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 #' snp <- read.snpData(gfile, sep = ",")
-#' pos <- getPos(snp)
+#' info <- snpInfo(snp)
 #'
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("getPos", signature(object = "snpData"),
+setMethod("snpInfo", signature(object = "snpData"),
           function(object) {
-            out <- object@position
-            if (!is.null(out)) {
-              colnames(out) <- colnames(object)
-              rownames(out) <- c("chr", "pos")
-            } else {
+            out <- object@snpInfo
+            if (is.null(out)) {
               cat("No position information available")
             }
             out
@@ -264,6 +245,8 @@ setMethod("getPos", signature(object = "snpData"),
 #' @description Allele frequency an object of class \linkS4class{snpData}.
 #'
 #' @param x An object of class \linkS4class{snpData}.
+#' @param maf If true minor allele frequency (default), other ways allele frequency of 
+#' 'allele.1'.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -274,8 +257,8 @@ setMethod("getPos", signature(object = "snpData"),
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("alleleFreq", signature(x = "snpData"),
-          function(x) {
-            out <- freqs2(x@snpData)[[1]]
+          function(x, maf = TRUE) {
+            out <- afreq(x@snpData, maf)
             names(out) <- colnames(x)
             out
           }
@@ -299,11 +282,44 @@ setMethod("alleleFreq", signature(x = "snpData"),
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("hetFreq", signature(x = "snpData"),
-          function(x, dim = c(1, 2)) {
-            if (dim[1] == 2)
-              return(freqs2(x@snpData)[[2]])
-            if (dim[1] == 1)
-              return(freq1(x@snpData))
-            return(NULL)
+          function(x, dim = 1) {
+            if (dim != 1L && dim != 2L)
+              stop("'dim' must be '1' or '2'")
+            out <- hetfreq(x@snpData, dim)
+            if (dim == 1L)
+              names(out) <- rownames(x)
+            else if (dim == 2L)
+              names(out) <- colnames(x)
+            return(out)
+          }
+)
+
+
+#' @title NA frequency
+#'
+#' @description NA frequency in an object of class \linkS4class{snpData}.
+#'
+#' @param x An object of class \linkS4class{snpData}.
+#' @param dim Integer for dimension.
+#'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp <- read.snpData(gfile, sep = ",")
+#' na1 <- naFreq(snp, 1)
+#' na2 <- naFreq(snp, 2)
+#'
+#' @importFrom methods setMethod signature
+#' @export
+setMethod("naFreq", signature(x = "snpData"),
+          function(x, dim = 1) {
+            if (dim != 1L && dim != 2L)
+              stop("'dim' must be '1' or '2'")
+            out <- nafreq(x@snpData, dim)
+            if (dim == 1L)
+              names(out) <- rownames(x)
+            else if (dim == 2L)
+              names(out) <- colnames(x)
+            return(out)
           }
 )

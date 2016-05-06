@@ -10,11 +10,11 @@
 \arguments{
 \item{x}{An object of class \linkS4class{snpData}.}
 
-\item{inx1}{An optional index vector for subsetting the data or in
-combination with \code{inx2} for the generation of interaction terms.}
+\item{inx1}{An optional index vector for subsetting the data or in combination with 
+\code{inx2} for the generation of interaction terms.}
 
-\item{inx2}{An optional index vector which in combination with \code{inx1}
-can be used to generate interaction terms of SNPs.}
+\item{inx2}{An optional index vector which in combination with \code{inx1} can be used 
+to generate interaction terms of SNPs.}
 
 \item{...}{Not implemented.}
 }

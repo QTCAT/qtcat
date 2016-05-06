@@ -15,24 +15,24 @@ qtcatHit(pheno, geno, B = 50, p.samp1 = 0.35, nfolds = 5,
 
 \item{B}{A integer indicating the number of sample-splits.}
 
-\item{p.samp1}{A value specifying the fraction of data used for the LASSO
-sample-split. The ANOVA sample-split is \code{1 - p.samp1}.}
+\item{p.samp1}{A value specifying the fraction of data used for the LASSO sample-split. 
+The ANOVA sample-split is \code{1 - p.samp1}.}
 
-\item{nfolds}{Number of folds (default is 5).
-See \code{\link[glmnet]{cv.glmnet}} for more details.}
+\item{nfolds}{Number of folds (default is 5). See \code{\link[glmnet]{cv.glmnet}} for 
+more details.}
 
-\item{lambda.opt}{Criterion for optimum selection of cross validated lasso.
-Either "lambda.1se" (default) or "lambda.min". See
+\item{lambda.opt}{Criterion for optimum selection of cross validated lasso. Either 
+"lambda.1se" (default) or "lambda.min". See
 \code{\link[glmnet]{cv.glmnet}} for more details.}
 
-\item{alpha}{A single value or a vector of values in the range of 0 to 1 for
-the elastic net mixing parameter. If more than one value are given, the best
-is selected during cross-validation.}
+\item{alpha}{A single value or a vector of values in the range of 0 to 1 for the elastic 
+net mixing parameter. If more than one value are given, the best is selected during 
+cross-validation.}
 
 \item{gamma}{Vector of gamma-values used in significant estimation.}
 
-\item{max.p.esti}{Maximum for computed p-values. All p-values above this
-value are set to one. Small \code{max.p.esti} values reduce computing time.}
+\item{max.p.esti}{Maximum for computed p-values. All p-values above this value are set 
+to one. Small \code{max.p.esti} values reduce computing time.}
 
 \item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
 \code{'B'}. For details see \code{\link[parallel]{mclapply}}.}

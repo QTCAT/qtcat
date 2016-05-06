@@ -119,25 +119,39 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// freqs2
-List freqs2(RawMatrix x);
-RcppExport SEXP qtcat_freqs2(SEXP xSEXP) {
+// afreq
+NumericVector afreq(RawMatrix x, bool maf);
+RcppExport SEXP qtcat_afreq(SEXP xSEXP, SEXP mafSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
-    __result = Rcpp::wrap(freqs2(x));
+    Rcpp::traits::input_parameter< bool >::type maf(mafSEXP);
+    __result = Rcpp::wrap(afreq(x, maf));
     return __result;
 END_RCPP
 }
-// freq1
-NumericVector freq1(RawMatrix x);
-RcppExport SEXP qtcat_freq1(SEXP xSEXP) {
+// hetfreq
+NumericVector hetfreq(RawMatrix x, int dim);
+RcppExport SEXP qtcat_hetfreq(SEXP xSEXP, SEXP dimSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
-    __result = Rcpp::wrap(freq1(x));
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    __result = Rcpp::wrap(hetfreq(x, dim));
+    return __result;
+END_RCPP
+}
+// nafreq
+NumericVector nafreq(RawMatrix x, int dim);
+RcppExport SEXP qtcat_nafreq(SEXP xSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    __result = Rcpp::wrap(nafreq(x, dim));
     return __result;
 END_RCPP
 }

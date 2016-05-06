@@ -5,7 +5,7 @@
 \alias{hetFreq,snpData-method}
 \title{Heterozygosity}
 \usage{
-\S4method{hetFreq}{snpData}(x, dim = c(1, 2))
+\S4method{hetFreq}{snpData}(x, dim = 1)
 }
 \arguments{
 \item{x}{An object of class \linkS4class{snpData}.}

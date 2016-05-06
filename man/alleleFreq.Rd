@@ -4,10 +4,13 @@
 \alias{alleleFreq}
 \title{Frequency of alleles in data.}
 \usage{
-alleleFreq(x)
+alleleFreq(x, maf = TRUE)
 }
 \arguments{
 \item{x}{An object.}
+
+\item{maf}{If true minor allele frequency (default), other ways allele frequency of 
+'allele.1'.}
 }
 \description{
 Frequency of alleles in data.

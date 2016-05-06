@@ -10,11 +10,11 @@
 \arguments{
 \item{x}{An object of class \linkS4class{snpData}.}
 
-\item{i}{Indices specifying elements to extract or replace. Indices are
-booleans, numeric or character vectors.}
+\item{i}{Indices specifying elements to extract or replace. Indices are booleans, 
+numeric or character vectors.}
 
-\item{j}{indices specifying elements to extract or replace. Indices are
-booleans, numeric or character vectors.}
+\item{j}{indices specifying elements to extract or replace. Indices are booleans, 
+numeric or character vectors.}
 
 \item{...}{Not implemented.}
 
