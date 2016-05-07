@@ -49,6 +49,7 @@ distCor <- function(snp) {
 #'
 #' @importFrom parallel mclapply
 #' @importFrom methods is
+#' @importFrom stats optimise
 #' @export
 identicals <- function(snp, mc.cores = 1) {
   stopifnot(is(snp, "snpData"))
@@ -168,8 +169,9 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' clust <- qtcatClust(snp)
 #'
 #' @importFrom parallel mclapply
-#' @importFrom stats hclust
+#' @importFrom stats hclust as.dendrogram
 #' @importFrom methods is
+#' @importFrom utils installed.packages
 #' @export
 qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
                        method = "complete", mc.cores = 1, trace = FALSE, ...) {

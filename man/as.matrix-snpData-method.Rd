@@ -5,18 +5,10 @@
 \alias{as.matrix,snpData-method}
 \title{snpData as matrix}
 \usage{
-\S4method{as.matrix}{snpData}(x, inx1 = 1:ncol(x), inx2 = NULL, ...)
+\S4method{as.matrix}{snpData}(x)
 }
 \arguments{
 \item{x}{An object of class \linkS4class{snpData}.}
-
-\item{inx1}{An optional index vector for subsetting the data or in combination with 
-\code{inx2} for the generation of interaction terms.}
-
-\item{inx2}{An optional index vector which in combination with \code{inx1} can be used 
-to generate interaction terms of SNPs.}
-
-\item{...}{Not implemented.}
 }
 \description{
 Matrix from an object of class \linkS4class{snpData}.

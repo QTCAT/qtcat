@@ -9,13 +9,12 @@
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @importFrom hit as.hierarchy
-#' @importFrom stats reorder
 #' @export
 imputSnpData <- function(snp, snpClust, min.absCor = .25) {
   stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   snpnames <- colnames(snp)
-  hier <- reorder(as.hierarchy(snpClust$dendrogram), snpnames)
+  hier <- as.hierarchy(snpClust$dendrogram, names = snpnames)
   flipAlleles <- as.numeric(alleleFreq(snp, FALSE) <= .5)
   snp <- imputeMedo(snp, snpClust$clusters, hier, flipAlleles, min.absCor)
   # impute non medoid SNPs (if exist)

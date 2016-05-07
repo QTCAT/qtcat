@@ -82,6 +82,7 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
 #' @param allele.2 Labels of allele two, for each SNP.
 #'
 #' @importFrom methods new
+#' @importFrom stats na.omit
 #' @export
 as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
                        allele.1 = NULL, allele.2 = NULL) {

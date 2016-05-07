@@ -274,6 +274,7 @@ qtcatQtc <- function(object, alpha = 0.05, min.absCor = 0.05) {
 #'
 #' @importFrom hit hit
 #' @importFrom methods is
+#' @importFrom stats lm cor
 #' @export
 medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
   stopifnot(is(object, "qtcatHit"))
