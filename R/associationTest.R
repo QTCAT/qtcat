@@ -183,7 +183,7 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.35,
                 gamma, max.p.esti, mc.cores,
                 trace, standardize = FALSE)
   out <- c(fitHit, geno[3L:5L])
-  class(out) <- c("hit", "qtcatHit")
+  class(out) <- c("qtcatHit", "hit")
   out
 }
 
@@ -239,6 +239,27 @@ qtcatQtc <- function(object, alpha = 0.05, min.absCor = 0.05) {
   out <- cbind(snpInfo(object)[rownames(sigClust), 1:2], sigClust)
   out
 }
+
+
+setOldClass("qtcatHit")
+#' @title Get position from snpData
+#'
+#' @description Genetic position info from an object of class qtcatHit.
+#'
+#' @param object An object of class qtcatHit.
+#'
+#'
+#' @importFrom methods setMethod setOldClass
+#' @export
+setMethod("snpInfo", "qtcatHit",
+          function(object) {
+            out <- object$snpInfo
+            if (is.null(out)) {
+              cat("No position information available")
+            }
+            out
+          }
+)
 
 
 #' @title Fitting a Linear Model to medoids
