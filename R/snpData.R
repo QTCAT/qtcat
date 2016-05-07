@@ -176,11 +176,6 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
 #' @description Matrix from an object of class \linkS4class{snpData}.
 #'
 #' @param x An object of class \linkS4class{snpData}.
-#' @param inx1 An optional index vector for subsetting the data or in combination with 
-#' \code{inx2} for the generation of interaction terms.
-#' @param inx2 An optional index vector which in combination with \code{inx1} can be used 
-#' to generate interaction terms of SNPs.
-#' @param ... Not implemented.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -191,24 +186,10 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
 #' @importFrom methods setMethod signature
 #' @export
 setMethod("as.matrix", signature(x = "snpData"),
-          function(x, inx1 = 1:ncol(x), inx2 = NULL, ...) {
+          function(x) {
             stopifnot(is(x, "snpData"))
-            if (is.null(inx2)) {
-              out <- design(x@snpData, inx1 - 1, inx1 - 1)
-              colnames(out) <- colnames(x)[inx1]
-            } else {
-              out <- design(x@snpData, inx1 - 1, inx2 - 1)
-              nam.dat <- data.frame(colnames(x)[inx1], colnames(x)[inx2],
-                                    stringsAsFactors = FALSE)
-              colnames(out) <- apply(nam.dat, 1, function(x) {
-                if (x[1] == x[2]) {
-                  return(x[1])
-                } else {
-                  return(paste(x, collapse = ":"))
-                }
-              })
-            }
-            rownames(out) <- rownames(x)
+            out <- design(x@snpData)
+            dimnames(out) <- dimnames(x)
             out
           }
 )

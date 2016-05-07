@@ -21,7 +21,7 @@
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33) {
   stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
@@ -31,13 +31,16 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5) {
   if (any(is.na(snp@snpData)))
     stop("Missing values in 'snp' are not allowed")
   # TODO: use clustering for imputation of SNPs!
-  desMat <- as.matrix(snp[, colnames(snp) %in% names])
+  snpnames <- colnames(snp)[colnames(snp) %in% names]
   if (missing(absCor))
-    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor,
-                         names = colnames(desMat))
+    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, names = snpnames)
   else
-    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, 1 - absCor,
-                         colnames(desMat))
+    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, 1 - absCor, snpnames)
+  if (any(naFreq(snp) > 0)) {
+    flipAlleles <- as.numeric(alleleFreq(snp, FALSE) <= .5)
+    snp <- imputeMedo(snp, snpClust$clusters, hier, flipAlleles, min.absCor)
+  }
+  desMat <- as.matrix(snp[, snpnames])
   out <- list(x = desMat,
               hierarchy = hier,
               clusters = snpClust$clusters,
@@ -46,7 +49,6 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5) {
   class(out) <- "qtcatGeno"
   out
 }
-
 
 #' @title A phenotype object constructor
 #'

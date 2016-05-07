@@ -33,8 +33,8 @@ corMedoids <- function(x, clusters) {
     .Call('qtcat_corMedoids', PACKAGE = 'qtcat', x, clusters)
 }
 
-design <- function(x, inx1, inx2) {
-    .Call('qtcat_design', PACKAGE = 'qtcat', x, inx1, inx2)
+design <- function(x) {
+    .Call('qtcat_design', PACKAGE = 'qtcat', x)
 }
 
 afreq <- function(x, maf) {

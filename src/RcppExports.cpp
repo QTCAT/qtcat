@@ -107,15 +107,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // design
-NumericMatrix design(RawMatrix x, IntegerVector inx1, IntegerVector inx2);
-RcppExport SEXP qtcat_design(SEXP xSEXP, SEXP inx1SEXP, SEXP inx2SEXP) {
+NumericMatrix design(RawMatrix x);
+RcppExport SEXP qtcat_design(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< RawMatrix >::type x(xSEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type inx1(inx1SEXP);
-    Rcpp::traits::input_parameter< IntegerVector >::type inx2(inx2SEXP);
-    __result = Rcpp::wrap(design(x, inx1, inx2));
+    __result = Rcpp::wrap(design(x));
     return __result;
 END_RCPP
 }

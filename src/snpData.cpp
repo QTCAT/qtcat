@@ -5,39 +5,18 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-NumericMatrix design(RawMatrix x, IntegerVector inx1, IntegerVector inx2) {
-     size_t n = x.nrow();
-     size_t p = inx1.size();
-     NumericMatrix out(n, p);
-     for (size_t i = 0; i < p; ++i) {
-        if (inx1[i] == inx2[i]) {
-            for (size_t j = 0; j < n; ++j) {
-                if (x(j, inx1[i]) == 0x01) {
-                    out(j, i) = 0;
-                } else if (x(j, inx1[i]) == 0x03) {
-                    out(j, i) = 1;
-                } else if (x(j, inx1[i]) == 0x02) {
-                    out(j, i) = .5;
-                }
-            }
-        } else {
-            for (size_t j = 0; j < n; ++j) {
-                if (x(j, inx1[i]) == 0x01 ||
-                    x(j, inx2[i]) == 0x01) {
-                    out(j, i) = 0;
-                } else if (x(j, inx1[i]) == 0x03 &&
-                           x(j, inx2[i]) == 0x03) {
-                    out(j, i) = 1;
-                } else if (x(j, inx1[i]) == 0x02 &&
-                           x(j, inx2[i]) == 0x03) {
-                    out(j, i) = .5;
-                } else if (x(j, inx1[i]) == 0x03 &&
-                           x(j, inx2[i]) == 0x02) {
-                    out(j, i) = .5;
-                } else if (x(j, inx1[i]) == 0x02 &&
-                           x(j, inx2[i]) == 0x02) {
-                    out(j, i) = .25;
-                }
+NumericMatrix design(RawMatrix x) {
+    size_t n = x.nrow();
+    size_t p = x.ncol();
+    NumericMatrix out(n, p);
+    for (size_t i = 0; i < p; i ++) {
+        for (size_t j = 0; j < n; j ++) {
+            if (x(j, i) == 0x01) {
+                out(j, i) = 0;
+            } else if (x(j, i) == 0x03) {
+                out(j, i) = 1;
+            } else if (x(j, i) == 0x02) {
+              out(j, i) = .5;
             }
         }
     }

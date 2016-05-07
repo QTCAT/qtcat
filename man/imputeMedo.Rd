@@ -11,6 +11,9 @@ imputeMedo(SNP, clust, hier, flipAlleles, min.absCor = 0.25)
 
 \item{hier}{A object of class hierarchy.}
 
+\item{flipAlleles}{A vertor of telling for each SNP if allele one has allele freq. > 0.5 
+or not.}
+
 \item{min.absCor}{A minimum value of correlation. If missing values still exist if this
 point in the hierarchy is reached, imputing is done via allele frequencies.}
 
