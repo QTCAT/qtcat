@@ -17,7 +17,7 @@ Imports:
     graphics,
     utils,
     Rcpp (>= 0.11.0),
-    hit
+    hit (>= 0.2-2)
 Suggests:
     fastcluster,
     knitr,
