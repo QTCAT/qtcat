@@ -1,7 +1,7 @@
 #' @title Correlation based distance among SNPs
 #'
-#' @description This function computes and returns a distance matrix. Distance is estimated 
-#' as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is 
+#' @description This function computes and returns a distance matrix. Distance is estimated
+#' as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is
 #' computed for all pairwise combinations SNPs.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
@@ -33,11 +33,11 @@ distCor <- function(snp) {
 
 #' @title Perfect simiarity  SNP clusters
 #'
-#' @description Finds perfect similarity cluster of SNPs. This is specially us full in 
+#' @description Finds perfect similarity cluster of SNPs. This is specially us full in
 #' crossed populations.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
-#' @param mc.cores A positive integer for the number of cores for parallel computing. See 
+#' @param mc.cores A positive integer for the number of cores for parallel computing. See
 #' \code{\link[parallel]{mclapply}} for details.
 #'
 #' @examples
@@ -60,10 +60,10 @@ identicals <- function(snp, mc.cores = 1) {
   preclust <- unlist(corPreIdenticals(snp@snpData, step), FALSE)
   kidenticals <- mclapply(preclust, function(i, snp) corIdenticals(snp, i),
                          snp = snp@snpData, mc.cores = mc.cores)
-  identclust <- joinCorIdenticals(ncol(snp@snpData), preclust, kidenticals)
+  identclust <- joinCorIdenticals(p, preclust, kidenticals)
   clust <- identclust[[1L]]
   names(clust) <- colnames(snp)
-  out <- list(clusters = clust, 
+  out <- list(clusters = clust,
               medoids = colnames(snp)[identclust[[2L]] + 1])
   class(out) <- "identicals"
   out
@@ -72,31 +72,31 @@ identicals <- function(snp, mc.cores = 1) {
 
 #' @title K-medoids clustering of SNPs using randomized search
 #'
-#' @description Partitioning (clustering) into k clusters "around medoids" by randomized 
+#' @description Partitioning (clustering) into k clusters "around medoids" by randomized
 #' search. 1-abs(cor) is used as distance among SNPs.
 #'
 #' @param snp An object of class \linkS4class{snpData}.
-#' @param k A positive integer specifying the number of clusters, greater than one and less 
+#' @param k A positive integer specifying the number of clusters, greater than one and less
 #' than the number of SNPs.
-#' @param maxNeigbours A positive integer specifying the maximum number of randomized 
+#' @param maxNeigbours A positive integer specifying the maximum number of randomized
 #' searches.
 #' @param nLocal A positive integer specifying the number of optimisation runs.
-#' @param mc.cores A positive integer for the number of cores for parallel computing. See 
+#' @param mc.cores A positive integer for the number of cores for parallel computing. See
 #' \code{\link[parallel]{mclapply}} for details.
 #'
-#' @details The K-medoids clustering is implemented as clustering large applications based 
-#' upon randomized search (CLARANS) algorithm (Ng and Han 2002). CLARANS is a modification 
-#' of the partitioning around medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the 
-#' PAM algorithm is estimating all distances between SNPs and the respective medoids SNPs, 
-#' CLARANS is searching a random subset of the SNPs. This is independently repeated several 
-#' times and the result which minimises the average distance the most is reported. This 
-#' produces results close to those of the PAM algorithm (Ng and Han 2002), even though the 
-#' number of runs and the subset size have to be arbitrarily chosen by the user. The 
+#' @details The K-medoids clustering is implemented as clustering large applications based
+#' upon randomized search (CLARANS) algorithm (Ng and Han 2002). CLARANS is a modification
+#' of the partitioning around medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the
+#' PAM algorithm is estimating all distances between SNPs and the respective medoids SNPs,
+#' CLARANS is searching a random subset of the SNPs. This is independently repeated several
+#' times and the result which minimises the average distance the most is reported. This
+#' produces results close to those of the PAM algorithm (Ng and Han 2002), even though the
+#' number of runs and the subset size have to be arbitrarily chosen by the user. The
 #' algorithm has two advantages: (i) the number of distance comparisons is dramatically
 #' reduced; and (ii) parallelizing is straightforward.
 #'
-#' @references Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial 
-#' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}. 
+#' @references Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
+#' data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
 #' \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 #'
 #' @examples
@@ -146,15 +146,15 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @description Hierarchical clustering for big SNP data sets.
 #'
 #' @param snp A object of class \linkS4class{snpData}.
-#' @param k A positive integer specifying the number of clusters, less than the number of 
+#' @param k A positive integer specifying the number of clusters, less than the number of
 #' observations.
 #' @param identicals Logical, if zero clustering.
-#' @param maxNeigbours Positive integer, specifying the maximum number of randomized 
+#' @param maxNeigbours Positive integer, specifying the maximum number of randomized
 #' searches.
-#' @param nLocal Positive integer, specifying the number of optimisation runs. Columns have 
+#' @param nLocal Positive integer, specifying the number of optimisation runs. Columns have
 #' to be similar to \code{snp}.
 #' @param method See hclust.
-#' @param mc.cores Number of cores for parallel computing. See \code{mclapply} in package 
+#' @param mc.cores Number of cores for parallel computing. See \code{mclapply} in package
 #' parallel for details.
 #' @param trace If \code{TRUE} it prints current status of the program.
 #' @param ... Additional argruments for \code{\link[stats]{hclust}}

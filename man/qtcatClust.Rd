@@ -10,20 +10,20 @@ qtcatClust(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
 \arguments{
 \item{snp}{A object of class \linkS4class{snpData}.}
 
-\item{k}{A positive integer specifying the number of clusters, less than the number of 
+\item{k}{A positive integer specifying the number of clusters, less than the number of
 observations.}
 
 \item{identicals}{Logical, if zero clustering.}
 
-\item{maxNeigbours}{Positive integer, specifying the maximum number of randomized 
+\item{maxNeigbours}{Positive integer, specifying the maximum number of randomized
 searches.}
 
-\item{nLocal}{Positive integer, specifying the number of optimisation runs. Columns have 
+\item{nLocal}{Positive integer, specifying the number of optimisation runs. Columns have
 to be similar to \code{snp}.}
 
 \item{method}{See hclust.}
 
-\item{mc.cores}{Number of cores for parallel computing. See \code{mclapply} in package 
+\item{mc.cores}{Number of cores for parallel computing. See \code{mclapply} in package
 parallel for details.}
 
 \item{trace}{If \code{TRUE} it prints current status of the program.}

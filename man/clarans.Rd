@@ -9,30 +9,30 @@ clarans(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1)
 \arguments{
 \item{snp}{An object of class \linkS4class{snpData}.}
 
-\item{k}{A positive integer specifying the number of clusters, greater than one and less 
+\item{k}{A positive integer specifying the number of clusters, greater than one and less
 than the number of SNPs.}
 
-\item{maxNeigbours}{A positive integer specifying the maximum number of randomized 
+\item{maxNeigbours}{A positive integer specifying the maximum number of randomized
 searches.}
 
 \item{nLocal}{A positive integer specifying the number of optimisation runs.}
 
-\item{mc.cores}{A positive integer for the number of cores for parallel computing. See 
+\item{mc.cores}{A positive integer for the number of cores for parallel computing. See
 \code{\link[parallel]{mclapply}} for details.}
 }
 \description{
-Partitioning (clustering) into k clusters "around medoids" by randomized 
+Partitioning (clustering) into k clusters "around medoids" by randomized
 search. 1-abs(cor) is used as distance among SNPs.
 }
 \details{
-The K-medoids clustering is implemented as clustering large applications based 
-upon randomized search (CLARANS) algorithm (Ng and Han 2002). CLARANS is a modification 
-of the partitioning around medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the 
-PAM algorithm is estimating all distances between SNPs and the respective medoids SNPs, 
-CLARANS is searching a random subset of the SNPs. This is independently repeated several 
-times and the result which minimises the average distance the most is reported. This 
-produces results close to those of the PAM algorithm (Ng and Han 2002), even though the 
-number of runs and the subset size have to be arbitrarily chosen by the user. The 
+The K-medoids clustering is implemented as clustering large applications based
+upon randomized search (CLARANS) algorithm (Ng and Han 2002). CLARANS is a modification
+of the partitioning around medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the
+PAM algorithm is estimating all distances between SNPs and the respective medoids SNPs,
+CLARANS is searching a random subset of the SNPs. This is independently repeated several
+times and the result which minimises the average distance the most is reported. This
+produces results close to those of the PAM algorithm (Ng and Han 2002), even though the
+number of runs and the subset size have to be arbitrarily chosen by the user. The
 algorithm has two advantages: (i) the number of distance comparisons is dramatically
 reduced; and (ii) parallelizing is straightforward.
 }
@@ -45,8 +45,8 @@ clust <- clarans(snp, 3)
 
 }
 \references{
-Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial 
-data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}. 
+Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
+data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
 \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 }
 

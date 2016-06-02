@@ -9,11 +9,11 @@ identicals(snp, mc.cores = 1)
 \arguments{
 \item{snp}{An object of class \linkS4class{snpData}.}
 
-\item{mc.cores}{A positive integer for the number of cores for parallel computing. See 
+\item{mc.cores}{A positive integer for the number of cores for parallel computing. See
 \code{\link[parallel]{mclapply}} for details.}
 }
 \description{
-Finds perfect similarity cluster of SNPs. This is specially us full in 
+Finds perfect similarity cluster of SNPs. This is specially us full in
 crossed populations.
 }
 \examples{

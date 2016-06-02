@@ -4,6 +4,7 @@
 
 using namespace Rcpp;
 
+
 // [[Rcpp::export]]
 NumericMatrix design(RawMatrix x) {
     size_t n = x.nrow();
