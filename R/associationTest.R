@@ -104,7 +104,8 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
   if (nn == nc && nn == np)
     out <- list(names = as.character(names),
                 pheno = pheno,
-                covariates = covariates)
+                covariates = covariates,
+                family = family)
   class(out) <- "qtcatPheno"
   out
 }
