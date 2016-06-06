@@ -17,7 +17,7 @@ double cor(RawVector x, RawVector y) {
         ey += y[i];
     }
     if ((n - n_na) < 1)
-        stop("estination of correlation not possible, no complete element pairs");
+        stop("estimation of correlation not possible, no complete element pairs");
     ex /= (n - n_na);
     ey /= (n - n_na);
     // correlation coefficent
@@ -259,8 +259,8 @@ IntegerVector corMedoids(RawMatrix x, IntegerVector clusters) {
     std::vector<int> clustInx;
     int nClust = 0;
     double dist = 0;
-    int dist_j, dist_i, medoInx;
-    IntegerVector medoids(n);
+    int dist_j, dist_i;
+    std::vector<int> medoInx;
     for (std::map< int, std::vector<int> >::iterator it = indexMap.begin();
          it != indexMap.end(); it ++) {
         clustInx = it->second;
@@ -283,8 +283,7 @@ IntegerVector corMedoids(RawMatrix x, IntegerVector clusters) {
         for (int i = 0; i < nClust; i ++) {
             dist_sums[i] = sum(dist_mat(_, i));
         }
-        medoInx = which_min(dist_sums);
-        medoids[clustInx[medoInx]] = 1;
+        medoInx.push_back(clustInx[which_min(dist_sums)]);
     }
-    return medoids;
+    return wrap(medoInx);
 }

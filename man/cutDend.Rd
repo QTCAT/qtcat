@@ -4,9 +4,11 @@
 \alias{cutDend}
 \title{Cut a dendrogram}
 \usage{
-cutDend(dend, absCor)
+cutDend(snp, dend, absCor = 1)
 }
 \arguments{
+\item{snp}{A object of class \linkS4class{snpData}.}
+
 \item{dend}{A dendrogram.}
 
 \item{absCor}{Cutting height in absolute value of correlation.}
@@ -20,7 +22,7 @@ gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
 clust <- qtcatClust(snp)
 
-cdend <- cutDend(clust$dendrogram, .5)
+cdend <- cutDend(snp, clust$dendrogram, .5)
 
 }
 
