@@ -283,7 +283,7 @@ IntegerVector corMedoids(RawMatrix x, IntegerVector clusters) {
         for (int i = 0; i < nClust; i ++) {
             dist_sums[i] = sum(dist_mat(_, i));
         }
-        medoInx.push_back(clustInx[which_min(dist_sums)]);
+        medoInx.push_back(clustInx[which_min(dist_sums)] + 1);
     }
     return wrap(medoInx);
 }

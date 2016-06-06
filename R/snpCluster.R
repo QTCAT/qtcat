@@ -269,69 +269,51 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
 #' @importFrom methods is
 #' @export
 cutClust <- function(snp, snpClust, absCor = 1) {
+  stopifnot(is(snp, "snpData"))
   stopifnot(is(snpClust, "qtcatClust"))
   stopifnot(!missing(absCor))
-  out <- cutDend(snp, snpClust$dendrogram, absCor)
-  if (!is.null(snpClust$clusters)) {
-    clust.dend <- out$clusters
-    clust <- snpClust$clusters
-    inxTF <- names(snpClust$clusters) %in% names(clust.dend)
-    clust[which(inxTF)] <- clust.dend
-    for (i in unique(snpClust$clusters[which(!inxTF)])) {
-      inx.i <- which(snpClust$clusters %in% i)
-      clust[inx.i] <- clust[inx.i[inxTF[inx.i]][1L]]
-    }
-    medo <- names(clust)[corMedoids(snp[, names(clust)]@snpData, clust)]
-    out$clusters <- clust
-    out$medoids <- medo
-  }
-  out
-}
-
-
-#' @title Cut a dendrogram
-#'
-#' @description Cut a dendrogram at a spcific hight.
-#'
-#' @param snp A object of class \linkS4class{snpData}.
-#' @param dend A dendrogram.
-#' @param absCor Cutting height in absolute value of correlation.
-#'
-#' @examples
-#' # file containing example data for SNP data
-#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
-#' snp <- read.snpData(gfile, sep = ",")
-#' clust <- qtcatClust(snp)
-#'
-#' cdend <- cutDend(snp, clust$dendrogram, .5)
-#'
-#' @importFrom methods is
-#' @export
-cutDend <- function(snp, dend, absCor = 1) {
-  stopifnot(is(snp, "snpData"))
-  stopifnot(is(dend, "dendrogram"))
-  stopifnot(!missing(absCor))
-  h <- 1 - absCor
-  if (h >= attr(dend, "height")) {
-    medo <- colnames(snp)[colnames(snp) %in% labels(dend)]
-    clust <- rep(1, length(medo))
-    names(clust) <- medo
+  dend <- snpClust$dendrogram
+  clust <- snpClust$clusters
+  if ((1 - absCor) >= attr(dend, "height")) {
+    stop("'absCor' outside of range")
   } else {
-    cut.dend  <- cut(dend, h = h)
-    clust.member <- function(i, dend) {
-      names.clust <- labels(dend[[i]])
-      clust <- rep(i, length(names.clust))
-      names(clust) <- names.clust
-      return(clust)
+    cut.dend  <- cut(dend, h = 1 - absCor)
+    clust.member <- function(i, dlist, clust) {
+      namesclust <- names(clust)[clust %in% unique(clust[labels(dlist[[i]])])]
+      clusti <- rep(i, length(namesclust))
+      names(clusti) <- namesclust
+      return(clusti)
     }
-    clust <- unlist(lapply(1:length(cut.dend$lower), clust.member, cut.dend$lower))
+    clust <- unlist(lapply(1:length(cut.dend$lower), clust.member, cut.dend$lower, clust))
+    medo <- names(clust)[corMedoids(snp[, names(clust)]@snpData, clust)]
+    dend <- rename.leafs(cut.dend$upper, medo)
     clust <- clust[na.exclude(match(colnames(snp), names(clust)))]
-    clustnames <- names(clust)
-    medo <- clustnames[corMedoids(snp[, clustnames]@snpData, clust)]
   }
-  out <- list(dendrogram = cut.dend$upper,
+  out <- list(dendrogram = dend,
               clusters = clust,
               medoids = medo)
   class(out) <- "qtcatClust"
   out
+}
+
+
+#' @title Rename dendrogram leafs
+#'
+#' @description Rename dendrogram leafs.
+#'
+#' @param dend A dendrogram.
+#' @param labels vector of new names.
+#'
+#' @importFrom stats dendrapply
+#' @keywords internal
+rename.leafs <- function(dend, labels){
+  dendlabel <- function(n) {
+    if(is.leaf(n)) {
+      i <<- i + 1L
+      attr(n, "label") <- labels[i]
+    }
+    n
+  }
+  i <- 0L
+  dendrapply(dend, dendlabel)
 }
