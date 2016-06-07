@@ -9,7 +9,7 @@
 
 # Quantitative Trait Cluster Association Test
 The current built and test status for Linux (Mac)
-[![Build Status](https://travis-ci.org/QTCAT/qtcat.svg)](https://travis-ci.org/QTCAT/qtcat)
+[![Build Status](https://travis-ci.org/QTCAT/qtcat.svg?branch=master)](https://travis-ci.org/QTCAT/qtcat)
 and for Windows 
 [![Build status](https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew/branch/master?svg=true)](https://ci.appveyor.com/project/jrklasen/qtcat/branch/master)
 
