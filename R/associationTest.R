@@ -161,6 +161,7 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.35,
                      alpha = 1, gamma = seq(0.05, 0.99, by = 0.01),
                      max.p.esti = 1, seed = 12321, mc.cores = 1, trace = FALSE, ...) {
   set.seed(seed)
+  on.exit(set.seed(NULL))
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
   id <- intersect(pheno$names, rownames(geno$x))
