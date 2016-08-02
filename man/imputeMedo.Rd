@@ -4,20 +4,17 @@
 \alias{imputeMedo}
 \title{Impute missing information at medoid SNPs}
 \usage{
-imputeMedo(SNP, clust, hier, flipAlleles, min.absCor = 0.25)
+imputeMedo(snp, clust, hier, min.absCor = 0.25)
 }
 \arguments{
+\item{snp}{An object of class \linkS4class{snpData}.}
+
 \item{clust}{A named vector of clusters.}
 
 \item{hier}{A object of class hierarchy.}
 
-\item{flipAlleles}{A vertor of telling for each SNP if allele one has allele freq. > 0.5 
-or not.}
-
 \item{min.absCor}{A minimum value of correlation. If missing values still exist if this
 point in the hierarchy is reached, imputing is done via allele frequencies.}
-
-\item{snp}{An object of class \linkS4class{snpData}.}
 }
 \description{
 Uses neighboring SNPs in the clustering hierarchy to impute alleles to

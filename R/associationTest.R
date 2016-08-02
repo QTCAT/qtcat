@@ -30,15 +30,13 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33) {
     names <- names(snpClust)
   if (any(is.na(snp@snpData)))
     stop("Missing values in 'snp' are not allowed")
-  # TODO: use clustering for imputation of SNPs!
   snpnames <- colnames(snp)[colnames(snp) %in% names]
   if (missing(absCor))
     hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, names = snpnames)
   else
     hier <- as.hierarchy(snpClust$dendrogram, height = 1 - absCor, names = snpnames)
   if (any(naFreq(snp) > 0)) {
-    flipAlleles <- as.numeric(alleleFreq(snp, FALSE) <= .5)
-    snp <- imputeMedo(snp, snpClust$clusters, hier, flipAlleles, min.absCor)
+    snp <- imputeMedo(snp, snpClust$clusters, hier, min.absCor)
   }
   desMat <- as.matrix(snp[, snpnames])
   out <- list(x = desMat,
