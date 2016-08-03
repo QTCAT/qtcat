@@ -8,6 +8,8 @@
 #' @param absCor Vector of absolute value of correlations considered in the hierarchy.
 #' @param min.absCor Minimum absolute value of correlation which is considered. A value in
 #' the range from 0 to 1.
+#' @param mc.cores Number of cores for parallelising. Theoretical maximum is
+#' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -21,7 +23,7 @@
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33, mc.cores = 1) {
   stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
@@ -36,7 +38,7 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33) {
   else
     hier <- as.hierarchy(snpClust$dendrogram, height = 1 - absCor, names = snpnames)
   if (any(naFreq(snp) > 0)) {
-    snp <- imputeMedo(snp, snpClust$clusters, hier, min.absCor)
+    snp <- imputeMedoids(snp, snpClust$clusters, hier, min.absCor, mc.cores)
   }
   desMat <- as.matrix(snp[, snpnames])
   out <- list(x = desMat,

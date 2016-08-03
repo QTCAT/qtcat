@@ -7,15 +7,17 @@
 #' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
+#' @param mc.cores Number of cores for parallelising. Theoretical maximum is
+#' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #'
 #' @importFrom hit as.hierarchy
 #' @export
-imputeSnpData <- function(snp, snpClust, min.absCor = .25) {
+imputeSnpMatrix <- function(snp, snpClust, min.absCor = .25, mc.cores = 1) {
   stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   snpnames <- colnames(snp)
   hier <- as.hierarchy(snpClust$dendrogram, names = snpnames)
-  snp <- imputeMedo(snp, snpClust$clusters, hier, min.absCor)
+  snp <- imputeMedoids(snp, snpClust$clusters, hier, min.absCor, mc.cores)
   # impute non medoid SNPs (if exist)
   nonMedo <- which(!(names(snpClust$clusters) %in% snpClust$medoids))
   if (length(nonMedo)) {
@@ -52,64 +54,87 @@ imputeSnpData <- function(snp, snpClust, min.absCor = .25) {
 #' @param hier A object of class hierarchy.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
+#' @param mc.cores Number of cores for parallelising. Theoretical maximum is
+#' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #'
+#' @importFrom parallel mclapply
 #' @keywords internal
-imputeMedo <- function(snp, clust, hier, min.absCor = .25) {
-  snpList <- list()
-  max.h <- 1 - min.absCor
-  leafs_hier <- which(sapply(hier, function(x) is.null(attr(x, which = "subset"))))
-  leafs_hiersnp <- hier[leafs_hier]
+imputeMedoids <- function(snp, clust, hier, min.absCor = .25, mc.cores = 1) {
+  hierLeafs <- which(sapply(hier, function(x) is.null(attr(x, which = "subset"))))
   naSnps <- which(naFreq(snp, 2) > 0 & colnames(snp) %in% labels(hier))
   flipAlleles <- as.numeric(alleleFreq(snp, FALSE) <= .5)
-  # run thru all SNPs with NAs
-  for (inxSnpOfInt in 1:ncol(snp)) { # inxSnpOfInt <- 1
-    snpList[[inxSnpOfInt]] <- snp@snpData[, inxSnpOfInt]
-    if (inxSnpOfInt %in% naSnps) {
-      unsolved <- TRUE
-      inxSnpsNotComp <- inxSnpOfInt
-      snpOfIntFlip <- flipAlleles[inxSnpOfInt]
-      # check in clusters of identicals
-      inxSnpGrp <- which(clust == clust[inxSnpOfInt])
-      inxSnpsNotComp <- inxSnpGrp[!(inxSnpGrp %in% inxSnpsNotComp)]
-      if (length(inxSnpsNotComp)) {
-        temp <- imputeSnp(snp, snpList[[inxSnpOfInt]], inxSnpsNotComp,
-                          snpOfIntFlip, flipAlleles)
-        snpList[[inxSnpOfInt]] <- temp[[1L]]
-        unsolved <- temp[[2L]]
-      }
-      if (unsolved) {
-        # run thru the heirarchy until NAs of the SNP are filled with  information or the
-        # height threshold is reached
-        hierSnpOfInt <- leafs_hier[sapply(leafs_hiersnp, function(x) any(x == inxSnpOfInt))]
-        super <- attr(hier[[hierSnpOfInt]], "superset")
-        inxSnpGrp <- hier[[super]]
-        h <- attr(inxSnpGrp, "height")
-        while (unsolved && h <= max.h) {
-          inxSnpsNotComp <- c(inxSnpsNotComp, inxSnpsNotComp)
-          inxSnpsNotComp <- inxSnpGrp[!(inxSnpGrp %in% inxSnpsNotComp)]
-          if (length(inxSnpsNotComp)) {
-            temp <- imputeSnp(snp, snpList[[inxSnpOfInt]], inxSnpsNotComp,
-                              snpOfIntFlip, flipAlleles)
-            snpList[[inxSnpOfInt]] <- temp[[1L]]
-            unsolved <- temp[[2L]]
-          }
-          super <- attr(hier[[super]], "superset")
-          inxSnpGrp <- hier[[super]]
-          h <- attr(inxSnpGrp, "height")
-        }
-      }
-      # if height threshold is reached use alle frequency for imputing
-      if (unsolved) {
-        js <- which(snpList[[inxSnpOfInt]] == as.raw(0))
-        alleleNo <- table(as.integer(snpList[[inxSnpOfInt]]), exclude = 0L)
-        alleles <- as.raw(names(alleleNo))
-        prob <- alleleNo / sum(alleleNo)
-        snpList[[inxSnpOfInt]][js] <- sample(alleles, length(js), TRUE, prob)
-      }
-    }
-  }
+  # run thru all SNPs
+  snpList <- mclapply(1:ncol(snp), imputeSnp,
+                      snp, clust, hier, hierLeafs, naSnps, flipAlleles, min.absCor,
+                      mc.cores = mc.cores)
   snp@snpData <- do.call(cbind, snpList)
   snp
+}
+
+
+#' @title Impute missing information at a medoid SNPs from a group of neighbors
+#'
+#' @description Uses neighboring SNPs in the clustering hierarchy to impute as many as
+#' possible alleles to positions with missing values at medoid SNPs.
+#'
+#' @param inxSnpOfInt A vertor of the snp of interest.
+#' @param snp An object of class \linkS4class{snpMatrix}.
+#' @param clust A named vector of clusters.
+#' @param hier A object of class hierarchy.
+#' @param hierLeafs Vector of leafs of the hierarchy.
+#' @param naSnps Vector of NA indeces.
+#' @param flipAlleles A vertor of telling for each SNP if allele one has allele freq. > 0.5
+#' or not.
+#' @param min.absCor A minimum value of correlation. If missing values still exist if this
+#' point in the hierarchy is reached, imputing is done via allele frequencies.
+#'
+#' @keywords internal
+imputeSnp <- function(inxSnpOfInt, snp, clust, hier, hierLeafs, naSnps,
+                      flipAlleles, min.absCor) {
+  snpOfInt <- snp@snpData[, inxSnpOfInt]
+  if (inxSnpOfInt %in% naSnps) {
+    unsolved <- TRUE
+    inxSnpsNotComp <- inxSnpOfInt
+    # check in clusters of identicals
+    inxSnpGrp <- which(clust == clust[inxSnpOfInt])
+    inxSnpsNotComp <- inxSnpGrp[!(inxSnpGrp %in% inxSnpsNotComp)]
+    if (length(inxSnpsNotComp)) {
+      temp <- imputeSnpIter(snp, snpOfInt, inxSnpsNotComp,
+                        flipAlleles[inxSnpOfInt], flipAlleles)
+      snpOfInt <- temp[[1L]]
+      unsolved <- temp[[2L]]
+    }
+    if (unsolved) {
+      # run thru the heirarchy until NAs of the SNP are filled with information or the
+      # height threshold is reached
+      hierSnpOfInt <- hierLeafs[sapply(hier[hierLeafs], function(x) any(x == inxSnpOfInt))]
+      super <- attr(hier[[hierSnpOfInt]], "superset")
+      inxSnpGrp <- hier[[super]]
+      h <- attr(inxSnpGrp, "height")
+      while (unsolved && h <= (1 - min.absCor)) {
+        inxSnpsNotComp <- c(inxSnpsNotComp, inxSnpsNotComp)
+        inxSnpsNotComp <- inxSnpGrp[!(inxSnpGrp %in% inxSnpsNotComp)]
+        if (length(inxSnpsNotComp)) {
+          temp <- imputeSnpIter(snp, snpOfInt, inxSnpsNotComp,
+                            flipAlleles[inxSnpOfInt], flipAlleles)
+          snpOfInt <- temp[[1L]]
+          unsolved <- temp[[2L]]
+        }
+        super <- attr(hier[[super]], "superset")
+        inxSnpGrp <- hier[[super]]
+        h <- attr(inxSnpGrp, "height")
+      }
+    }
+    # if height threshold is reached use alle frequency for random imputing
+    if (unsolved) {
+      js <- which(snpOfInt == as.raw(0L))
+      alleleNo <- table(as.integer(snpOfInt), exclude = 0L)
+      alleles <- as.raw(names(alleleNo))
+      prob <- alleleNo / sum(alleleNo)
+      snpOfInt[js] <- sample(alleles, length(js), TRUE, prob)
+    }
+  }
+  snpOfInt
 }
 
 
@@ -128,22 +153,22 @@ imputeMedo <- function(snp, clust, hier, min.absCor = .25) {
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @keywords internal
-imputeSnp <- function(snp, snpOfInt, inxSnpsToComp, snpOfIntFlip, flipAlleles) {
+imputeSnpIter <- function(snp, snpOfInt, inxSnpsToComp, snpOfIntFlip, flipAlleles) {
   unsolved <- TRUE
   n <- length(inxSnpsToComp)
-  i <- 1
+  i <- 1L
   while (unsolved && i <= n) {
-    js <- which(snpOfInt == as.raw(0))
+    js <- which(snpOfInt == as.raw(0L))
     jAllele <- snp@snpData[js, inxSnpsToComp[i]]
     if (snpOfIntFlip != flipAlleles[inxSnpsToComp[i]]) {
-      j1 <- which(jAllele == as.raw(1))
-      j3 <- which(jAllele == as.raw(3))
-      jAllele[j1] <- as.raw(3)
-      jAllele[j3] <- as.raw(1)
+      j1 <- which(jAllele == as.raw(1L))
+      j3 <- which(jAllele == as.raw(3L))
+      jAllele[j1] <- as.raw(3L)
+      jAllele[j3] <- as.raw(1L)
     }
     snpOfInt[js] <- jAllele
-    unsolved <- any(jAllele == as.raw(0))
-    i <- i + 1
+    unsolved <- any(jAllele == as.raw(0L))
+    i <- i + 1L
   }
   list(snpOfInt, unsolved)
 }

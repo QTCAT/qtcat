@@ -4,7 +4,7 @@
 \alias{qtcatGeno}
 \title{A genotype object constructor}
 \usage{
-qtcatGeno(snp, snpClust, absCor, min.absCor = 0.33)
+qtcatGeno(snp, snpClust, absCor, min.absCor = 0.33, mc.cores = 1)
 }
 \arguments{
 \item{snp}{An object of S4 class \linkS4class{snpMatrix}.}
@@ -15,6 +15,9 @@ qtcatGeno(snp, snpClust, absCor, min.absCor = 0.33)
 
 \item{min.absCor}{Minimum absolute value of correlation which is considered. A value in
 the range from 0 to 1.}
+
+\item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
+\code{'B'}. For details see \code{\link[parallel]{mclapply}}.}
 }
 \description{
 Constructs an S3 object containing SNP matrix and SNP hierarchy. This is
