@@ -1,13 +1,13 @@
-#' @title Read SNP tables to snpData object
+#' @title Read SNP tables to snpMatrix object
 #'
-#' @description Reads a file in table format and returns a 'snpData' object.
+#' @description Reads a file in table format and returns a 'snpMatrix' object.
 #'
-#' @param file The name of the file which the data are to be read from. If it does not 
-#' contain an absolute path, the file name is relative to the current working directory, 
+#' @param file The name of the file which the data are to be read from. If it does not
+#' contain an absolute path, the file name is relative to the current working directory,
 #' \code{getwd()}. Tilde-expansion is performed where supported.
-#' @param sep The field separator character. Values on each line of the file are separated 
+#' @param sep The field separator character. Values on each line of the file are separated
 #' by this character.
-#' @param quote The set of quoting characters. To disable quoting altogether, use 
+#' @param quote The set of quoting characters. To disable quoting altogether, use
 #' \code{quote = ""}.
 #' @param na.string A string which is  interpreted as NA value.
 #' @param nrows Integer, the maximum number of rows to read.
@@ -58,7 +58,7 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
   chr <- suppressWarnings(as.numeric(temp$chr))
   if (any(is.na(chr)))
     chr <- temp$chr
-  out <- new("snpData",
+  out <- new("snpMatrix",
              snpData = temp$snpData,
              snpInfo = data.frame(chr = chr,
                                    pos = temp$pos,
@@ -70,9 +70,9 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
 }
 
 
-#' @title snpData object constructor
+#' @title snpMatrix object constructor
 #'
-#' @description Constructs a \code{snpData} object from given data.
+#' @description Constructs a \code{snpMatrix} object from given data.
 #'
 #' @param x A matrix with indoviduals in rows and SNPs in columns.
 #' @param chr A vector with chromosoms at which SNPs are located.
@@ -84,7 +84,7 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
 #' @importFrom methods new
 #' @importFrom stats na.omit
 #' @export
-as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
+as.snpMatrix <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
                        allele.1 = NULL, allele.2 = NULL) {
   if (!is.matrix(x))
     x <- as.matrix(x)
@@ -94,7 +94,7 @@ as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
     stop("'x' has less than two columns")
   if (missing(chr))
     stop("'chr' must be specified")
-  if (missing(pos)) 
+  if (missing(pos))
     stop("'pos' must be specified")
   if (!is.vector(alleleCoding))
     stop("'alleleCoding' is not a vector")
@@ -122,7 +122,7 @@ as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
   y <- matrix(raw(0), nrow(x), ncol(x))
   for (i in 1:nLabels)
     y[alleleCoding[i] == x] <- newLabels[i]
-  out <- new("snpData",
+  out <- new("snpMatrix",
              snpData = y,
              snpInfo = data.frame(chr = chr,
                                   pos = pos,
@@ -135,21 +135,21 @@ as.snpData <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
 }
 
 
-#' @title Sub snpData
+#' @title Sub snpMatrix
 #'
-#' @description Subsetting an object of class \linkS4class{snpData}.
+#' @description Subsetting an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x  An object of class \linkS4class{snpData}.
-#' @param i Indices specifying elements to extract or replace. Indices are booleans, 
+#' @param x  An object of class \linkS4class{snpMatrix}.
+#' @param i Indices specifying elements to extract or replace. Indices are booleans,
 #' numeric or character vectors.
-#' @param j indices specifying elements to extract or replace. Indices are booleans, 
+#' @param j indices specifying elements to extract or replace. Indices are booleans,
 #' numeric or character vectors.
 #' @param ... Not implemented.
 #' @param drop Not implemented.
 #'
 #' @importFrom methods setMethod signature new
 #' @export
-setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
+setMethod("[", signature(x = "snpMatrix", i = "ANY", j = "ANY", drop = "missing"),
           function(x, i, j, ..., drop) {
             if (!missing(i)) {
               if (is.character(i)) {
@@ -162,7 +162,7 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
               }
             }
             snpData <- x@snpData[i, j, drop = FALSE]
-            out <- new("snpData",
+            out <- new("snpMatrix",
                        snpData = snpData,
                        snpInfo = x@snpInfo[j, ],
                        dim = dim(snpData),
@@ -172,11 +172,11 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
 )
 
 
-#' @title snpData as matrix
+#' @title snpMatrix as matrix
 #'
-#' @description Matrix from an object of class \linkS4class{snpData}.
+#' @description Matrix from an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param x An object of class \linkS4class{snpMatrix}.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -186,9 +186,8 @@ setMethod("[", signature(x = "snpData", i = "ANY", j = "ANY", drop = "missing"),
 #'
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("as.matrix", signature(x = "snpData"),
+setMethod("as.matrix", signature(x = "snpMatrix"),
           function(x) {
-            stopifnot(is(x, "snpData"))
             out <- design(x@snpData)
             dimnames(out) <- dimnames(x)
             out
@@ -196,12 +195,12 @@ setMethod("as.matrix", signature(x = "snpData"),
 )
 
 
-#' @title Get position from snpData
+#' @title Get position from snpMatrix
 #'
 #' @description Genetic position info from an object of class
-#'  \linkS4class{snpData}.
+#'  \linkS4class{snpMatrix}.
 #'
-#' @param object An object of class \linkS4class{snpData}.
+#' @param object An object of class \linkS4class{snpMatrix}.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -211,7 +210,7 @@ setMethod("as.matrix", signature(x = "snpData"),
 #'
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("snpInfo", signature(object = "snpData"),
+setMethod("snpInfo", signature(object = "snpMatrix"),
           function(object) {
             out <- object@snpInfo
             if (is.null(out)) {
@@ -224,10 +223,10 @@ setMethod("snpInfo", signature(object = "snpData"),
 
 #' @title Allele frequency
 #'
-#' @description Allele frequency an object of class \linkS4class{snpData}.
+#' @description Allele frequency an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpData}.
-#' @param maf If true minor allele frequency (default), other ways allele frequency of 
+#' @param x An object of class \linkS4class{snpMatrix}.
+#' @param maf If true minor allele frequency (default), other ways allele frequency of
 #' 'allele.1'.
 #'
 #' @examples
@@ -238,7 +237,7 @@ setMethod("snpInfo", signature(object = "snpData"),
 #'
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("alleleFreq", signature(x = "snpData"),
+setMethod("alleleFreq", signature(x = "snpMatrix"),
           function(x, maf = TRUE) {
             out <- afreq(x@snpData, maf)
             names(out) <- colnames(x)
@@ -249,9 +248,9 @@ setMethod("alleleFreq", signature(x = "snpData"),
 
 #' @title Heterozygosity
 #'
-#' @description Heterozygosity an object of class \linkS4class{snpData}.
+#' @description Heterozygosity an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param x An object of class \linkS4class{snpMatrix}.
 #' @param dim Integer for dimension.
 #'
 #' @examples
@@ -263,7 +262,7 @@ setMethod("alleleFreq", signature(x = "snpData"),
 #'
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("hetFreq", signature(x = "snpData"),
+setMethod("hetFreq", signature(x = "snpMatrix"),
           function(x, dim = 1) {
             if (dim != 1L && dim != 2L)
               stop("'dim' must be '1' or '2'")
@@ -279,9 +278,9 @@ setMethod("hetFreq", signature(x = "snpData"),
 
 #' @title NA frequency
 #'
-#' @description NA frequency in an object of class \linkS4class{snpData}.
+#' @description NA frequency in an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpData}.
+#' @param x An object of class \linkS4class{snpMatrix}.
 #' @param dim Integer for dimension.
 #'
 #' @examples
@@ -293,7 +292,7 @@ setMethod("hetFreq", signature(x = "snpData"),
 #'
 #' @importFrom methods setMethod signature
 #' @export
-setMethod("naFreq", signature(x = "snpData"),
+setMethod("naFreq", signature(x = "snpMatrix"),
           function(x, dim = 1) {
             if (dim != 1L && dim != 2L)
               stop("'dim' must be '1' or '2'")

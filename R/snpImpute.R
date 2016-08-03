@@ -3,7 +3,7 @@
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
 #' positions with missing values.
 #'
-#' @param snp An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpMatrix}.
 #' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
@@ -11,7 +11,7 @@
 #' @importFrom hit as.hierarchy
 #' @export
 imputeSnpData <- function(snp, snpClust, min.absCor = .25) {
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   snpnames <- colnames(snp)
   hier <- as.hierarchy(snpClust$dendrogram, names = snpnames)
@@ -47,7 +47,7 @@ imputeSnpData <- function(snp, snpClust, min.absCor = .25) {
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
 #' positions with missing values at medoid SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpMatrix}.
 #' @param clust A named vector of clusters.
 #' @param hier A object of class hierarchy.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
@@ -118,7 +118,7 @@ imputeMedo <- function(snp, clust, hier, min.absCor = .25) {
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute as many as
 #' possible alleles to positions with missing values at medoid SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpMatrix}.
 #' @param snpOfInt A vertor of the snp of interest.
 #' @param inxSnpsToComp Index of neighbors.
 #' @param snpOfIntFlip Flip status of the snp of interest.

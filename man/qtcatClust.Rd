@@ -8,7 +8,7 @@ qtcatClust(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
   method = "complete", mc.cores = 1, trace = FALSE, ...)
 }
 \arguments{
-\item{snp}{A object of class \linkS4class{snpData}.}
+\item{snp}{A object of class \linkS4class{snpMatrix}.}
 
 \item{k}{A positive integer specifying the number of clusters, less than the number of
 observations.}

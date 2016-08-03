@@ -7,7 +7,7 @@
 imputeMedo(snp, clust, hier, min.absCor = 0.25)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpMatrix}.}
 
 \item{clust}{A named vector of clusters.}
 

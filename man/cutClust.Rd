@@ -7,7 +7,7 @@
 cutClust(snp, snpClust, absCor = 1)
 }
 \arguments{
-\item{snp}{A object of class \linkS4class{snpData}.}
+\item{snp}{A object of class \linkS4class{snpMatrix}.}
 
 \item{snpClust}{An object of class \code{\link{qtcatClust}}.}
 

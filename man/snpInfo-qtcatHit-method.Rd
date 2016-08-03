@@ -3,7 +3,7 @@
 \docType{methods}
 \name{snpInfo,qtcatHit-method}
 \alias{snpInfo,qtcatHit-method}
-\title{Get position from snpData}
+\title{Get position from qtcatHit object}
 \usage{
 \S4method{snpInfo}{qtcatHit}(object)
 }

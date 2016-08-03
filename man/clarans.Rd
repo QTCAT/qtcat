@@ -7,7 +7,7 @@
 clarans(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpMatrix}.}
 
 \item{k}{A positive integer specifying the number of clusters, greater than one and less
 than the number of SNPs.}

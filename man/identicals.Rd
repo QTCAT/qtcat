@@ -7,7 +7,7 @@
 identicals(snp, mc.cores = 1)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpMatrix}.}
 
 \item{mc.cores}{A positive integer for the number of cores for parallel computing. See
 \code{\link[parallel]{mclapply}} for details.}

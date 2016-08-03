@@ -7,7 +7,7 @@
 imputeSnp(snp, snpOfInt, inxSnpsToComp, snpOfIntFlip, flipAlleles)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpMatrix}.}
 
 \item{snpOfInt}{A vertor of the snp of interest.}
 

@@ -4,7 +4,7 @@
 #' as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is
 #' computed for all pairwise combinations SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpMatrix}.
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
 #'
@@ -18,7 +18,7 @@
 #' @importFrom methods is
 #' @export
 distCor <- function(snp) {
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   out <- corDists(snp@snpData)
   attr(out,"Labels") <- colnames(snp)
   attr(out,"Size") <- ncol(snp)
@@ -36,7 +36,7 @@ distCor <- function(snp) {
 #' @description Finds perfect similarity cluster of SNPs. This is specially us full in
 #' crossed populations.
 #'
-#' @param snp An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpMatrix}.
 #' @param mc.cores A positive integer for the number of cores for parallel computing. See
 #' \code{\link[parallel]{mclapply}} for details.
 #'
@@ -52,7 +52,7 @@ distCor <- function(snp) {
 #' @importFrom stats optimise
 #' @export
 identicals <- function(snp, mc.cores = 1) {
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   p <- ncol(snp@snpData)
   s <- optimise(function(s, p, m) p * s + p / s * (p / s - 1) / 2 * s / m,
                 interval = c(2, p - 1), p = p, m = mc.cores)$minimum
@@ -75,7 +75,7 @@ identicals <- function(snp, mc.cores = 1) {
 #' @description Partitioning (clustering) into k clusters "around medoids" by randomized
 #' search. 1-abs(cor) is used as distance among SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpData}.
+#' @param snp An object of class \linkS4class{snpMatrix}.
 #' @param k A positive integer specifying the number of clusters, greater than one and less
 #' than the number of SNPs.
 #' @param maxNeigbours A positive integer specifying the maximum number of randomized
@@ -110,7 +110,7 @@ identicals <- function(snp, mc.cores = 1) {
 #' @importFrom methods is
 #' @export
 clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   if (missing(k))
     stop("'k' must be specifid")
   if (k < 2L)
@@ -145,7 +145,7 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #'
 #' @description Hierarchical clustering for big SNP data sets.
 #'
-#' @param snp A object of class \linkS4class{snpData}.
+#' @param snp A object of class \linkS4class{snpMatrix}.
 #' @param k A positive integer specifying the number of clusters, less than the number of
 #' observations.
 #' @param identicals Logical, if zero clustering.
@@ -178,7 +178,7 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
   if (is.element("fastcluster", rownames(installed.packages()))) {
     hclust <- fastcluster::hclust
   }
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   if (identicals) {
     # identicals
     if (trace)
@@ -254,7 +254,7 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
 #'
 #' @description Cut a qtcatClust object at an specific height.
 #'
-#' @param snp A object of class \linkS4class{snpData}.
+#' @param snp A object of class \linkS4class{snpMatrix}.
 #' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param absCor cutting height in absolute value of correlation.
 #'
@@ -269,7 +269,7 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
 #' @importFrom methods is
 #' @export
 cutClust <- function(snp, snpClust, absCor = 1) {
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   stopifnot(!missing(absCor))
   dend <- snpClust$dendrogram

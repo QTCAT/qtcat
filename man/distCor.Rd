@@ -7,7 +7,7 @@
 distCor(snp)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpMatrix}.}
 }
 \description{
 This function computes and returns a distance matrix. Distance is estimated

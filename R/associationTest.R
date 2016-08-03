@@ -3,7 +3,7 @@
 #' @description Constructs an S3 object containing SNP matrix and SNP hierarchy. This is
 #' needed for \code{\link{qtcatHit}} as input.
 #'
-#' @param snp An object of S4 class \linkS4class{snpData}.
+#' @param snp An object of S4 class \linkS4class{snpMatrix}.
 #' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param absCor Vector of absolute value of correlations considered in the hierarchy.
 #' @param min.absCor Minimum absolute value of correlation which is considered. A value in
@@ -22,7 +22,7 @@
 #' @importFrom methods is
 #' @export
 qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33) {
-  stopifnot(is(snp, "snpData"))
+  stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
     stop("Names of 'snp' and 'snpClust' differ")
@@ -242,7 +242,7 @@ qtcatQtc <- function(object, alpha = 0.05, min.absCor = 0.05) {
 
 
 setOldClass("qtcatHit")
-#' @title Get position from snpData
+#' @title Get position from qtcatHit object
 #'
 #' @description Genetic position info from an object of class qtcatHit.
 #'
