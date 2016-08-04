@@ -5,34 +5,27 @@ using namespace Rcpp;
 // correlation
 double cor(RawVector x, RawVector y) {
     int n = x.size();
-    IntegerVector X(n), Y(n);
-    double ex = 0, ey = 0, xt = 0, yt = 0,
-           sxx = 0, syy = 0, sxy = 0;
+    int n_na = 0;
+    double ex = 0, ey = 0, xt = 0, yt = 0, sxx = 0, syy = 0, sxy = 0;
     // setup variables and find the mean
-    for (int i = 0; i < n; i++) {
-        if (x[i] == 0x05)  {
-            X[i] = 4;
-        } else if ((x[i] == 0x02) |
-                   (x[i] == 0x03) |
-                   (x[i] == 0x04)) {
-            X[i] = 2;
+    for (int i = 0; i < n; i ++) {
+        if ((x[i] == 0x00) | (y[i] == 0x00)) {
+            n_na ++;
+            continue;
         }
-        if (y[i] == 0x05)  {
-            Y[i] = 4;
-        } else if ((y[i] == 0x02) |
-                   (y[i] == 0x03) |
-                   (y[i] == 0x04)) {
-            Y[i] = 2;
-        }
-        ex += X[i];
-        ey += Y[i];
+        ex += x[i];
+        ey += y[i];
     }
-    ex /= n;
-    ey /= n;
+    if ((n - n_na) < 1)
+        stop("estimation of correlation not possible, no complete element pairs");
+    ex /= (n - n_na);
+    ey /= (n - n_na);
     // correlation coefficent
-    for (int i = 0; i < n; i++) {
-        xt = X[i] - ex;
-        yt = Y[i] - ey;
+    for (int i = 0; i < n; i ++) {
+        if ((x[i] == 0x00) | (y[i] == 0x00))
+            continue;
+        xt = x[i] - ex;
+        yt = y[i] - ey;
         sxx += xt * xt;
         syy += yt * yt;
         sxy += xt * yt;
@@ -54,8 +47,8 @@ NumericVector corDists(RawMatrix x) {
     int n = x.ncol();
     NumericVector dist(n * (n -1) / 2);
     int count = 0;
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = i + 1; j < n; j++) {
+    for (int i = 0; i < n - 1; i ++) {
+        for (int j = i + 1; j < n; j ++) {
             dist[count] = corDist(x(_, i), x(_, j));
             count ++;
         }
@@ -77,7 +70,7 @@ List corPreIdenticals(RawMatrix x, const int step) {
         int startStep = (int)step * .5;
         double medodist = 0;
         premedoInx.push_back(startStep);
-        for (int i = startStep+step; i < n; i += step) {
+        for (int i = startStep + step; i < n; i += step) {
             for(int j = startStep; j < i; j += step) {
               medodist = corDist(x(_, i), x(_, j));
               if (medodist < .05) {
@@ -108,7 +101,6 @@ List corPreIdenticals(RawMatrix x, const int step) {
         for (int i = 0; i < n; i ++) {
             preclust[0].push_back(i);
         }
-        k = 1;
     }
     return List::create(preclust);
 } // preClustIdenticals
@@ -127,7 +119,7 @@ List corIdenticals(RawMatrix x, IntegerVector clustIdx) {
         if (clusters[i] == 0) {
             clusters[i] = clustCount;
             grp.push_back(i);
-            for (int j = i+1; j < nCluster; j ++) {
+            for (int j = i + 1; j < nCluster; j ++) {
                 j0 = clustIdx[j];
                 if (clusters[j] == 0) {
                     dist = corDist(x(_, i0), x(_, j0));
@@ -172,6 +164,7 @@ List joinCorIdenticals(int n, List preclust, List ClustMedo) {
      return List::create(clusters, medoInx);
 } // joinIdenticals
 
+
 // clustering of IDB by correlation dictamce with CLARANS
 // [[Rcpp::export]]
 List corClarans(RawMatrix x, const int k, const int maxNeigbours) {
@@ -214,7 +207,7 @@ List corClarans(RawMatrix x, const int k, const int maxNeigbours) {
     int iter = 0;
     while (iter < maxNeigbours) {
         if ( iter == 0) {
-            ranVar = floor(runif(maxNeigbours, 0, n-1e-15));
+            ranVar = floor(runif(maxNeigbours, 0, n - 1e-15));
         }
         // replacing medoids with objects if costs are smaller
         i = ranVar[iter];
@@ -249,8 +242,9 @@ List corClarans(RawMatrix x, const int k, const int maxNeigbours) {
         }
     }
     // Result as list
-    return List::create(clusters+1, medoInx, objective);
+    return List::create(clusters + 1, medoInx, objective);
 } // clarans
+
 
 // medoids of SNP clusters
 // [[Rcpp::export]]
@@ -258,24 +252,24 @@ IntegerVector corMedoids(RawMatrix x, IntegerVector clusters) {
     int n = clusters.size();
     // map of vectors with cluster indexes
     std::map< int, std::vector<int> > indexMap;
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i ++) {
         indexMap[clusters[i]].push_back(i);
     }
     // for each cluster a dist matrix were the col with min dist is the medoid
     std::vector<int> clustInx;
     int nClust = 0;
     double dist = 0;
-    int dist_j, dist_i, medoInx;
-    IntegerVector medoids(n);
+    int dist_j, dist_i;
+    std::vector<int> medoInx;
     for (std::map< int, std::vector<int> >::iterator it = indexMap.begin();
-         it != indexMap.end(); ++ it) {
+         it != indexMap.end(); it ++) {
         clustInx = it->second;
         nClust = clustInx.size();
         NumericMatrix dist_mat(nClust, nClust);
         NumericVector dist_sums(nClust);
-        for (int j = 0; j < nClust-1; ++ j) {
+        for (int j = 0; j < nClust - 1; j ++) {
           dist_j = clustInx[j];
-            for (int i = j; i < nClust; ++ i) {
+            for (int i = j; i < nClust; i ++) {
                 if ( i == j) {
                     dist_mat(j, i) = 0;
                 } else {
@@ -286,11 +280,10 @@ IntegerVector corMedoids(RawMatrix x, IntegerVector clusters) {
                 }
             }
         }
-        for (int i = 0; i < nClust; ++ i) {
+        for (int i = 0; i < nClust; i ++) {
             dist_sums[i] = sum(dist_mat(_, i));
         }
-        medoInx = which_min(dist_sums);
-        medoids[clustInx[medoInx]] = 1;
+        medoInx.push_back(clustInx[which_min(dist_sums)] + 1);
     }
-    return medoids;
+    return wrap(medoInx);
 }

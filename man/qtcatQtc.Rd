@@ -14,8 +14,8 @@ qtcatQtc(object, alpha = 0.05, min.absCor = 0.05)
 \item{min.absCor}{Minimum absolute value of correlation considered.}
 }
 \description{
-Summarizing the QTCs (significant cluster of SNPs) and their
-position at the genome.
+Summarizing the QTCs (significant cluster of SNPs) and their position at
+the genome.
 }
 \examples{
 # If you want to run the examples, use:

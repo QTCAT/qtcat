@@ -7,13 +7,12 @@
 distCor(snp)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpData}.}
+\item{snp}{An object of class \linkS4class{snpMatrix}.}
 }
 \description{
-This function computes and returns a distance matrix.
-Distance is estimated as one minus absolute value of the correlation
-coefficient 1-abs(cor). The estimation is computed for all pairwise
-combinations SNPs.
+This function computes and returns a distance matrix. Distance is estimated
+as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is
+computed for all pairwise combinations SNPs.
 }
 \details{
 See \code{\link[stats]{dist}} for details about the output object.

@@ -33,15 +33,19 @@ corMedoids <- function(x, clusters) {
     .Call('qtcat_corMedoids', PACKAGE = 'qtcat', x, clusters)
 }
 
-design <- function(x, inx1, inx2) {
-    .Call('qtcat_design', PACKAGE = 'qtcat', x, inx1, inx2)
+design <- function(x) {
+    .Call('qtcat_design', PACKAGE = 'qtcat', x)
 }
 
-freqs2 <- function(x) {
-    .Call('qtcat_freqs2', PACKAGE = 'qtcat', x)
+afreq <- function(x, maf) {
+    .Call('qtcat_afreq', PACKAGE = 'qtcat', x, maf)
 }
 
-freq1 <- function(x) {
-    .Call('qtcat_freq1', PACKAGE = 'qtcat', x)
+hetfreq <- function(x, dim) {
+    .Call('qtcat_hetfreq', PACKAGE = 'qtcat', x, dim)
+}
+
+nafreq <- function(x, dim) {
+    .Call('qtcat_nafreq', PACKAGE = 'qtcat', x, dim)
 }
 
