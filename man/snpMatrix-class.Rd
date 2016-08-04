@@ -3,7 +3,7 @@
 \docType{class}
 \name{snpMatrix-class}
 \alias{snpMatrix-class}
-\title{An S4 class to represent a SNP matrix}
+\title{An S4 class to represent a SNP-matrix}
 \description{
 An S4 class to represent a SNP matrix. Storing SNP information by using a
 byte-level (raw) storage scheme jointly with genomic positions and alleles.

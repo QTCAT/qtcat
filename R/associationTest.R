@@ -1,7 +1,9 @@
 #' @title A genotype object constructor
 #'
-#' @description Constructs an S3 object containing SNP matrix and SNP hierarchy. This is
-#' needed for \code{\link{qtcatHit}} as input.
+#' @description Constructs an S3 object containing a SNP-matrix and a SNP hierarchy. If a
+#' SNPs in the SNP-matrix contains missing data, the clustering is used to impute
+#' information from highly correlated neighbor SNPs. This is needed for
+#' \code{\link{qtcatHit}} as input.
 #'
 #' @param snp An object of S4 class \linkS4class{snpMatrix}.
 #' @param snpClust An object of class \code{\link{qtcatClust}}.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/snpImpute.R
 \name{imputeSnpMatrix}
 \alias{imputeSnpMatrix}
-\title{Impute missing information at each SNP}
+\title{Impute allele in formation to SNPs with missing data}
 \usage{
 imputeSnpMatrix(snp, snpClust, min.absCor = 0.25, mc.cores = 1)
 }

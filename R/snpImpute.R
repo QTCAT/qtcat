@@ -1,4 +1,4 @@
-#' @title Impute missing information at each SNP
+#' @title Impute allele in formation to SNPs with missing data
 #'
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
 #' positions with missing values.

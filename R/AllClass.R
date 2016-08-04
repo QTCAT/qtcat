@@ -1,4 +1,4 @@
-#' @title An S4 class to represent a SNP matrix
+#' @title An S4 class to represent a SNP-matrix
 #'
 #' @description An S4 class to represent a SNP matrix. Storing SNP information by using a
 #' byte-level (raw) storage scheme jointly with genomic positions and alleles.
@@ -19,6 +19,3 @@ setClass("snpMatrix",
                    snpInfo = "data.frame",
                    dim = "integer",
                    dimnames = "list"))
-# TODO: check validity of class
-#    - dims of slots
-#    - ...

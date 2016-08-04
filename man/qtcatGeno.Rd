@@ -20,8 +20,10 @@ the range from 0 to 1.}
 \code{'B'}. For details see \code{\link[parallel]{mclapply}}.}
 }
 \description{
-Constructs an S3 object containing SNP matrix and SNP hierarchy. This is
-needed for \code{\link{qtcatHit}} as input.
+Constructs an S3 object containing a SNP-matrix and a SNP hierarchy. If a
+SNPs in the SNP-matrix contains missing data, the clustering is used to impute
+information from highly correlated neighbor SNPs. This is needed for
+\code{\link{qtcatHit}} as input.
 }
 \examples{
 # file containing example data for SNP data
