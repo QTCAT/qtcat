@@ -4,19 +4,21 @@
 \alias{imputeSnp}
 \title{Impute missing information at a medoid SNPs from a group of neighbors}
 \usage{
-imputeSnp(inxSnpOfInt, snp, clust, hier, hierLeafs, naSnps, flipAlleles,
-  min.absCor)
+imputeSnp(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps,
+  flipAlleles, min.absCor)
 }
 \arguments{
 \item{inxSnpOfInt}{A vertor of the snp of interest.}
 
 \item{snp}{An object of class \linkS4class{snpMatrix}.}
 
-\item{clust}{A named vector of clusters.}
-
 \item{hier}{A object of class hierarchy.}
 
 \item{hierLeafs}{Vector of leafs of the hierarchy.}
+
+\item{clust}{A named vector of clusters.}
+
+\item{medoSnps}{Vector of medo turue o false.}
 
 \item{naSnps}{Vector of NA indeces.}
 

@@ -4,7 +4,7 @@
 \alias{qtcatGeno}
 \title{A genotype object constructor}
 \usage{
-qtcatGeno(snp, snpClust, absCor, min.absCor = 0.33, mc.cores = 1)
+qtcatGeno(snp, snpClust, absCor, min.absCor = 0.5, mc.cores = 1)
 }
 \arguments{
 \item{snp}{An object of S4 class \linkS4class{snpMatrix}.}

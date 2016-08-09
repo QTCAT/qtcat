@@ -17,7 +17,7 @@ imputeSnpMatrix <- function(snp, snpClust, min.absCor = .25, mc.cores = 1) {
   stopifnot(is(snpClust, "qtcatClust"))
   snpnames <- colnames(snp)
   hier <- as.hierarchy(snpClust$dendrogram, names = snpnames)
-  snp <- imputeMedoids(snp, snpClust$clusters, hier, min.absCor, mc.cores)
+  snp <- imputeMedoids(snp, snpClust, hier, min.absCor, mc.cores)
   # impute non medoid SNPs (if exist)
   nonMedo <- which(!(names(snpClust$clusters) %in% snpClust$medoids))
   if (length(nonMedo)) {
@@ -50,7 +50,7 @@ imputeSnpMatrix <- function(snp, snpClust, min.absCor = .25, mc.cores = 1) {
 #' positions with missing values at medoid SNPs.
 #'
 #' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param clust A named vector of clusters.
+#' @param snpClust An object of class \code{\link{qtcatClust}}.
 #' @param hier A object of class hierarchy.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
@@ -59,13 +59,15 @@ imputeSnpMatrix <- function(snp, snpClust, min.absCor = .25, mc.cores = 1) {
 #'
 #' @importFrom parallel mclapply
 #' @keywords internal
-imputeMedoids <- function(snp, clust, hier, min.absCor = .25, mc.cores = 1) {
+imputeMedoids <- function(snp, snpClust, hier, min.absCor = .25, mc.cores = 1) {
   hierLeafs <- which(sapply(hier, function(x) is.null(attr(x, which = "subset"))))
   naSnps <- which(naFreq(snp, 2) > 0 & colnames(snp) %in% labels(hier))
+  medoSnps <- names(snpClust$clusters) %in% snpClust$medoids
   flipAlleles <- as.numeric(alleleFreq(snp, FALSE) <= .5)
   # run thru all SNPs
   snpList <- mclapply(1:ncol(snp), imputeSnp,
-                      snp, clust, hier, hierLeafs, naSnps, flipAlleles, min.absCor,
+                      snp, hier, hierLeafs, snpClust$clusters, medoSnps, 
+                      naSnps, flipAlleles, min.absCor,
                       mc.cores = mc.cores)
   snp@snpData <- do.call(cbind, snpList)
   snp
@@ -79,20 +81,22 @@ imputeMedoids <- function(snp, clust, hier, min.absCor = .25, mc.cores = 1) {
 #'
 #' @param inxSnpOfInt A vertor of the snp of interest.
 #' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param clust A named vector of clusters.
 #' @param hier A object of class hierarchy.
 #' @param hierLeafs Vector of leafs of the hierarchy.
+#' @param clust A named vector of clusters.
+#' @param medoSnps Vector of medo turue o false.
 #' @param naSnps Vector of NA indeces.
+#' 
 #' @param flipAlleles A vertor of telling for each SNP if allele one has allele freq. > 0.5
 #' or not.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @keywords internal
-imputeSnp <- function(inxSnpOfInt, snp, clust, hier, hierLeafs, naSnps,
+imputeSnp <- function(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps, 
                       flipAlleles, min.absCor) {
   snpOfInt <- snp@snpData[, inxSnpOfInt]
-  if (inxSnpOfInt %in% naSnps) {
+  if (medoSnps[inxSnpOfInt] && (inxSnpOfInt %in% naSnps)) {
     unsolved <- TRUE
     inxSnpsNotComp <- inxSnpOfInt
     # check in clusters of identicals

@@ -25,23 +25,20 @@
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
 #' @export
-qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.33, mc.cores = 1) {
+qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5, mc.cores = 1) {
   stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   if (!setequal(names(snpClust$clusters), colnames(snp)))
     stop("Names of 'snp' and 'snpClust' differ")
+  if (missing(absCor))
+    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, names = colnames(snp))
+  else
+    hier <- as.hierarchy(snpClust$dendrogram, height = 1 - absCor, names = colnames(snp))
+  if (any(naFreq(snp) > 0))
+    snp <- imputeMedoids(snp, snpClust, hier, min.absCor, mc.cores)
   if (is.null(names <- snpClust$medoids))
     names <- names(snpClust)
-  if (any(is.na(snp@snpData)))
-    stop("Missing values in 'snp' are not allowed")
   snpnames <- colnames(snp)[colnames(snp) %in% names]
-  if (missing(absCor))
-    hier <- as.hierarchy(snpClust$dendrogram, 1 - min.absCor, names = snpnames)
-  else
-    hier <- as.hierarchy(snpClust$dendrogram, height = 1 - absCor, names = snpnames)
-  if (any(naFreq(snp) > 0)) {
-    snp <- imputeMedoids(snp, snpClust$clusters, hier, min.absCor, mc.cores)
-  }
   desMat <- as.matrix(snp[, snpnames])
   out <- list(x = desMat,
               hierarchy = hier,

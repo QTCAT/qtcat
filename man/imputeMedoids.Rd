@@ -4,12 +4,12 @@
 \alias{imputeMedoids}
 \title{Impute missing information at medoid SNPs}
 \usage{
-imputeMedoids(snp, clust, hier, min.absCor = 0.25, mc.cores = 1)
+imputeMedoids(snp, snpClust, hier, min.absCor = 0.25, mc.cores = 1)
 }
 \arguments{
 \item{snp}{An object of class \linkS4class{snpMatrix}.}
 
-\item{clust}{A named vector of clusters.}
+\item{snpClust}{An object of class \code{\link{qtcatClust}}.}
 
 \item{hier}{A object of class hierarchy.}
 
