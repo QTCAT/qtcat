@@ -125,6 +125,8 @@ imputeSnp <- function(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps
           unsolved <- temp[[2L]]
         }
         super <- attr(hier[[super]], "superset")
+        if (is.null(super))
+          break
         inxSnpGrp <- hier[[super]]
         h <- attr(inxSnpGrp, "height")
       }

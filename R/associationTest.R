@@ -35,7 +35,7 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5, mc.cores = 1) {
   else
     hier <- as.hierarchy(snpClust$dendrogram, height = 1 - absCor, names = colnames(snp))
   if (any(naFreq(snp) > 0))
-    snp <- imputeMedoids(snp, snpClust, hier, min.absCor, mc.cores)
+    snp <- imputeMedoids(snp, snpClust, hier, .25, mc.cores)
   if (is.null(names <- snpClust$medoids))
     names <- names(snpClust)
   snpnames <- colnames(snp)[colnames(snp) %in% names]
