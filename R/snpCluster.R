@@ -267,6 +267,7 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
 #' cclust <- cutClust(snp, clust, .5)
 #'
 #' @importFrom methods is
+#' @importFrom stats na.omit
 #' @export
 cutClust <- function(snp, snpClust, absCor = 1) {
   stopifnot(is(snp, "snpMatrix"))
@@ -287,7 +288,7 @@ cutClust <- function(snp, snpClust, absCor = 1) {
     clust <- unlist(lapply(1:length(cut.dend$lower), clust.member, cut.dend$lower, clust))
     medo <- names(clust)[corMedoids(snp[, names(clust)]@snpData, clust)]
     dend <- rename.leafs(cut.dend$upper, medo)
-    clust <- clust[na.exclude(match(colnames(snp), names(clust)))]
+    clust <- clust[na.omit(match(colnames(snp), names(clust)))]
   }
   out <- list(dendrogram = dend,
               clusters = clust,
@@ -304,7 +305,7 @@ cutClust <- function(snp, snpClust, absCor = 1) {
 #' @param dend A dendrogram.
 #' @param labels vector of new names.
 #'
-#' @importFrom stats dendrapply
+#' @importFrom stats dendrapply is.leaf
 #' @keywords internal
 rename.leafs <- function(dend, labels){
   dendlabel <- function(n) {
