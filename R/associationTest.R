@@ -24,6 +24,7 @@
 #'
 #' @importFrom hit as.hierarchy
 #' @importFrom methods is
+#' @importFrom stats reorder
 #' @export
 qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5, mc.cores = 1) {
   stopifnot(is(snp, "snpMatrix"))
@@ -40,6 +41,7 @@ qtcatGeno <- function(snp, snpClust, absCor, min.absCor = 0.5, mc.cores = 1) {
     names <- names(snpClust)
   snpnames <- colnames(snp)[colnames(snp) %in% names]
   desMat <- as.matrix(snp[, snpnames])
+  hier <- reorder(hier, snpnames)
   out <- list(x = desMat,
               hierarchy = hier,
               clusters = snpClust$clusters,
@@ -132,7 +134,7 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @param mc.cores Number of cores for parallelising. Theoretical maximum is
 #' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #' @param trace If \code{TRUE} it prints current status of the program.
-#' @param ... additional arguments for \code{\link[glmnet]{cv.glmnet}}.
+#' @param ... Additional arguments for \code{\link[glmnet]{cv.glmnet}}.
 #'
 #' @examples
 #' # If you want to run the examples, use:

@@ -39,7 +39,7 @@ to one. Small \code{max.p.esti} values reduce computing time.}
 
 \item{trace}{If \code{TRUE} it prints current status of the program.}
 
-\item{...}{additional arguments for \code{\link[glmnet]{cv.glmnet}}.}
+\item{...}{Additional arguments for \code{\link[glmnet]{cv.glmnet}}.}
 }
 \description{
 Hierarchical inference testing for phenotype-SNP association.
