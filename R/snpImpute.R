@@ -10,9 +10,27 @@
 #' @param mc.cores Number of cores for parallelising. Theoretical maximum is
 #' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #'
+#' @examples
+#' # file containing example data for SNP data
+#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+#' snp1 <- read.snpData(gfile, sep = ",")
+#' # delete SNP information from Matrix, 33.33% NAs (-> 66.67% SNP info)
+#' snp2 <- snp1
+#' nainx <- sample(1:length(snp2@snpData), length(snp2@snpData) / 3)
+#' snp2@snpData[nainx] <- as.raw(0)
+#' # clustering
+#' snp2clust <- qtcatClust(snp2)
+#'
+#' # imputing
+#' snp3 <- imputeSnpMatrix(snp2, snp2clust)
+#' # comparison of the full and the imputed data set
+#' snpmat1 <- as.matrix(snp1)
+#' snpmat3 <- as.matrix(snp3)
+#' (1 - sum(abs(snpmat1- snpmat3)) / length(snpmat1)) * 100
+#'
 #' @importFrom hit as.hierarchy
 #' @export
-imputeSnpMatrix <- function(snp, snpClust, min.absCor = .25, mc.cores = 1) {
+imputeSnpMatrix <- function(snp, snpClust, min.absCor = .1, mc.cores = 1) {
   stopifnot(is(snp, "snpMatrix"))
   stopifnot(is(snpClust, "qtcatClust"))
   snpnames <- colnames(snp)
@@ -66,7 +84,7 @@ imputeMedoids <- function(snp, snpClust, hier, min.absCor = .25, mc.cores = 1) {
   flipAlleles <- as.numeric(alleleFreq(snp, FALSE) <= .5)
   # run thru all SNPs
   snpList <- mclapply(1:ncol(snp), imputeSnp,
-                      snp, hier, hierLeafs, snpClust$clusters, medoSnps, 
+                      snp, hier, hierLeafs, snpClust$clusters, medoSnps,
                       naSnps, flipAlleles, min.absCor,
                       mc.cores = mc.cores)
   snp@snpData <- do.call(cbind, snpList)
@@ -86,14 +104,14 @@ imputeMedoids <- function(snp, snpClust, hier, min.absCor = .25, mc.cores = 1) {
 #' @param clust A named vector of clusters.
 #' @param medoSnps Vector of medo turue o false.
 #' @param naSnps Vector of NA indeces.
-#' 
+#'
 #' @param flipAlleles A vertor of telling for each SNP if allele one has allele freq. > 0.5
 #' or not.
 #' @param min.absCor A minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @keywords internal
-imputeSnp <- function(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps, 
+imputeSnp <- function(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps,
                       flipAlleles, min.absCor) {
   snpOfInt <- snp@snpData[, inxSnpOfInt]
   if (medoSnps[inxSnpOfInt] && (inxSnpOfInt %in% naSnps)) {

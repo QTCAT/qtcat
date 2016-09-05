@@ -4,7 +4,7 @@
 \alias{imputeSnpMatrix}
 \title{Impute allele in formation to SNPs with missing data}
 \usage{
-imputeSnpMatrix(snp, snpClust, min.absCor = 0.25, mc.cores = 1)
+imputeSnpMatrix(snp, snpClust, min.absCor = 0.1, mc.cores = 1)
 }
 \arguments{
 \item{snp}{An object of class \linkS4class{snpMatrix}.}
@@ -20,5 +20,24 @@ point in the hierarchy is reached, imputing is done via allele frequencies.}
 \description{
 Uses neighboring SNPs in the clustering hierarchy to impute alleles to
 positions with missing values.
+}
+\examples{
+# file containing example data for SNP data
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+snp1 <- read.snpData(gfile, sep = ",")
+# delete SNP information from Matrix, 33.33\% NAs (-> 66.67\% SNP info)
+snp2 <- snp1
+nainx <- sample(1:length(snp2@snpData), length(snp2@snpData) / 3)
+snp2@snpData[nainx] <- as.raw(0)
+# clustering
+snp2clust <- qtcatClust(snp2)
+
+# imputing
+snp3 <- imputeSnpMatrix(snp2, snp2clust)
+# comparison of the full and the imputed data set
+snpmat1 <- as.matrix(snp1)
+snpmat3 <- as.matrix(snp3)
+(1 - sum(abs(snpmat1- snpmat3)) / length(snpmat1)) * 100
+
 }
 
