@@ -33,6 +33,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
     // Individual names
     Rcpp::CharacterVector indivNames = Rcpp::wrap(lineElements);
     //
+    int nosnpcount = 0;
     vector<string> lociNames;
     vector<string> chr;
     vector<int> pos;
@@ -75,9 +76,7 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         vector<char> allele(allelesSet.begin(), allelesSet.end());
         // if more not two alleles skip
         if (allele.size() != 2) {
-            Rcpp::Rcerr << "warning: Line " << line <<
-                " has more or less than two alleles and therefore the line is skipt"
-                << endl;
+            nosnpcount ++;
             continue;
         }
         allelepos.push_back(allele[0]);
@@ -108,12 +107,16 @@ Rcpp::List read_snpData(Rcpp::CharacterVector file, char sep, char quote,
         chr.push_back(lineElements[posStart]);
         pos.push_back(atoi(lineElements[posStart + 1].c_str()));
         col ++;
-        if ((nrows > 0) && (nrows <= (col + 1))) {
+        if ((nrows > 0) && (nrows <= line)) {
             break;
         }
     }
     if (snpData.size() == 0)
         Rcpp::stop("No valid SNP found");
+    if (nosnpcount > 0)
+        Rcpp::Rcerr << "note: " << nosnpcount << " of " << line <<
+          " lines have more or less than two alleles and are therefore not considered"
+          << endl;
     // Rcpp conversioan and vector as matrix
     // alleles
     Rcpp::CharacterVector alleles = Rcpp::wrap(allelepos);
