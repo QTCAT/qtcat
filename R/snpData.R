@@ -1,16 +1,16 @@
-#' @title Read SNP tables to snpMatrix object
+#' @title Read SNP tables as a snpMatrix object
 #'
-#' @description Reads a file in table format and returns a 'snpMatrix' object.
+#' @description Reads a file in table format and as a \linkS4class{snpMatrix} object.
 #'
-#' @param file The name of the file which the data are to be read from. If it does not
+#' @param file the name of the file which the data are to be read from. If it does not
 #' contain an absolute path, the file name is relative to the current working directory,
 #' \code{getwd()}. Tilde-expansion is performed where supported.
-#' @param sep The field separator character. Values on each line of the file are separated
+#' @param sep a field separator character. Values on each line of the file are separated
 #' by this character.
-#' @param quote The set of quoting characters. To disable quoting altogether, use
+#' @param quote the set of quoting characters. To disable quoting altogether, use
 #' \code{quote = ""}.
-#' @param na.string A string which is  interpreted as NA value.
-#' @param nrows Integer, the maximum number of rows to read.
+#' @param na.string a string which is  interpreted as NA value.
+#' @param nrows a integer, the maximum number of rows to read.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -70,16 +70,16 @@ read.snpData <- function(file, sep = " ",  quote = "\"",
 }
 
 
-#' @title snpMatrix object constructor
+#' @title A snpMatrix constructor
 #'
-#' @description Constructs a \code{snpMatrix} object from given data.
+#' @description Constructs a \linkS4class{snpMatrix} object from the given data.
 #'
-#' @param x A matrix with indoviduals in rows and SNPs in columns.
-#' @param chr A vector with chromosoms at which SNPs are located.
-#' @param pos A vector with genomic positions at which SNPs are located.
-#' @param alleleCoding A coding scheme of \code{x} for hom het hom.
-#' @param allele.1 Labels of allele one, for each SNP.
-#' @param allele.2 Labels of allele two, for each SNP.
+#' @param x a matrix with individuals in rows and SNPs in columns.
+#' @param chr a vector with chromosoms at which SNPs are located.
+#' @param pos a vector with genomic positions at which SNPs are located.
+#' @param alleleCoding a coding scheme of \code{x} for hom (AA), het (AB), and hom (BB).
+#' @param allele.1 labels of allele one, for each SNP.
+#' @param allele.2 labels of allele two, for each SNP.
 #'
 #' @importFrom methods new
 #' @importFrom stats na.omit
@@ -135,17 +135,17 @@ as.snpMatrix <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
 }
 
 
-#' @title Sub snpMatrix
+#' @title Subsetting snpMatrix
 #'
 #' @description Subsetting an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x  An object of class \linkS4class{snpMatrix}.
-#' @param i Indices specifying elements to extract or replace. Indices are booleans,
+#' @param x  an object of class \linkS4class{snpMatrix}.
+#' @param i a indices specifying elements to extract or replace. Indices are booleans,
 #' numeric or character vectors.
 #' @param j indices specifying elements to extract or replace. Indices are booleans,
 #' numeric or character vectors.
-#' @param ... Not implemented.
-#' @param drop Not implemented.
+#' @param ... not implemented.
+#' @param drop not implemented.
 #'
 #' @importFrom methods setMethod signature new
 #' @export
@@ -172,11 +172,11 @@ setMethod("[", signature(x = "snpMatrix", i = "ANY", j = "ANY", drop = "missing"
 )
 
 
-#' @title snpMatrix as matrix
+#' @title As matrix method for snpMatrix
 #'
-#' @description Matrix from an object of class \linkS4class{snpMatrix}.
+#' @description As matrix method for an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpMatrix}.
+#' @param x an object of class \linkS4class{snpMatrix}.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -200,7 +200,7 @@ setMethod("as.matrix", signature(x = "snpMatrix"),
 #' @description Genetic position info from an object of class
 #'  \linkS4class{snpMatrix}.
 #'
-#' @param object An object of class \linkS4class{snpMatrix}.
+#' @param object an object of class \linkS4class{snpMatrix}.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -225,9 +225,9 @@ setMethod("snpInfo", signature(object = "snpMatrix"),
 #'
 #' @description Allele frequency an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpMatrix}.
-#' @param maf If true minor allele frequency (default), other ways allele frequency of
-#' 'allele.1'.
+#' @param x an object of class \linkS4class{snpMatrix}.
+#' @param maf logical, if true minor allele frequency (default), other ways allele
+#' frequency of 'allele.1'.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -250,8 +250,9 @@ setMethod("alleleFreq", signature(x = "snpMatrix"),
 #'
 #' @description Heterozygosity an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpMatrix}.
-#' @param dim Integer for dimension.
+#' @param x an object of class \linkS4class{snpMatrix}.
+#' @param dim a integer for dimension. 1 (default) is for rows (individuals), 2 is for
+#' columns (SNPs).
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -280,8 +281,9 @@ setMethod("hetFreq", signature(x = "snpMatrix"),
 #'
 #' @description NA frequency in an object of class \linkS4class{snpMatrix}.
 #'
-#' @param x An object of class \linkS4class{snpMatrix}.
-#' @param dim Integer for dimension.
+#' @param x an object of class \linkS4class{snpMatrix}.
+#' @param dim a integer for dimension. 1 (default) is for rows (individuals), 2 is for
+#' columns (SNPs).
 #'
 #' @examples
 #' # file containing example data for SNP data

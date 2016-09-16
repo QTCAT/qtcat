@@ -1,13 +1,13 @@
 #' @title Impute allele in formation to SNPs with missing data
 #'
-#' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
+#' @description Uses neighbor SNPs from the clustering hierarchy to impute alleles to
 #' positions with missing values.
 #'
-#' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param snpClust An object of class \code{\link{qtcatClust}}.
-#' @param min.absCor A minimum value of correlation. If missing values still exist if this
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param snpClust an object of class \code{\link{qtcatClust}}.
+#' @param min.absCor a minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
-#' @param mc.cores Number of cores for parallelising. Theoretical maximum is
+#' @param mc.cores a number of cores for parallelising. Theoretical maximum is
 #' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #'
 #' @examples
@@ -67,12 +67,12 @@ imputeSnpMatrix <- function(snp, snpClust, min.absCor = .1, mc.cores = 1) {
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute alleles to
 #' positions with missing values at medoid SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param snpClust An object of class \code{\link{qtcatClust}}.
-#' @param hier A object of class hierarchy.
-#' @param min.absCor A minimum value of correlation. If missing values still exist if this
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param snpClust an object of class \code{\link{qtcatClust}}.
+#' @param hier an object of class hierarchy.
+#' @param min.absCor a minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
-#' @param mc.cores Number of cores for parallelising. Theoretical maximum is
+#' @param mc.cores a number of cores for parallelising. Theoretical maximum is
 #' \code{'B'}. For details see \code{\link[parallel]{mclapply}}.
 #'
 #' @importFrom parallel mclapply
@@ -97,17 +97,16 @@ imputeMedoids <- function(snp, snpClust, hier, min.absCor = .25, mc.cores = 1) {
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute as many as
 #' possible alleles to positions with missing values at medoid SNPs.
 #'
-#' @param inxSnpOfInt A vertor of the snp of interest.
-#' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param hier A object of class hierarchy.
-#' @param hierLeafs Vector of leafs of the hierarchy.
-#' @param clust A named vector of clusters.
-#' @param medoSnps Vector of medo turue o false.
-#' @param naSnps Vector of NA indeces.
-#'
-#' @param flipAlleles A vertor of telling for each SNP if allele one has allele freq. > 0.5
+#' @param inxSnpOfInt a vertor of the snp of interest.
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param hier an object of class hierarchy.
+#' @param hierLeafs a vector of leafs of the hierarchy.
+#' @param clust a named vector of clusters.
+#' @param medoSnps a vector of medo turue o false.
+#' @param naSnps a vector of NA indeces.
+#' @param flipAlleles a vertor of telling for each SNP if allele one has allele freq. > 0.5
 #' or not.
-#' @param min.absCor A minimum value of correlation. If missing values still exist if this
+#' @param min.absCor a minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @keywords internal
@@ -167,13 +166,13 @@ imputeSnp <- function(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps
 #' @description Uses neighboring SNPs in the clustering hierarchy to impute as many as
 #' possible alleles to positions with missing values at medoid SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param snpOfInt A vertor of the snp of interest.
-#' @param inxSnpsToComp Index of neighbors.
-#' @param snpOfIntFlip Flip status of the snp of interest.
-#' @param flipAlleles A vertor of telling for each SNP if allele one has allele freq. > 0.5
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param snpOfInt a vertor of the snp of interest.
+#' @param inxSnpsToComp a index of neighbors.
+#' @param snpOfIntFlip flip status of the snp of interest.
+#' @param flipAlleles a vertor of telling for each SNP if allele one has allele freq. > 0.5
 #' or not.
-#' @param min.absCor A minimum value of correlation. If missing values still exist if this
+#' @param min.absCor a minimum value of correlation. If missing values still exist if this
 #' point in the hierarchy is reached, imputing is done via allele frequencies.
 #'
 #' @keywords internal

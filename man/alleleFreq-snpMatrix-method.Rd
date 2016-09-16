@@ -8,10 +8,10 @@
 \S4method{alleleFreq}{snpMatrix}(x, maf = TRUE)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpMatrix}.}
+\item{x}{an object of class \linkS4class{snpMatrix}.}
 
-\item{maf}{If true minor allele frequency (default), other ways allele frequency of
-'allele.1'.}
+\item{maf}{logical, if true minor allele frequency (default), other ways allele
+frequency of 'allele.1'.}
 }
 \description{
 Allele frequency an object of class \linkS4class{snpMatrix}.

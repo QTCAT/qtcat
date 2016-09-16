@@ -8,7 +8,7 @@
 \S4method{snpInfo}{snpMatrix}(object)
 }
 \arguments{
-\item{object}{An object of class \linkS4class{snpMatrix}.}
+\item{object}{an object of class \linkS4class{snpMatrix}.}
 }
 \description{
 Genetic position info from an object of class

@@ -7,15 +7,15 @@
 medoidsLm(object, pheno, geno, alpha = 0.05, min.absCor = 0.05)
 }
 \arguments{
-\item{object}{An object of class \code{\link{qtcatHit}}.}
+\item{object}{an object of class \code{\link{qtcatHit}}.}
 
-\item{pheno}{An object of class \code{\link{qtcatPheno}}.}
+\item{pheno}{an object of class \code{\link{qtcatPheno}}.}
 
-\item{geno}{An object of class \code{\link{qtcatGeno}}.}
+\item{geno}{an object of class \code{\link{qtcatGeno}}.}
 
-\item{alpha}{An alpha level for significance estimation.}
+\item{alpha}{an alpha level for significance estimation.}
 
-\item{min.absCor}{Minimum absolute value of correlation considered.}
+\item{min.absCor}{minimum absolute value of correlation considered.}
 }
 \description{
 Linear model between phenotype and medoids of QTCs (significant SNP

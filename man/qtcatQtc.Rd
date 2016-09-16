@@ -7,11 +7,11 @@
 qtcatQtc(object, alpha = 0.05, min.absCor = 0.05)
 }
 \arguments{
-\item{object}{An object of class \code{\link{qtcatHit}}.}
+\item{object}{an object of class \code{\link{qtcatHit}}.}
 
-\item{alpha}{An alpha level for significance estimation.}
+\item{alpha}{an alpha level for significance estimation.}
 
-\item{min.absCor}{Minimum absolute value of correlation considered.}
+\item{min.absCor}{a minimum absolute value of correlation to be considered.}
 }
 \description{
 Summarizing the QTCs (significant cluster of SNPs) and their position at

@@ -8,17 +8,17 @@ plotQtc(x, alpha = 0.05, xlab = "Chromosomes",
   ylab = expression(-log[10](italic(p))), col.axis = NULL, ...)
 }
 \arguments{
-\item{x}{An object of class \code{\link{qtcatHit}}.}
+\item{x}{an object of class \code{\link{qtcatHit}}.}
 
-\item{alpha}{An alpha level for significance estimation.}
+\item{alpha}{an alpha level for significance estimation.}
 
-\item{xlab}{A title for the x axis.}
+\item{xlab}{a title for the x axis.}
 
-\item{ylab}{A title for the y axis.}
+\item{ylab}{a title for the y axis.}
 
-\item{col.axis}{Colors for axis line, tick marks, and title respectively.}
+\item{col.axis}{colors for axis line, tick marks, and title respectively.}
 
-\item{...}{Other graphical parameters may also be passed as arguments to this function.}
+\item{...}{other graphical parameters may also be passed as arguments to this function.}
 }
 \description{
 Plot the QTCs (significant cluster of SNPs) at their

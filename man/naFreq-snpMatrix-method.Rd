@@ -8,9 +8,10 @@
 \S4method{naFreq}{snpMatrix}(x, dim = 1)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpMatrix}.}
+\item{x}{an object of class \linkS4class{snpMatrix}.}
 
-\item{dim}{Integer for dimension.}
+\item{dim}{a integer for dimension. 1 (default) is for rows (individuals), 2 is for
+columns (SNPs).}
 }
 \description{
 NA frequency in an object of class \linkS4class{snpMatrix}.

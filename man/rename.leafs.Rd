@@ -7,9 +7,9 @@
 rename.leafs(dend, labels)
 }
 \arguments{
-\item{dend}{A dendrogram.}
+\item{dend}{a dendrogram.}
 
-\item{labels}{vector of new names.}
+\item{labels}{a vector of new names.}
 }
 \description{
 Rename dendrogram leafs.

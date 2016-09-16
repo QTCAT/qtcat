@@ -2,36 +2,37 @@
 % Please edit documentation in R/snpCluster.R
 \name{qtcatClust}
 \alias{qtcatClust}
-\title{A three step approximated hierarchical clustering of SNPs}
+\title{Hierarchical clustering for big SNP data sets.}
 \usage{
 qtcatClust(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
   method = "complete", mc.cores = 1, trace = FALSE, ...)
 }
 \arguments{
-\item{snp}{A object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 
-\item{k}{A positive integer specifying the number of clusters, less than the number of
+\item{k}{a positive integer specifying the number of clusters, less than the number of
 observations.}
 
-\item{identicals}{Logical, if zero clustering.}
+\item{identicals}{logical, if zero clustering.}
 
-\item{maxNeigbours}{Positive integer, specifying the maximum number of randomized
+\item{maxNeigbours}{a positive integer, specifying the maximum number of randomized
 searches.}
 
-\item{nLocal}{Positive integer, specifying the number of optimisation runs. Columns have
-to be similar to \code{snp}.}
+\item{nLocal}{a positive integer, specifying the number of optimisation runs. Columns
+have to be similar to \code{snp}.}
 
-\item{method}{See hclust.}
+\item{method}{see hclust.}
 
-\item{mc.cores}{Number of cores for parallel computing. See \code{mclapply} in package
+\item{mc.cores}{a number of cores for parallel computing. See \code{mclapply} in package
 parallel for details.}
 
-\item{trace}{If \code{TRUE} it prints current status of the program.}
+\item{trace}{logical, if \code{TRUE} it prints current status of the program.}
 
-\item{...}{Additional argruments for \code{\link[stats]{hclust}}}
+\item{...}{additional argruments for \code{\link[stats]{hclust}}}
 }
 \description{
-Hierarchical clustering for big SNP data sets.
+A three step approximated hierarchical clustering of SNPs suitable to
+large data sets.
 }
 \examples{
 # file containing example data for SNP data

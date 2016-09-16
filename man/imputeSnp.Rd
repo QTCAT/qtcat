@@ -8,24 +8,24 @@ imputeSnp(inxSnpOfInt, snp, hier, hierLeafs, clust, medoSnps, naSnps,
   flipAlleles, min.absCor)
 }
 \arguments{
-\item{inxSnpOfInt}{A vertor of the snp of interest.}
+\item{inxSnpOfInt}{a vertor of the snp of interest.}
 
-\item{snp}{An object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 
-\item{hier}{A object of class hierarchy.}
+\item{hier}{an object of class hierarchy.}
 
-\item{hierLeafs}{Vector of leafs of the hierarchy.}
+\item{hierLeafs}{a vector of leafs of the hierarchy.}
 
-\item{clust}{A named vector of clusters.}
+\item{clust}{a named vector of clusters.}
 
-\item{medoSnps}{Vector of medo turue o false.}
+\item{medoSnps}{a vector of medo turue o false.}
 
-\item{naSnps}{Vector of NA indeces.}
+\item{naSnps}{a vector of NA indeces.}
 
-\item{flipAlleles}{A vertor of telling for each SNP if allele one has allele freq. > 0.5
+\item{flipAlleles}{a vertor of telling for each SNP if allele one has allele freq. > 0.5
 or not.}
 
-\item{min.absCor}{A minimum value of correlation. If missing values still exist if this
+\item{min.absCor}{a minimum value of correlation. If missing values still exist if this
 point in the hierarchy is reached, imputing is done via allele frequencies.}
 }
 \description{

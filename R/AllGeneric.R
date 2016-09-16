@@ -1,46 +1,48 @@
-#' @title Extract position and allele information from object.
+#' @title Extract genomic position and allele information.
 #'
-#' @description Extract position and allele information from object.
+#' @description Extract genomic position and allele information from object.
 #'
-#' @param object An object.
+#' @param object an object, for which a corresponding method exists.
 #'
 #' @importFrom methods setGeneric
 #' @export
 setGeneric("snpInfo", function(object) standardGeneric("snpInfo"))
 
 
-#' @title Frequency of alleles in data.
+#' @title  Allele Frequency.
 #'
-#' @description Frequency of alleles in data.
+#' @description Frequency of alleles in data set.
 #'
-#' @param x An object.
-#' @param maf If true minor allele frequency (default), other ways allele frequency of 
-#' 'allele.1'.
+#' @param x an object, for which a corresponding method exists.
+#' @param maf logical, if true minor allele frequency (default), other ways allele
+#' frequency of 'allele.1'.
 #'
 #' @importFrom methods setGeneric
 #' @export
 setGeneric("alleleFreq", function(x, maf = TRUE) standardGeneric("alleleFreq"))
 
 
-#' @title Frequency of heterozygosity in data.
+#' @title Heterozygosity Frequency.
 #'
-#' @description Frequency of heterozygosity in data.
+#' @description Frequency of heterozygosity in data set.
 #'
-#' @param x An object.
-#' @param dim Dimension over which heterozygosity is estimated.
+#' @param x an object, for which a corresponding method exists.
+#' @param dim dimension over which heterozygosity is estimated. 1 (default) is for rows
+#' (individuals), 2 is for columns (SNPs).
 #'
 #' @importFrom methods setGeneric
 #' @export
 setGeneric("hetFreq", function(x, dim = 1L) standardGeneric("hetFreq"))
 
 
-#' @title Frequency of NAs in data.
+#' @title Missing Data Frequency.
 #'
-#' @description Frequency of NAs in data.
+#' @description Frequency of missing Data in data set.
 #'
-#' @param x An object.
-#' @param dim Dimension over which heterozygosity is estimated.
+#' @param x an object, for which a corresponding method exists.
+#' @param dim dimension over which heterozygosity is estimated. 1 (default) is for rows
+#' (individuals), 2 is for columns (SNPs).
 #'
 #' @importFrom methods setGeneric
 #' @export
-setGeneric("naFreq", function(x, dim=1L) standardGeneric("naFreq"))
+setGeneric("naFreq", function(x, dim = 1L) standardGeneric("naFreq"))

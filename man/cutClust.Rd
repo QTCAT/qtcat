@@ -7,11 +7,11 @@
 cutClust(snp, snpClust, absCor = 1)
 }
 \arguments{
-\item{snp}{A object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 
-\item{snpClust}{An object of class \code{\link{qtcatClust}}.}
+\item{snpClust}{an object of class \code{\link{qtcatClust}}.}
 
-\item{absCor}{cutting height in absolute value of correlation.}
+\item{absCor}{a cutting height in absolute value of correlation.}
 }
 \description{
 Cut a qtcatClust object at an specific height.

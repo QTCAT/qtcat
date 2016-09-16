@@ -3,22 +3,22 @@
 \docType{methods}
 \name{[,snpMatrix,ANY,ANY,missing-method}
 \alias{[,snpMatrix,ANY,ANY,missing-method}
-\title{Sub snpMatrix}
+\title{Subsetting snpMatrix}
 \usage{
 \S4method{[}{snpMatrix,ANY,ANY,missing}(x, i, j, ..., drop = TRUE)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpMatrix}.}
+\item{x}{an object of class \linkS4class{snpMatrix}.}
 
-\item{i}{Indices specifying elements to extract or replace. Indices are booleans,
+\item{i}{a indices specifying elements to extract or replace. Indices are booleans,
 numeric or character vectors.}
 
 \item{j}{indices specifying elements to extract or replace. Indices are booleans,
 numeric or character vectors.}
 
-\item{...}{Not implemented.}
+\item{...}{not implemented.}
 
-\item{drop}{Not implemented.}
+\item{drop}{not implemented.}
 }
 \description{
 Subsetting an object of class \linkS4class{snpMatrix}.

@@ -2,16 +2,17 @@
 % Please edit documentation in R/AllGeneric.R
 \name{naFreq}
 \alias{naFreq}
-\title{Frequency of NAs in data.}
+\title{Missing Data Frequency.}
 \usage{
 naFreq(x, dim = 1L)
 }
 \arguments{
-\item{x}{An object.}
+\item{x}{an object, for which a corresponding method exists.}
 
-\item{dim}{Dimension over which heterozygosity is estimated.}
+\item{dim}{dimension over which heterozygosity is estimated. 1 (default) is for rows
+(individuals), 2 is for columns (SNPs).}
 }
 \description{
-Frequency of NAs in data.
+Frequency of missing Data in data set.
 }
 

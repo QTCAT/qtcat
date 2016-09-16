@@ -2,25 +2,25 @@
 % Please edit documentation in R/snpData.R
 \name{as.snpMatrix}
 \alias{as.snpMatrix}
-\title{snpMatrix object constructor}
+\title{A snpMatrix constructor}
 \usage{
 as.snpMatrix(x, chr, pos, alleleCoding = c(-1, 0, 1), allele.1 = NULL,
   allele.2 = NULL)
 }
 \arguments{
-\item{x}{A matrix with indoviduals in rows and SNPs in columns.}
+\item{x}{a matrix with individuals in rows and SNPs in columns.}
 
-\item{chr}{A vector with chromosoms at which SNPs are located.}
+\item{chr}{a vector with chromosoms at which SNPs are located.}
 
-\item{pos}{A vector with genomic positions at which SNPs are located.}
+\item{pos}{a vector with genomic positions at which SNPs are located.}
 
-\item{alleleCoding}{A coding scheme of \code{x} for hom het hom.}
+\item{alleleCoding}{a coding scheme of \code{x} for hom (AA), het (AB), and hom (BB).}
 
-\item{allele.1}{Labels of allele one, for each SNP.}
+\item{allele.1}{labels of allele one, for each SNP.}
 
-\item{allele.2}{Labels of allele two, for each SNP.}
+\item{allele.2}{labels of allele two, for each SNP.}
 }
 \description{
-Constructs a \code{snpMatrix} object from given data.
+Constructs a \linkS4class{snpMatrix} object from the given data.
 }
 

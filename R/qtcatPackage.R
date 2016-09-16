@@ -1,9 +1,9 @@
 #' @title Quantitative Trait Cluster Association Test
 #'
-#' @description An association mapping method which jointly analyses all SNPs
-#' at once and at the same time accounts for the correlation between them. This
-#' makes correction for population structure unnecessary and therefore
-#' increases power compared to classical methods like the mixed model.
+#' @description QTCAT tests all SNPs jointly in ther association to the phenotype and at
+#' the same time considers correlation between them. Thus, correction for population
+#' structure becomes unnecessary, which in many cases results in a power advantages
+#' compared to other methods.
 #'
 #' @author Jonas Klasen
 #'

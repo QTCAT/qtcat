@@ -1,10 +1,10 @@
-#' @title Correlation based distance among SNPs
+#' @title Correlation based distance between SNPs
 #'
-#' @description This function computes and returns a distance matrix. Distance is estimated
-#' as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is
-#' computed for all pairwise combinations SNPs.
+#' @description This function computes a distance matrix. The distance is estimated
+#' as one minus the absolute value of the correlation coefficient \code{1 - abs(cor)}.
 #'
-#' @param snp An object of class \linkS4class{snpMatrix}.
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#'
 #' @details See \code{\link[stats]{dist}} for details about the output object.
 #' @seealso \code{\link[stats]{dist}}
 #'
@@ -31,13 +31,13 @@ distCor <- function(snp) {
 }
 
 
-#' @title Perfect simiarity  SNP clusters
+#' @title Perfect simiarity clusters of SNP
 #'
-#' @description Finds perfect similarity cluster of SNPs. This is specially us full in
-#' crossed populations.
+#' @description Finds perfect similarity cluster of SNPs. This is specially usfull in
+#' artificial crossing populations.
 #'
-#' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param mc.cores A positive integer for the number of cores for parallel computing. See
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param mc.cores a positive integer for the number of cores for parallel computing. See
 #' \code{\link[parallel]{mclapply}} for details.
 #'
 #' @examples
@@ -73,24 +73,24 @@ identicals <- function(snp, mc.cores = 1) {
 #' @title K-medoids clustering of SNPs using randomized search
 #'
 #' @description Partitioning (clustering) into k clusters "around medoids" by randomized
-#' search. 1-abs(cor) is used as distance among SNPs.
+#' search. \code{1-abs(cor)} is used as distance between SNPs.
 #'
-#' @param snp An object of class \linkS4class{snpMatrix}.
-#' @param k A positive integer specifying the number of clusters, greater than one and less
-#' than the number of SNPs.
-#' @param maxNeigbours A positive integer specifying the maximum number of randomized
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param k a positive integer specifying the number of clusters, has to be greater than
+#' one and less than the number of SNPs.
+#' @param maxNeigbours a positive integer specifying the maximum number of randomized
 #' searches.
-#' @param nLocal A positive integer specifying the number of optimisation runs.
-#' @param mc.cores A positive integer for the number of cores for parallel computing. See
+#' @param nLocal a positive integer specifying the number of optimisation runs.
+#' @param mc.cores a positive integer for the number of cores for parallel computing. See
 #' \code{\link[parallel]{mclapply}} for details.
 #'
 #' @details The K-medoids clustering is implemented as clustering large applications based
 #' upon randomized search (CLARANS) algorithm (Ng and Han 2002). CLARANS is a modification
 #' of the partitioning around medoids (PAM) algorithm \code{\link[cluster]{pam}}. Where the
-#' PAM algorithm is estimating all distances between SNPs and the respective medoids SNPs,
+#' PAM algorithm is estimating all distances between SNPs and the respective medoids,
 #' CLARANS is searching a random subset of the SNPs. This is independently repeated several
 #' times and the result which minimises the average distance the most is reported. This
-#' produces results close to those of the PAM algorithm (Ng and Han 2002), even though the
+#' produces results close to those of the PAM algorithm (Ng and Han 2002), though the
 #' number of runs and the subset size have to be arbitrarily chosen by the user. The
 #' algorithm has two advantages: (i) the number of distance comparisons is dramatically
 #' reduced; and (ii) parallelizing is straightforward.
@@ -120,7 +120,7 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
     # cluster optimisation by clarans
     out <- corClarans(snp@snpData, k, maxNeigbours)
     out
-  } # clarans.i
+  }
   out.nLocal <- mclapply(1L:nLocal, clarans.i,
                          snp, k, maxNeigbours,
                          mc.cores = mc.cores)
@@ -141,23 +141,24 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 }
 
 
-#' @title A three step approximated hierarchical clustering of SNPs
+#' @title Hierarchical clustering for big SNP data sets.
 #'
-#' @description Hierarchical clustering for big SNP data sets.
+#' @description A three step approximated hierarchical clustering of SNPs suitable to
+#' large data sets.
 #'
-#' @param snp A object of class \linkS4class{snpMatrix}.
-#' @param k A positive integer specifying the number of clusters, less than the number of
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param k a positive integer specifying the number of clusters, less than the number of
 #' observations.
-#' @param identicals Logical, if zero clustering.
-#' @param maxNeigbours Positive integer, specifying the maximum number of randomized
+#' @param identicals logical, if zero clustering.
+#' @param maxNeigbours a positive integer, specifying the maximum number of randomized
 #' searches.
-#' @param nLocal Positive integer, specifying the number of optimisation runs. Columns have
-#' to be similar to \code{snp}.
-#' @param method See hclust.
-#' @param mc.cores Number of cores for parallel computing. See \code{mclapply} in package
+#' @param nLocal a positive integer, specifying the number of optimisation runs. Columns
+#' have to be similar to \code{snp}.
+#' @param method see hclust.
+#' @param mc.cores a number of cores for parallel computing. See \code{mclapply} in package
 #' parallel for details.
-#' @param trace If \code{TRUE} it prints current status of the program.
-#' @param ... Additional argruments for \code{\link[stats]{hclust}}
+#' @param trace logical, if \code{TRUE} it prints current status of the program.
+#' @param ... additional argruments for \code{\link[stats]{hclust}}
 #'
 #' @seealso clarans
 #'
@@ -220,7 +221,7 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
       inx.i <- which(clarFit$clusters == i)
       out <- as.dendrogram(hclust(distCor(snp[, inx.i]), method, ...))
       out
-    } # hclust.sub
+    }
     hclustFit <- mclapply(clust.inx, hclust.sub,
                           snp, clarFit, method, ...,
                           mc.cores = mc.cores)
@@ -254,9 +255,9 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
 #'
 #' @description Cut a qtcatClust object at an specific height.
 #'
-#' @param snp A object of class \linkS4class{snpMatrix}.
-#' @param snpClust An object of class \code{\link{qtcatClust}}.
-#' @param absCor cutting height in absolute value of correlation.
+#' @param snp an object of class \linkS4class{snpMatrix}.
+#' @param snpClust an object of class \code{\link{qtcatClust}}.
+#' @param absCor a cutting height in absolute value of correlation.
 #'
 #' @examples
 #' # file containing example data for SNP data
@@ -302,8 +303,8 @@ cutClust <- function(snp, snpClust, absCor = 1) {
 #'
 #' @description Rename dendrogram leafs.
 #'
-#' @param dend A dendrogram.
-#' @param labels vector of new names.
+#' @param dend a dendrogram.
+#' @param labels a vector of new names.
 #'
 #' @importFrom stats dendrapply is.leaf
 #' @keywords internal

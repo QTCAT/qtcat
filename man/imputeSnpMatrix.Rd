@@ -7,18 +7,18 @@
 imputeSnpMatrix(snp, snpClust, min.absCor = 0.1, mc.cores = 1)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 
-\item{snpClust}{An object of class \code{\link{qtcatClust}}.}
+\item{snpClust}{an object of class \code{\link{qtcatClust}}.}
 
-\item{min.absCor}{A minimum value of correlation. If missing values still exist if this
+\item{min.absCor}{a minimum value of correlation. If missing values still exist if this
 point in the hierarchy is reached, imputing is done via allele frequencies.}
 
-\item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
+\item{mc.cores}{a number of cores for parallelising. Theoretical maximum is
 \code{'B'}. For details see \code{\link[parallel]{mclapply}}.}
 }
 \description{
-Uses neighboring SNPs in the clustering hierarchy to impute alleles to
+Uses neighbor SNPs from the clustering hierarchy to impute alleles to
 positions with missing values.
 }
 \examples{

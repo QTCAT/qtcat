@@ -2,17 +2,17 @@
 % Please edit documentation in R/AllGeneric.R
 \name{alleleFreq}
 \alias{alleleFreq}
-\title{Frequency of alleles in data.}
+\title{Allele Frequency.}
 \usage{
 alleleFreq(x, maf = TRUE)
 }
 \arguments{
-\item{x}{An object.}
+\item{x}{an object, for which a corresponding method exists.}
 
-\item{maf}{If true minor allele frequency (default), other ways allele frequency of 
-'allele.1'.}
+\item{maf}{logical, if true minor allele frequency (default), other ways allele
+frequency of 'allele.1'.}
 }
 \description{
-Frequency of alleles in data.
+Frequency of alleles in data set.
 }
 

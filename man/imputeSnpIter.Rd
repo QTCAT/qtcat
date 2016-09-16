@@ -7,18 +7,18 @@
 imputeSnpIter(snp, snpOfInt, inxSnpsToComp, snpOfIntFlip, flipAlleles)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 
-\item{snpOfInt}{A vertor of the snp of interest.}
+\item{snpOfInt}{a vertor of the snp of interest.}
 
-\item{inxSnpsToComp}{Index of neighbors.}
+\item{inxSnpsToComp}{a index of neighbors.}
 
-\item{snpOfIntFlip}{Flip status of the snp of interest.}
+\item{snpOfIntFlip}{flip status of the snp of interest.}
 
-\item{flipAlleles}{A vertor of telling for each SNP if allele one has allele freq. > 0.5
+\item{flipAlleles}{a vertor of telling for each SNP if allele one has allele freq. > 0.5
 or not.}
 
-\item{min.absCor}{A minimum value of correlation. If missing values still exist if this
+\item{min.absCor}{a minimum value of correlation. If missing values still exist if this
 point in the hierarchy is reached, imputing is done via allele frequencies.}
 }
 \description{

@@ -9,37 +9,37 @@ qtcatHit(pheno, geno, B = 50, p.samp1 = 0.35, nfolds = 5,
   0.01), max.p.esti = 1, seed = 12321, mc.cores = 1, trace = FALSE, ...)
 }
 \arguments{
-\item{pheno}{An object of class \code{\link{qtcatPheno}}.}
+\item{pheno}{an object of class \code{\link{qtcatPheno}}.}
 
-\item{geno}{An object of class \code{\link{qtcatGeno}}.}
+\item{geno}{an object of class \code{\link{qtcatGeno}}.}
 
-\item{B}{A integer indicating the number of sample-splits.}
+\item{B}{a integer indicating the number of sample-splits.}
 
-\item{p.samp1}{A value specifying the fraction of data used for the LASSO sample-split.
+\item{p.samp1}{a value specifying the fraction of data used for the LASSO sample-split.
 The ANOVA sample-split is \code{1 - p.samp1}.}
 
 \item{nfolds}{Number of folds (default is 5). See \code{\link[glmnet]{cv.glmnet}} for
 more details.}
 
-\item{lambda.opt}{Criterion for optimum selection of cross validated lasso. Either
+\item{lambda.opt}{a criterion for optimum selection of cross validated lasso. Either
 "lambda.1se" (default) or "lambda.min". See
 \code{\link[glmnet]{cv.glmnet}} for more details.}
 
-\item{alpha}{A single value in the range of 0 to 1 for the elastic net mixing parameter.}
+\item{alpha}{a single value in the range of 0 to 1 for the elastic net mixing parameter.}
 
-\item{gamma}{Vector of gamma-values used in significant estimation.}
+\item{gamma}{a vector of gamma-values used in significance estimation.}
 
-\item{max.p.esti}{Maximum for computed p-values. All p-values above this value are set
+\item{max.p.esti}{a maximum for computed p-values. All p-values above this value are set
 to one. Small \code{max.p.esti} values reduce computing time.}
 
-\item{seed}{A RNG seed, see \code{\link{set.seed}}.}
+\item{seed}{a RNG seed, see \code{\link{set.seed}}.}
 
-\item{mc.cores}{Number of cores for parallelising. Theoretical maximum is
+\item{mc.cores}{a number of cores for parallelising. The maximum is
 \code{'B'}. For details see \code{\link[parallel]{mclapply}}.}
 
-\item{trace}{If \code{TRUE} it prints current status of the program.}
+\item{trace}{logical, if \code{TRUE} it prints the current status of the program.}
 
-\item{...}{Additional arguments for \code{\link[glmnet]{cv.glmnet}}.}
+\item{...}{additional arguments for \code{\link[glmnet]{cv.glmnet}}.}
 }
 \description{
 Hierarchical inference testing for phenotype-SNP association.

@@ -15,10 +15,9 @@ and for Windows
 
 
 ## Description:
-An association mapping method which jointly analyses all SNPs at once and at 
-the same time accounts for the correlation between them. This makes correction 
-for population structure unnecessary and therefore increases power compared to 
-classical methods like the mixed model.
+QTCAT tests all SNPs jointly in ther association to the phenotype and at the same time 
+considers correlation between them. Thus, correction for population structure becomes 
+unnecessary, which in many cases results in a power advantages compared to other methods. 
 
 ## Installation:
 The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools)

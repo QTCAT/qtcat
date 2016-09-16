@@ -2,19 +2,19 @@
 % Please edit documentation in R/snpCluster.R
 \name{identicals}
 \alias{identicals}
-\title{Perfect simiarity  SNP clusters}
+\title{Perfect simiarity clusters of SNP}
 \usage{
 identicals(snp, mc.cores = 1)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 
-\item{mc.cores}{A positive integer for the number of cores for parallel computing. See
+\item{mc.cores}{a positive integer for the number of cores for parallel computing. See
 \code{\link[parallel]{mclapply}} for details.}
 }
 \description{
-Finds perfect similarity cluster of SNPs. This is specially us full in
-crossed populations.
+Finds perfect similarity cluster of SNPs. This is specially usfull in
+artificial crossing populations.
 }
 \examples{
 # file containing example data for SNP data

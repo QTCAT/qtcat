@@ -2,14 +2,14 @@
 % Please edit documentation in R/AllGeneric.R
 \name{snpInfo}
 \alias{snpInfo}
-\title{Extract position and allele information from object.}
+\title{Extract genomic position and allele information.}
 \usage{
 snpInfo(object)
 }
 \arguments{
-\item{object}{An object.}
+\item{object}{an object, for which a corresponding method exists.}
 }
 \description{
-Extract position and allele information from object.
+Extract genomic position and allele information from object.
 }
 

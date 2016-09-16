@@ -2,16 +2,17 @@
 % Please edit documentation in R/AllGeneric.R
 \name{hetFreq}
 \alias{hetFreq}
-\title{Frequency of heterozygosity in data.}
+\title{Heterozygosity Frequency.}
 \usage{
 hetFreq(x, dim = 1L)
 }
 \arguments{
-\item{x}{An object.}
+\item{x}{an object, for which a corresponding method exists.}
 
-\item{dim}{Dimension over which heterozygosity is estimated.}
+\item{dim}{dimension over which heterozygosity is estimated. 1 (default) is for rows
+(individuals), 2 is for columns (SNPs).}
 }
 \description{
-Frequency of heterozygosity in data.
+Frequency of heterozygosity in data set.
 }
 

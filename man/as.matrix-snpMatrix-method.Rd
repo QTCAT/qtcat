@@ -3,15 +3,15 @@
 \docType{methods}
 \name{as.matrix,snpMatrix-method}
 \alias{as.matrix,snpMatrix-method}
-\title{snpMatrix as matrix}
+\title{As matrix method for snpMatrix}
 \usage{
 \S4method{as.matrix}{snpMatrix}(x)
 }
 \arguments{
-\item{x}{An object of class \linkS4class{snpMatrix}.}
+\item{x}{an object of class \linkS4class{snpMatrix}.}
 }
 \description{
-Matrix from an object of class \linkS4class{snpMatrix}.
+As matrix method for an object of class \linkS4class{snpMatrix}.
 }
 \examples{
 # file containing example data for SNP data

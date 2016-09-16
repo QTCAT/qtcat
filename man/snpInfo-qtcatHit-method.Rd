@@ -8,7 +8,7 @@
 \S4method{snpInfo}{qtcatHit}(object)
 }
 \arguments{
-\item{object}{An object of class qtcatHit.}
+\item{object}{an object of class \code{\link{qtcatHit}}.}
 }
 \description{
 Genetic position info from an object of class qtcatHit.

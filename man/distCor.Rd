@@ -2,17 +2,16 @@
 % Please edit documentation in R/snpCluster.R
 \name{distCor}
 \alias{distCor}
-\title{Correlation based distance among SNPs}
+\title{Correlation based distance between SNPs}
 \usage{
 distCor(snp)
 }
 \arguments{
-\item{snp}{An object of class \linkS4class{snpMatrix}.}
+\item{snp}{an object of class \linkS4class{snpMatrix}.}
 }
 \description{
-This function computes and returns a distance matrix. Distance is estimated
-as one minus absolute value of the correlation coefficient 1-abs(cor). The estimation is
-computed for all pairwise combinations SNPs.
+This function computes a distance matrix. The distance is estimated
+as one minus the absolute value of the correlation coefficient \code{1 - abs(cor)}.
 }
 \details{
 See \code{\link[stats]{dist}} for details about the output object.
