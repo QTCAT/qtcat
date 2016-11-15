@@ -5,7 +5,7 @@ Description: QTCAT tests all SNPs jointly in ther association to the phenotype a
     becomes unnecessary, which in many cases results in a power advantages compared to
     other methods.
 Authors@R: person("Jonas", "Klasen", role = c("aut", "cre"), email = "qtcat@gmx.de")
-Version: 0.2.1
+Version: 0.3.0
 URL: http://github.com/QTCAT/qtcat
 BugReports: https://github.com/QTCAT/qtcat/issues
 Depends:
@@ -17,7 +17,7 @@ Imports:
     graphics,
     utils,
     Rcpp (>= 0.11.0),
-    hit (>= 0.3.1)
+    hit (>= 0.4.0)
 Suggests:
     fastcluster,
     knitr,
