@@ -15,9 +15,9 @@ and for Windows
 
 
 ## Description:
-QTCAT tests all SNPs jointly in ther association to the phenotype and at the same time 
-considers correlation between them. Thus, correction for population structure becomes 
-unnecessary, which in many cases results in a power advantages compared to other methods. 
+All SNPs are jointly associated to the phenotype and at the same time correlation among 
+them is considered. Thus, correction for population structure becomes unnecessary, which in 
+many cases results in a power advantages compared to other methods.
 
 **Klasen, J. R. et al. (2016)**. *A multi-marker association method for genome-wide 
 association studies without the need for population structure correction*. Nature 

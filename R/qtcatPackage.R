@@ -1,9 +1,8 @@
 #' @title Quantitative Trait Cluster Association Test
 #'
-#' @description QTCAT tests all SNPs jointly in ther association to the phenotype and at
-#' the same time considers correlation between them. Thus, correction for population
-#' structure becomes unnecessary, which in many cases results in a power advantages
-#' compared to other methods.
+#' @description All SNPs are jointly associated to the phenotype and at the same time
+#' correlation among them is considered. Thus, correction for population structure becomes
+#' unnecessary, which in many cases results in a power advantages compared to other methods.
 #'
 #' @author Jonas Klasen
 #'
