@@ -15,9 +15,13 @@ and for Windows
 
 
 ## Description:
-QTCAT tests all SNPs jointly in ther association to the phenotype and at the same time 
-considers correlation between them. Thus, correction for population structure becomes 
-unnecessary, which in many cases results in a power advantages compared to other methods. 
+All SNPs are jointly associated to the phenotype and at the same time correlation among 
+them is considered. Thus, correction for population structure becomes unnecessary, which in 
+many cases results in a power advantages compared to other methods.
+
+**Klasen, J. R. et al. (2016)**. *A multi-marker association method for genome-wide 
+association studies without the need for population structure correction*. Nature 
+Communications. [Paper](http://www.nature.com/articles/ncomms13299)
 
 ## Installation:
 The package can be installed from an R console via [`devtools`](https://github.com/hadley/devtools#updating-to-the-latest-version-of-devtools)

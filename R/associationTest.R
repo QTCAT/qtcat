@@ -124,6 +124,8 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' The ANOVA sample-split is \code{1 - p.samp1}.
 #' @param nfolds Number of folds (default is 5). See \code{\link[glmnet]{cv.glmnet}} for
 #' more details.
+#' @param overall.lambda 	Logical, if true, lambda is estimated once, if false (default),
+#' lambda is estimated for each sample split.
 #' @param lambda.opt a criterion for optimum selection of cross validated lasso. Either
 #' "lambda.1se" (default) or "lambda.min". See
 #' \code{\link[glmnet]{cv.glmnet}} for more details.
@@ -159,7 +161,7 @@ qtcatPheno <- function(names, pheno, family = "gaussian", covariates = NULL) {
 #' @importFrom methods is
 #' @export
 qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.35,
-                     nfolds = 5, lambda.opt = "lambda.1se",
+                     nfolds = 5, overall.lambda = FALSE, lambda.opt = "lambda.1se",
                      alpha = 1, gamma = seq(0.05, 0.99, by = 0.01),
                      max.p.esti = 1, seed = 12321, mc.cores = 1, trace = FALSE, ...) {
   set.seed(seed)
@@ -183,7 +185,7 @@ qtcatHit <- function(pheno, geno, B = 50, p.samp1 = 0.35,
     x <- cbind(geno$x[genoInx, ], pheno$covariates[phenoInx, ])
   y <- pheno$pheno[phenoInx]
   fitHit <- hit(x, y, geno$hierarchy, pheno$family,
-                B, p.samp1, nfolds, lambda.opt, alpha,
+                B, p.samp1, nfolds, overall.lambda, lambda.opt, alpha,
                 gamma, max.p.esti, mc.cores,
                 trace, standardize = FALSE)
   out <- c(fitHit, geno[3L:5L])
