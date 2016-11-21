@@ -48,4 +48,4 @@ There is also a [Arabidopsis example](https://github.com/QTCAT/qtcat.data) avail
 --------------------------------------------------------------------------------
 
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-&copy; 2015 JR Klasen
+&copy; 2016 JR Klasen
