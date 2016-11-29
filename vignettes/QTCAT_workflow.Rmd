@@ -1,0 +1,73 @@
+---
+title: "QTCAT workflow"
+author: "Jonas Klasen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{QTCAT workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Principle idea of QTCAT
+An association mapping method which jointly analyses all SNPs at once and at 
+the same time accounts for the correlation between them. This makes correction 
+for population structure unnecessary and therefore increases power compared to 
+classical methods like the mixed model.
+
+## Data preparation 
+```R
+require(qtcat)
+# read data
+pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
+gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
+pdat <- read.csv(pfile, header = TRUE)
+snp <- read.snpData(gfile, sep = ",")
+
+```
+
+```R
+# data checks
+dim(snp) # matrix (n indiv * p snps)
+snp <- snp[, alleleFreq(snp) >= .05] # minor allele freq greater than 5%
+hist(hetFreq(snp, 2)) # het per snp
+hist(hetFreq(snp, 1)) # het per indiv
+
+```
+
+## Clustering of SNPs
+```R
+# clustering
+clustSnp <- qtcatClust(snp)
+
+```
+
+## Phenotype and genotype object
+```R
+# prepare data for hit
+# Construct phenotype object
+pheno <- qtcatPheno(names = pdat[, 1],
+                    pheno = pdat[, 2],
+                    covariates = model.matrix(~ pdat[, 3]))
+geno <- qtcatGeno(snp, clustSnp)
+
+```
+
+## HIT analysis
+```R
+# Hierarchical Inference Testing
+qtcFit <- qtcatHit(pheno, geno)
+# result of QTCAT
+(qtc <- qtcatQtc(qtcFit, alpha = 0.05)) 
+
+```
+
+## Additional model validation steps
+```R
+# run lm at pheno and medoids of significant QTCs
+qtcLmFit <- medoidsLm(qtcFit, pheno, geno)
+plot(qtcLmFit) # check model assumptions (normality, ...)
+# explained variance (includes covariates if they are part of pheno object)
+summary(qtcLmFit)$r.squared 
+
+```
