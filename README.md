@@ -42,6 +42,7 @@ library(qtcat)
 example(qtcatQtc, run.dontrun = TRUE)
 
 ```
+The data used in the example can be found under [inst/extdata](https://github.com/QTCAT/qtcat/tree/master/inst/extdata) 
 
 There is also a [Arabidopsis example](https://github.com/QTCAT/qtcat.data) available.
 
