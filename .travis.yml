@@ -1,6 +1,12 @@
-language: R
-sudo: required
-#warnings_are_errors: true
+language: r
+cache: packages
 
-r_github_packages:
-  - jrklasen/hit
+matrix:
+  include:
+    - os: linux
+    - os: osx
+
+warnings_are_errors: true
+
+# r_github_packages:
+#   - jrklasen/hit
