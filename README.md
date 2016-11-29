@@ -8,7 +8,7 @@
 --------------------------------------------------------------------------------
 
 # Quantitative Trait Cluster Association Test
-The current built and test status for Linux & OS X
+The current built and test status for Linux (Mac)
 [![Build Status](https://travis-ci.org/QTCAT/qtcat.svg?branch=master)](https://travis-ci.org/QTCAT/qtcat)
 and for Windows 
 [![Build status](https://ci.appveyor.com/api/projects/status/hx1pvqer9flugwew/branch/master?svg=true)](https://ci.appveyor.com/project/jrklasen/qtcat/branch/master)
@@ -42,7 +42,6 @@ library(qtcat)
 example(qtcatQtc, run.dontrun = TRUE)
 
 ```
-The data used in the example can be found under [inst/extdata](https://github.com/QTCAT/qtcat/tree/master/inst/extdata) 
 
 There is also a [Arabidopsis example](https://github.com/QTCAT/qtcat.data) available.
 

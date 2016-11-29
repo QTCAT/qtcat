@@ -268,57 +268,7 @@ setMethod("snpInfo", "qtcatHit",
 )
 
 
-#' @title Find medoids of QTCs
-#' @description Find a medoid of for each quantitative trait cluster (QTC).
-#'
-#' @param object an object of class \code{\link{qtcatHit}}.
-#' @param geno an object of class \code{\link{qtcatGeno}}.
-#' @param alpha an alpha level for significance estimation.
-#' @param min.absCor minimum absolute value of correlation considered.
-#'
-#' @examples
-#' # If you want to run the examples, use:
-#' # example(medoQtc, run.dontrun = TRUE)
-#' \dontrun{
-#' # files containing example data for SNP data and the phenotype
-#' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
-#' gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
-#' pdat <- read.csv(pfile, header = TRUE)
-#' snp <- read.snpData(gfile, sep = ",")
-#' clust <- qtcatClust(snp)
-#' geno <- qtcatGeno(snp, clust)
-#' pheno <- qtcatPheno(names = pdat[, 1],
-#'                     pheno = pdat[, 2],
-#'                     covariates = model.matrix(~ pdat[, 3]))
-#' fitted <- qtcatHit(pheno, geno)
-#'
-#' # QTC medoids
-#' medo <- medoQtc(fitted, geno)
-#' }
-#'
-#' @importFrom methods is
-#' @importFrom stats cor
-#' @export
-medoQtc <- function(object, geno, alpha = 0.05, min.absCor = 0.05) {
-  stopifnot(is(object, "qtcatHit"))
-  stopifnot(is(geno, "qtcatGeno"))
-  sigClust <- summary(object, alpha, min.absCor)
-  if (nrow(sigClust)) {
-    clusters <- split(rownames(sigClust), sigClust$clusters)
-    medoids <- sapply(clusters, function(names, geno) {
-      if (length(names) > 1L)
-        return(names[which.max(abs(cor(geno$x[, names])))])
-      else
-        return(names)
-    }, geno = geno)
-  } else {
-    medoids <- c()
-  }
-  medoids
-}
-
-
-#' @title Fitting a Linear Model to QTCs
+#' @title Fitting a Linear Model to medoids
 #'
 #' @description Linear model between phenotype and medoids of QTCs (significant SNP
 #' clusters).
@@ -331,7 +281,7 @@ medoQtc <- function(object, geno, alpha = 0.05, min.absCor = 0.05) {
 #'
 #' @examples
 #' # If you want to run the examples, use:
-#' # example(lmQtc, run.dontrun = TRUE)
+#' # example(medoidsLm, run.dontrun = TRUE)
 #' \dontrun{
 #' # files containing example data for SNP data and the phenotype
 #' pfile <- system.file("extdata/phenodata.csv", package = "qtcat")
@@ -346,13 +296,14 @@ medoQtc <- function(object, geno, alpha = 0.05, min.absCor = 0.05) {
 #' fitted <- qtcatHit(pheno, geno)
 #'
 #' # fitting a LM to the phenotype and QTC medoids
-#' lmfitted <- lmQtc(fitted, pheno, geno)
+#' lmfitted <- medoidsLm(fitted, pheno, geno)
 #' }
 #'
+#' @importFrom hit hit
 #' @importFrom methods is
-#' @importFrom stats lm
+#' @importFrom stats lm cor
 #' @export
-lmQtc <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
+medoidsLm <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
   stopifnot(is(object, "qtcatHit"))
   stopifnot(is(pheno, "qtcatPheno"))
   stopifnot(is(geno, "qtcatGeno"))
@@ -366,9 +317,16 @@ lmQtc <- function(object, pheno, geno, alpha = 0.05, min.absCor = 0.05) {
   if (length(id.uniquePheno <- setdiff(pheno$names, id)))
     cat("The following individuals are part of 'pheno' but not of 'geno':\n",
         paste(id.uniquePheno, collapse = " "), "\n")
-  medoids <- medoQtc(object, geno, alpha, min.absCor)
-  if (length(medoids)) {
-    xg <- geno$x[, colnames(geno$x) %in% medoids, drop = FALSE]
+  sigClust <- summary(object, alpha, min.absCor)
+  if (nrow(sigClust)) {
+    clusters <- split(rownames(sigClust), sigClust$clusters)
+    medoids <- lapply(clusters, function(names, geno) {
+      if (length(names) > 1L)
+        return(names[which.max(abs(cor(geno$x[, names])))])
+      else
+        return(names)
+    }, geno = geno)
+    xg <- geno$x[, colnames(geno$x) %in% unlist(medoids), drop = FALSE]
     genoInx <- match(pheno$names[phenoInx], rownames(xg))
     rownames(xg) <- NULL
     if (ncol(pheno$covariates)) {
