@@ -28,7 +28,7 @@ parallel for details.}
 
 \item{trace}{logical, if \code{TRUE} it prints current status of the program.}
 
-\item{...}{additional argruments for \code{\link[stats]{hclust}}}
+\item{...}{additional argruments for \code{\link[fastcluster]{hclust}}}
 }
 \description{
 A three step approximated hierarchical clustering of SNPs suitable to

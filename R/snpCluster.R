@@ -158,7 +158,7 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #' @param mc.cores a number of cores for parallel computing. See \code{mclapply} in package
 #' parallel for details.
 #' @param trace logical, if \code{TRUE} it prints current status of the program.
-#' @param ... additional argruments for \code{\link[stats]{hclust}}
+#' @param ... additional argruments for \code{\link[fastcluster]{hclust}}
 #'
 #' @seealso clarans
 #'
@@ -169,16 +169,14 @@ clarans <- function(snp, k, maxNeigbours = 100, nLocal = 10, mc.cores = 1) {
 #'
 #' clust <- qtcatClust(snp)
 #'
+#' @importFrom fastcluster hclust
+#' @importFrom stats as.dendrogram
 #' @importFrom parallel mclapply
-#' @importFrom stats hclust as.dendrogram
 #' @importFrom methods is
 #' @importFrom utils installed.packages
 #' @export
 qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 10,
                        method = "complete", mc.cores = 1, trace = FALSE, ...) {
-  if (is.element("fastcluster", rownames(installed.packages()))) {
-    hclust <- fastcluster::hclust
-  }
   stopifnot(is(snp, "snpMatrix"))
   if (identicals) {
     # identicals
