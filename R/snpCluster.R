@@ -210,9 +210,6 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
       min.bigclust <- clust.inx[which.min(min(cluster.size[clust.inx]))]
       clarFit$clusters[clarFit$clusters %in% smallclust] <- min.bigclust
     }
-    if (max(cluster.size) > 65536L)
-      stop(paste("Clusters from CLARANS are to big for hclust, choose larger 'k'. The current 'k' is",
-                 k))
     # HClust
     if (trace)
       cat("Step 3: HClust is running\n")
@@ -226,8 +223,6 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
                           mc.cores = mc.cores)
     dendro <- do.call(merge, c(hclustFit, height = 1, adjust = "add.max"))
   } else {
-    if (ncol(snp) > 65536L)
-      stop("Data size is to big for hclust, choose larger 'k'")
     # HClust
     if (trace)
       cat("Step 2: CLARANS is switch off\nStep 3: HClust is running\n")
