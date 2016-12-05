@@ -211,7 +211,8 @@ qtcatClust <- function(snp, k, identicals = TRUE, maxNeigbours = 100, nLocal = 1
       clarFit$clusters[clarFit$clusters %in% smallclust] <- min.bigclust
     }
     if (max(cluster.size) > 65536L)
-      stop("Clusters from CLARANS are to big for hclust, choose larger 'k'")
+      stop(paste("Clusters from CLARANS are to big for hclust, choose larger 'k'. The current 'k' is",
+                 k))
     # HClust
     if (trace)
       cat("Step 3: HClust is running\n")
