@@ -43,4 +43,3 @@ plotSelFreq(fitted)
 }
 
 }
-

@@ -45,4 +45,3 @@ clust <- qtcatClust(snp)
 \seealso{
 clarans
 }
-

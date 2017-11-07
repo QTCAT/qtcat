@@ -31,4 +31,3 @@ gfile <- system.file("extdata/snpdata.csv", package = "qtcat")
 snp <- read.snpData(gfile, sep = ",")
 
 }
-

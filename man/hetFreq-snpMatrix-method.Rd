@@ -24,4 +24,3 @@ hf1 <- hetFreq(snp, 1)
 hf2 <- hetFreq(snp, 2)
 
 }
-

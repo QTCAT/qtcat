@@ -12,4 +12,3 @@ snpInfo(object)
 \description{
 Extract genomic position and allele information from object.
 }
-

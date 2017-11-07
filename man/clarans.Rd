@@ -49,4 +49,3 @@ Ng and J. Han (2002). CLARANS: A method for clustering objects for spatial
 data mining. \emph{IEEE Transactions on Knowledge and Data Engineering}.
 \url{http://dx.doi.org/10.1109/TKDE.2002.1033770}).
 }
-

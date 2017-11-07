@@ -68,4 +68,3 @@ fitted <- qtcatHit(pheno, geno)
 }
 
 }
-

@@ -27,4 +27,3 @@ dist <- distCor(snp[, 1:10])
 \seealso{
 \code{\link[stats]{dist}}
 }
-

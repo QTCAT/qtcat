@@ -24,4 +24,3 @@ na1 <- naFreq(snp, 1)
 na2 <- naFreq(snp, 2)
 
 }
-

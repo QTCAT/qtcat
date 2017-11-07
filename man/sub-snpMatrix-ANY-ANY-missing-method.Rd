@@ -23,4 +23,3 @@ numeric or character vectors.}
 \description{
 Subsetting an object of class \linkS4class{snpMatrix}.
 }
-

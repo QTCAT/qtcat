@@ -38,4 +38,3 @@ qtcatQtc(fitted)
 }
 
 }
-

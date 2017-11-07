@@ -23,4 +23,3 @@ as.snpMatrix(x, chr, pos, alleleCoding = c(-1, 0, 1), allele.1 = NULL,
 \description{
 Constructs a \linkS4class{snpMatrix} object from the given data.
 }
-

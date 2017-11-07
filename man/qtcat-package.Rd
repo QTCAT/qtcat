@@ -2,8 +2,8 @@
 % Please edit documentation in R/qtcatPackage.R
 \docType{package}
 \name{qtcat-package}
-\alias{qtcat}
 \alias{qtcat-package}
+\alias{qtcat}
 \title{Quantitative Trait Cluster Association Test}
 \description{
 All SNPs are jointly associated to the phenotype and at the same time
@@ -13,4 +13,3 @@ unnecessary, which in many cases results in a power advantages compared to other
 \author{
 Jonas Klasen
 }
-

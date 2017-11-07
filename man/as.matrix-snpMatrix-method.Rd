@@ -20,4 +20,3 @@ snp <- read.snpData(gfile, sep = ",")
 snpmat <- as.matrix(snp)
 
 }
-

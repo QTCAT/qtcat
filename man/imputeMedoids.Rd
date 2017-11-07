@@ -24,4 +24,3 @@ Uses neighboring SNPs in the clustering hierarchy to impute alleles to
 positions with missing values at medoid SNPs.
 }
 \keyword{internal}
-

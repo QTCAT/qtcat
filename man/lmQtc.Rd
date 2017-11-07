@@ -42,4 +42,3 @@ lmfitted <- lmQtc(fitted, pheno, geno)
 }
 
 }
-

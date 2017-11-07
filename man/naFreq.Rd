@@ -15,4 +15,3 @@ naFreq(x, dim = 1L)
 \description{
 Frequency of missing Data in data set.
 }
-

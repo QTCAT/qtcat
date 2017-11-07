@@ -23,4 +23,3 @@ snp <- read.snpData(gfile, sep = ",")
 af <- alleleFreq(snp)
 
 }
-

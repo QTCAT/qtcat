@@ -25,4 +25,3 @@ clust <- qtcatClust(snp)
 cclust <- cutClust(snp, clust, .5)
 
 }
-

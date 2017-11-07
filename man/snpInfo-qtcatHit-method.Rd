@@ -13,4 +13,3 @@
 \description{
 Genetic position info from an object of class qtcatHit.
 }
-

@@ -35,4 +35,3 @@ clust <- qtcatClust(snp)
 geno <- qtcatGeno(snp, clust)
 
 }
-

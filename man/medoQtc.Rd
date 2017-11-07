@@ -39,4 +39,3 @@ medo <- medoQtc(fitted, geno)
 }
 
 }
-

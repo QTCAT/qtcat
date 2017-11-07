@@ -35,4 +35,3 @@ pheno <- qtcatPheno(names = pdat[, 1],
                     covariates = model.matrix(~ pdat[, 3]))
 
 }
-

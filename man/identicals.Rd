@@ -24,4 +24,3 @@ snp <- read.snpData(gfile, sep = ",")
 ident <- identicals(snp)
 
 }
-

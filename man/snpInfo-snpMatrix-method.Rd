@@ -21,4 +21,3 @@ snp <- read.snpData(gfile, sep = ",")
 info <- snpInfo(snp)
 
 }
-

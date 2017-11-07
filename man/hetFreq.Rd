@@ -15,4 +15,3 @@ hetFreq(x, dim = 1L)
 \description{
 Frequency of heterozygosity in data set.
 }
-

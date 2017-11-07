@@ -15,4 +15,3 @@ rename.leafs(dend, labels)
 Rename dendrogram leafs.
 }
 \keyword{internal}
-

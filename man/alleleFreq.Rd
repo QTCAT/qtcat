@@ -15,4 +15,3 @@ frequency of 'allele.1'.}
 \description{
 Frequency of alleles in data set.
 }
-

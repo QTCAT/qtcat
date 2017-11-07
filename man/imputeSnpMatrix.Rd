@@ -40,4 +40,3 @@ snpmat3 <- as.matrix(snp3)
 (1 - sum(abs(snpmat1- snpmat3)) / length(snpmat1)) * 100
 
 }
-
