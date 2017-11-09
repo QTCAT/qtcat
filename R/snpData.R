@@ -112,7 +112,6 @@ as.snpMatrix <- function(x, chr, pos, alleleCoding = c(-1, 0, 1),
   }
   loci.names <- colnames(x)
   attr(x, 'dimnames') <- NULL
-  attr(position, 'dimnames') <- NULL
   nLabels <- length(alleleCoding)
   if (nLabels == 2L) {
     newLabels <- as.raw(c(1, 3))
