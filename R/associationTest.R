@@ -433,7 +433,7 @@ plotQtc <- function(x, alpha = 0.05, xlab = "Chromosomes",
   chrsize <- cumsum(c(0, chrminmax[2L, -ncol(chrminmax)])) -
     cumsum(chrminmax[1L, ]) +
     cumsum(c(0, rep(chrgap, ncol(chrminmax) - 1L)))
-  chr <- unique(pos[, 1L])
+  chr <- sort(unique(pos[, 1L]))
   for (i in seq_along(chr)) {
     inx <- which(pos[, 1L] == chr[i])
     pos[inx, 2L] <- pos[inx, 2L] + chrsize[i]
@@ -505,7 +505,7 @@ plotSelFreq <- function(x, xlab = "Chromosomes", ylab = "Sel. freq.",
   chrsize <- cumsum(c(0, chrminmax[2L, -ncol(chrminmax)])) -
     cumsum(chrminmax[1L, ]) +
     cumsum(c(0, rep(chrgap, ncol(chrminmax) - 1L)))
-  chr <- unique(pos[, 1L])
+  chr <- sort(unique(pos[, 1L]))
   for (i in seq_along(chr)) {
     inx <- which(pos[, 1L] == chr[i])
     pos[inx, 2L] <- pos[inx, 2L] + chrsize[i]
