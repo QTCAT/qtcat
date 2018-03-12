@@ -5,7 +5,7 @@ Description:
     them is considered. Thus, correction for population structure becomes unnecessary, 
     which in many cases results in a power advantages compared to other methods.
 Authors@R: person("Jonas", "Klasen", role = c("aut", "cre"), email = "qtcat@gmx.de")
-Version: 0.4.2
+Version: 0.4.3
 URL: http://github.com/QTCAT/qtcat
 BugReports: https://github.com/QTCAT/qtcat/issues
 Depends:

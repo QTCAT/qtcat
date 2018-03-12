@@ -46,7 +46,7 @@ double corDist(RawVector x, RawVector y) {
 NumericVector corDists(RawMatrix x) {
     int n = x.ncol();
     NumericVector dist(n * (n -1) / 2);
-    int count = 0;
+    uint64_t count = 0;
     for (int i = 0; i < n - 1; i ++) {
         for (int j = i + 1; j < n; j ++) {
             dist[count] = corDist(x(_, i), x(_, j));
