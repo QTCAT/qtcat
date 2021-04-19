@@ -8,6 +8,8 @@
 --------------------------------------------------------------------------------
 
 # Quantitative Trait Cluster Association Test
+This project has no active development and is unmaintained.
+
 The current built and test status for Linux & OS X
 [![Build Status](https://travis-ci.org/QTCAT/qtcat.svg?branch=master)](https://travis-ci.org/QTCAT/qtcat)
 and for Windows 
